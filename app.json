@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "FreeShow Remote",
-    "slug": "FreeShowRemote",
+    "slug": "freeshow-remote",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -70,7 +70,8 @@
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE",
         "android.permission.ACCESS_WIFI_STATE",
-        "android.permission.WAKE_LOCK"
+        "android.permission.WAKE_LOCK",
+        "android.permission.RECORD_AUDIO"
       ],
       "package": "app.freeshow.remote",
       "allowBackup": false,
@@ -140,10 +141,10 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "a8981839-843a-4268-b544-cde35e549de6"
+        "projectId": "ea07578b-f68b-4961-b7d8-45f37a64f97b"
       }
     },
     "buildCacheProvider": "eas",
-    "owner": "ChurchApps"
+    "owner": "churchapps"
   }
 }
