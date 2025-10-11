@@ -1,0 +1,149 @@
+{
+  "expo": {
+    "name": "FreeShow Remote",
+    "slug": "FreeShowRemote",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "scheme": "FreeShowRemote",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "splash": {
+      "image": "./assets/splash-icon-bg.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0a0f"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "requireFullScreen": false,
+      "splash": {
+        "image": "./assets/splash-icon-bg.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#0a0a0f"
+      },
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "CFBundleDisplayName": "FreeShow Remote",
+        "CFBundleShortVersionString": "1.0.3",
+        "CFBundleVersion": "1",
+        "UIStatusBarHidden": false,
+        "UIViewControllerBasedStatusBarAppearance": true,
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ],
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ],
+        "UIApplicationShortcutItems": []
+      },
+      "bundleIdentifier": "app.freeshow.remote",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "icon": "./assets/icon.png",
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": true,
+      "splash": {
+        "image": "./assets/splash-icon-bg.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#0a0a0f"
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.WAKE_LOCK"
+      ],
+      "package": "app.freeshow.remote",
+      "allowBackup": false,
+      "softwareKeyboardLayoutMode": "pan"
+    },
+    "plugins": [
+      "expo-system-ui",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera for scanning QR codes."
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true,
+            "networkSecurityConfig": "./android/network_security_config.xml",
+            "manifestQueries": {
+              "intent": [
+                {
+                  "action": "android.intent.action.VIEW",
+                  "data": {
+                    "scheme": "http"
+                  }
+                },
+                {
+                  "action": "android.intent.action.VIEW",
+                  "data": {
+                    "scheme": "https"
+                  }
+                }
+              ]
+            }
+          },
+          "ios": {
+            "infoPlist": {
+              "NSAppTransportSecurity": {
+                "NSAllowsLocalNetworking": true
+              }
+            }
+          }
+        }
+      ],
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0a0a0f",
+          "image": "./assets/splash-icon-bg.png",
+          "imageWidth": 250,
+          "resizeMode": "contain"
+        }
+      ],
+      [
+        "expo-quick-actions",
+        {
+          "androidIcons": {
+            "wifi_shortcut": {
+              "foregroundImage": "./assets/icon.png",
+              "backgroundColor": "#0a0a0f"
+            }
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a8981839-843a-4268-b544-cde35e549de6"
+      }
+    },
+    "buildCacheProvider": "eas",
+    "owner": "ChurchApps"
+  }
+}
