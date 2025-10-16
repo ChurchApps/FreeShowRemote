@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
+import TVFocusable from './TVFocusable';
 
 interface InterfaceHeaderProps {
   connectionName: string | null;
@@ -78,7 +79,8 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
           </View>
 
           {/* Disconnect Button */}
-          <Pressable
+          <TVFocusable onPress={onDisconnect} >
+            <Pressable
             style={({ pressed }) => [
               styles.actionButton,
               pressed && styles.actionButtonPressed
@@ -92,6 +94,7 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
               <Ionicons name="power" size={isTablet ? 22 : 20} color="#EF5350" />
             </LinearGradient>
           </Pressable>
+          </TVFocusable>
         </LinearGradient>
       </View>
     </View>

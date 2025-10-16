@@ -8,6 +8,7 @@ import {
   Linking,
   TouchableWithoutFeedback,
   Dimensions,
+  Platform,
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -21,6 +22,7 @@ import { configService } from '../config/AppConfig';
 import { ErrorLogger } from '../services/ErrorLogger';
 import { ShowOption } from '../types';
 import ErrorModal from '../components/ErrorModal';
+import TVFocusable from '../components/TVFocusable';
 
 interface WebViewScreenProps {
   navigation: any;
@@ -36,7 +38,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
   const [isFullScreen, setIsFullScreen] = useState(initialFullscreen);
   const [currentOrientation, setCurrentOrientation] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
   const webViewRef = useRef<WebView>(null);
-  const [errorModal, setErrorModal] = useState<{visible: boolean, title: string, message: string}>({
+  const [errorModal, setErrorModal] = useState<{ visible: boolean, title: string, message: string }>({
     visible: false,
     title: '',
     message: ''
@@ -90,7 +92,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
       const timer = setTimeout(() => {
         setShowFullscreenHint(false);
       }, configService.getNetworkConfig().fullscreenHintDuration);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isFullScreen]);
@@ -121,9 +123,9 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
 
   const handleRotateScreen = async () => {
     try {
-      const isLandscape = currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT || 
-                          currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
-      
+      const isLandscape = currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+
       if (isLandscape) {
         // Switch to portrait
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
@@ -146,13 +148,13 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     if (!isFullScreen) return;
 
     const now = Date.now();
-    
+
     // Show visual feedback on any tap
     setShowCornerFeedback(true);
     setTimeout(() => setShowCornerFeedback(false), configService.getNetworkConfig().cornerFeedbackDuration);
 
     if (lastTap && (now - lastTap) < DOUBLE_TAP_DELAY) {
-  // Double tap detected - exit fullscreen
+      // Double tap detected - exit fullscreen
       setIsFullScreen(false);
       setLastTap(null);
     } else {
@@ -214,7 +216,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     }
 
     const newUrl = `http://${connectionHost}:${show.port}`;
-    
+
     // Navigate to the new show interface
     navigation.setParams({
       url: newUrl,
@@ -265,21 +267,23 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
   };
 
   const getRotationIcon = () => {
-    const isLandscape = currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT || 
-                        currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
+    const isLandscape = currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_LEFT ||
+      currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
     return isLandscape ? 'phone-portrait' : 'phone-landscape';
   };
 
   if (error) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-            <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
-          </TouchableOpacity>
-          <Text style={styles.title}>{title}</Text>
-          <View style={styles.placeholder} />
-        </View>
+        <TVFocusable onPress={handleClose}>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
+            </TouchableOpacity>
+            <Text style={styles.title}>{title}</Text>
+            <View style={styles.placeholder} />
+          </View>
+        </TVFocusable>
 
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle" size={64} color={FreeShowTheme.colors.text + '66'} />
@@ -301,10 +305,12 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     <SafeAreaView style={styles.container}>
       {!isFullScreen && (
         <View style={styles.header}>
-          <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-            <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
-          </TouchableOpacity>
-          
+          <TVFocusable onPress={handleClose}>
+            <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+              <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
+            </TouchableOpacity>
+          </TVFocusable>
+
           {connectionHost && showId ? (
             deviceDimensions.isTablet ? (
               /* Tablet: ShowSwitcher modal + Quick Interface Switch Buttons - Centered */
@@ -320,81 +326,81 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                   <View style={styles.quickButtonsContainer}>
                     <TouchableOpacity
                       style={[
-                        styles.quickButton, 
+                        styles.quickButton,
                         showId === 'remote' && styles.quickButtonActive,
                         !currentShowPorts?.remote && styles.quickButtonDisabled
                       ]}
                       onPress={() => currentShowPorts?.remote && handleQuickSwitch('remote')}
                       disabled={!currentShowPorts?.remote}
                     >
-                      <Ionicons 
-                        name="play-circle" 
-                        size={20} 
+                      <Ionicons
+                        name="play-circle"
+                        size={20}
                         color={
-                          showId === 'remote' ? 'white' : 
-                          !currentShowPorts?.remote ? FreeShowTheme.colors.text + '40' : 
-                          FreeShowTheme.colors.text
-                        } 
+                          showId === 'remote' ? 'white' :
+                            !currentShowPorts?.remote ? FreeShowTheme.colors.text + '40' :
+                              FreeShowTheme.colors.text
+                        }
                       />
                     </TouchableOpacity>
-                    
+
                     <TouchableOpacity
                       style={[
-                        styles.quickButton, 
+                        styles.quickButton,
                         showId === 'stage' && styles.quickButtonActive,
                         !currentShowPorts?.stage && styles.quickButtonDisabled
                       ]}
                       onPress={() => currentShowPorts?.stage && handleQuickSwitch('stage')}
                       disabled={!currentShowPorts?.stage}
                     >
-                      <Ionicons 
-                        name="desktop" 
-                        size={20} 
+                      <Ionicons
+                        name="desktop"
+                        size={20}
                         color={
-                          showId === 'stage' ? 'white' : 
-                          !currentShowPorts?.stage ? FreeShowTheme.colors.text + '40' : 
-                          FreeShowTheme.colors.text
-                        } 
+                          showId === 'stage' ? 'white' :
+                            !currentShowPorts?.stage ? FreeShowTheme.colors.text + '40' :
+                              FreeShowTheme.colors.text
+                        }
                       />
                     </TouchableOpacity>
-                    
+
                     <TouchableOpacity
                       style={[
-                        styles.quickButton, 
+                        styles.quickButton,
                         showId === 'control' && styles.quickButtonActive,
                         !currentShowPorts?.control && styles.quickButtonDisabled
                       ]}
                       onPress={() => currentShowPorts?.control && handleQuickSwitch('control')}
                       disabled={!currentShowPorts?.control}
                     >
-                      <Ionicons 
-                        name="settings" 
-                        size={20} 
+                      <Ionicons
+                        name="settings"
+                        size={20}
                         color={
-                          showId === 'control' ? 'white' : 
-                          !currentShowPorts?.control ? FreeShowTheme.colors.text + '40' : 
-                          FreeShowTheme.colors.text
-                        } 
+                          showId === 'control' ? 'white' :
+                            !currentShowPorts?.control ? FreeShowTheme.colors.text + '40' :
+                              FreeShowTheme.colors.text
+                        }
                       />
                     </TouchableOpacity>
-                    
+
                     <TouchableOpacity
                       style={[
-                        styles.quickButton, 
+                        styles.quickButton,
                         showId === 'output' && styles.quickButtonActive,
                         !currentShowPorts?.output && styles.quickButtonDisabled
                       ]}
                       onPress={() => currentShowPorts?.output && handleQuickSwitch('output')}
                       disabled={!currentShowPorts?.output}
                     >
-                      <Ionicons 
-                        name="tv" 
-                        size={20} 
+                      <Ionicons
+                        name="tv"
+                        size={20}
                         color={
-                          showId === 'output' ? 'white' : 
-                          !currentShowPorts?.output ? FreeShowTheme.colors.text + '40' : 
-                          FreeShowTheme.colors.text
-                        } 
+                          showId === 'output' ? 'white' :
+                            !currentShowPorts?.output ? FreeShowTheme.colors.text + '40' :
+                              FreeShowTheme.colors.text
+                        }
                       />
                     </TouchableOpacity>
                   </View>
@@ -418,32 +424,44 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
             </View>
           )}
 
-          <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-            <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.text} />
-          </TouchableOpacity>
+          <TVFocusable onPress={handleRefresh}>
+            <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+              <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.text} />
+            </TouchableOpacity>
+          </TVFocusable>
 
-          <TouchableOpacity
-            style={styles.openBrowserButton}
-            onPress={handleOpenInBrowser}
-            onLongPress={handleCopyUrl}
-            delayLongPress={300}
-          >
-            <Ionicons name="open-outline" size={20} color={FreeShowTheme.colors.text} />
-          </TouchableOpacity>
+          {
+            !Platform.isTV && (
+              <TouchableOpacity
+                style={styles.openBrowserButton}
+                onPress={handleOpenInBrowser}
+                onLongPress={handleCopyUrl}
+                delayLongPress={300}
+              >
+                <Ionicons name="open-outline" size={20} color={FreeShowTheme.colors.text} />
+              </TouchableOpacity>
+            )
+          }
 
           {showId === 'output' && (
-            <TouchableOpacity style={styles.rotationButton} onPress={handleRotateScreen}>
-              <Ionicons name={getRotationIcon()} size={20} color={FreeShowTheme.colors.text} />
-            </TouchableOpacity>
+            <TVFocusable onPress={handleRotateScreen}>
+              <TouchableOpacity style={styles.rotationButton} onPress={handleRotateScreen}>
+                <Ionicons name={getRotationIcon()} size={20} color={FreeShowTheme.colors.text} />
+              </TouchableOpacity>
+            </TVFocusable>
           )}
 
-          <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
-            <Ionicons 
-              name={isFullScreen ? "contract" : "expand"} 
-              size={20} 
-              color={FreeShowTheme.colors.text} 
-            />
-          </TouchableOpacity>
+          {
+            !Platform.isTV && (
+              <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
+                <Ionicons
+                  name={isFullScreen ? "contract" : "expand"}
+                  size={20}
+                  color={FreeShowTheme.colors.text}
+                />
+              </TouchableOpacity>
+            )
+          }
         </View>
       )}
 
@@ -477,7 +495,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         visible={errorModal.visible}
         title={errorModal.title}
         message={errorModal.message}
-        onClose={() => setErrorModal({visible: false, title: '', message: ''})}
+        onClose={() => setErrorModal({ visible: false, title: '', message: '' })}
       />
 
       {/* Fullscreen hint (tap to dismiss) */}
@@ -494,24 +512,24 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         </TouchableOpacity>
       )}
 
-  {/* Double-tap corners to exit fullscreen */}
-  {isFullScreen && (
+      {/* Double-tap corners to exit fullscreen */}
+      {isFullScreen && (
         <>
           {/* Top-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
-          
+
           {/* Top-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaTopRight, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
-          
+
           {/* Bottom-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaBottomLeft, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
-          
+
           {/* Bottom-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaBottomRight, showCornerFeedback && styles.cornerTapAreaActive]} />
@@ -607,7 +625,7 @@ const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
-  
+
   webView: {
     flex: 1,
     backgroundColor: FreeShowTheme.colors.primary,
@@ -695,8 +713,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   fullscreenHint: {
-  position: 'absolute',
-  top: 40,
+    position: 'absolute',
+    top: 40,
     left: 20,
     right: 20,
     zIndex: 10000,

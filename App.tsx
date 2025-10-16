@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNavigationContainerRef } from '@react-navigation/native';
@@ -578,6 +578,10 @@ function MainLayout() {
 
   // Default to bottom bar if settings not loaded yet
   const navigationLayout: 'bottomBar' | 'sidebar' | 'floating' = settings?.navigationLayout || 'bottomBar';
+
+  if (Platform.isTV) {
+    return <SidebarLayout />
+  }
 
   if (navigationLayout === 'sidebar') {
     return <SidebarLayout />;

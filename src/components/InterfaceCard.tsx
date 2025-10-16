@@ -4,6 +4,7 @@ import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ShowOption } from '../types';
+import TVFocusable from './TVFocusable';
 
 interface InterfaceCardProps {
   show: ShowOption;
@@ -67,34 +68,36 @@ const InterfaceCard: React.FC<InterfaceCardProps> = ({
   );
 
   return (
-    <Pressable
-      style={({ pressed }) => [
-        styles.interfaceCard,
-        pressed && styles.interfaceCardPressed,
-        isDisabled && styles.disabledCard
-      ]}
-      onPress={onPress}
-      onLongPress={onLongPress}
-      delayLongPress={300}
-    >
-      <LinearGradient
-        colors={[
-          `${show.color}10`,
-          `${show.color}05`
+    <TVFocusable onPress={onPress} onLongPress={onLongPress} disabled={isDisabled}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.interfaceCard,
+          pressed && styles.interfaceCardPressed,
+          isDisabled && styles.disabledCard
         ]}
-        style={styles.interfaceCardGradient}
+        onPress={onPress}
+        onLongPress={onLongPress}
+        delayLongPress={300}
       >
-        {Platform.OS === 'ios' ? (
-          <BlurView intensity={15} style={[styles.cardBlur, isLarge && styles.cardBlurLarge, isXL && styles.cardBlurXL]}>
-            <CardContent />
-          </BlurView>
-        ) : (
-          <View style={[styles.cardContent, isLarge && styles.cardContentLarge, isXL && styles.cardContentXL]}>
-            <CardContent />
-          </View>
-        )}
-      </LinearGradient>
-    </Pressable>
+        <LinearGradient
+          colors={[
+            `${show.color}10`,
+            `${show.color}05`
+          ]}
+          style={styles.interfaceCardGradient}
+        >
+          {Platform.OS === 'ios' ? (
+            <BlurView intensity={15} style={[styles.cardBlur, isLarge && styles.cardBlurLarge, isXL && styles.cardBlurXL]}>
+              <CardContent />
+            </BlurView>
+          ) : (
+            <View style={[styles.cardContent, isLarge && styles.cardContentLarge, isXL && styles.cardContentXL]}>
+              <CardContent />
+            </View>
+          )}
+        </LinearGradient>
+      </Pressable>
+    </TVFocusable>
   );
 };
 

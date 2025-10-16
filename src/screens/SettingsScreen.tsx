@@ -20,6 +20,7 @@ import { getNavigationLayoutInfo } from '../utils/navigationUtils';
 import { configService } from '../config/AppConfig';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { ShowOption } from '../types';
+import TVFocusable from '../components/TVFocusable';
 
 interface SettingsScreenProps {
   navigation: any;
@@ -75,19 +76,19 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       deactivateKeepAwake();
     }
   }, [keepAwake]);
-const handleKeepAwakeToggle = async (value: boolean) => {
+  const handleKeepAwakeToggle = async (value: boolean) => {
     setKeepAwake(value);
     await actions.updateSettings({ keepAwake: value });
   };
 
   const handleAutoReconnectToggle = async (value: boolean) => {
     setAutoReconnect(value);
-    
+
     // If turning off auto-reconnect, also disable auto-launch features
     if (!value) {
       setAutoLaunchInterface('none');
       setAutoLaunchFullscreen(false);
-      await actions.updateSettings({ 
+      await actions.updateSettings({
         autoReconnect: value,
         autoLaunchInterface: 'none',
         autoLaunchFullscreen: false
@@ -100,18 +101,18 @@ const handleKeepAwakeToggle = async (value: boolean) => {
   const handleAutoLaunchSelect = async (showId: string) => {
     const typedShowId = showId as 'none' | 'remote' | 'stage' | 'control' | 'output' | 'api';
     setAutoLaunchInterface(typedShowId);
-    
+
     // If setting to 'none' or 'api', disable fullscreen
     if (typedShowId === 'none' || typedShowId === 'api') {
       setAutoLaunchFullscreen(false);
-      await actions.updateSettings({ 
+      await actions.updateSettings({
         autoLaunchInterface: typedShowId,
         autoLaunchFullscreen: false
       });
     } else {
       await actions.updateSettings({ autoLaunchInterface: typedShowId });
     }
-    
+
     setShowLaunchPicker(false);
   };
 
@@ -141,237 +142,174 @@ const handleKeepAwakeToggle = async (value: boolean) => {
         colors={FreeShowTheme.gradients.appBackground}
         style={styles.container}
       >
-      <SafeAreaWrapper style={[styles.safeAreaContainer, { backgroundColor: 'transparent' }]}>
-        <View style={styles.animatedContainer}>
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={navigationLayout === 'floating' ? styles.scrollContentWithFloatingNav : styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-          >
-            {/* Header */}
-            <View style={styles.header}>
-              {/* Brand Header Card */}
-              <View style={styles.brandCard}>
-                <LinearGradient
-                  colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={styles.brandGradient}
-                >
-                  {/* Title Section - Left */}
-                  <View style={styles.titleSection}>
-                    <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>Settings</Text>
-                    <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>
-                      Customize your experience
-                    </Text>
-                  </View>
+        <SafeAreaWrapper style={[styles.safeAreaContainer, { backgroundColor: 'transparent' }]}>
+          <View style={styles.animatedContainer}>
+            <ScrollView
+              style={styles.scrollView}
+              contentContainerStyle={navigationLayout === 'floating' ? styles.scrollContentWithFloatingNav : styles.scrollContent}
+              showsVerticalScrollIndicator={false}
+              bounces={false}
+            >
+              {/* Header */}
+              <View style={styles.header}>
+                {/* Brand Header Card */}
+                <View style={styles.brandCard}>
+                  <LinearGradient
+                    colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.brandGradient}
+                  >
+                    {/* Title Section - Left */}
+                    <View style={styles.titleSection}>
+                      <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>Settings</Text>
+                      <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>
+                        Customize your experience
+                      </Text>
+                    </View>
 
-                  {/* Logo - Right */}
-                  <View style={styles.logoContainer}>
-                    <Image 
-                      source={require('../../assets/splash-icon.png')}
-                      style={styles.logo}
-                      resizeMode="contain"
-                    />
-                  </View>
-                </LinearGradient>
+                    {/* Logo - Right */}
+                    <View style={styles.logoContainer}>
+                      <Image
+                        source={require('../../assets/splash-icon.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                      />
+                    </View>
+                  </LinearGradient>
+                </View>
               </View>
-            </View>
 
-            {/* Settings Card */}
-            <View style={styles.settingsCard}>
-              {/* Keep Awake Toggle */}
-              <TouchableOpacity
-                style={styles.settingItem}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="moon" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                    <Text style={styles.settingTitle}>Keep Awake</Text>
-                  </View>
-                  <Text style={styles.settingDescription}>
-                    Prevent your device screen from sleeping while the app is open
-                  </Text>
-                </View>
-                <Switch
-                  value={keepAwake}
-                  onValueChange={handleKeepAwakeToggle}
-                  trackColor={{
-                    false: FreeShowTheme.colors.primaryLighter,
-                    true: FreeShowTheme.colors.secondary + '60'
-                  }}
-                  thumbColor={keepAwake ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
-                  ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                  style={styles.switch}
-                />
-              </TouchableOpacity>
-
-              <View style={styles.settingDivider} />
-
-              {/* Navigation Layout Selection */}
-              <TouchableOpacity
-                style={styles.settingItem}
-                activeOpacity={0.7}
-                onPress={() => {}} // No action needed for the container
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="menu" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                    <Text style={styles.settingTitle}>Navigation Layout</Text>
-                  </View>
-
-                  <View style={styles.pillContainer}>
+              {/* Settings Card */}
+              {
+                !Platform.isTV && (
+                  <View style={styles.settingsCard}>
+                    {/* Keep Awake Toggle */}
                     <TouchableOpacity
-                      style={[
-                        styles.pillThird,
-                        styles.pillLeft,
-                        navigationLayout === 'bottomBar' && styles.pillActive
-                      ]}
-                      onPress={() => handleNavigationLayoutSelect('bottomBar')}
-                      activeOpacity={0.8}
+                      style={styles.settingItem}
+                      activeOpacity={0.7}
                     >
-                      <Ionicons
-                        name="list"
-                        size={14}
-                        color={navigationLayout === 'bottomBar' ? 'white' : FreeShowTheme.colors.secondary}
+                      <View style={styles.settingInfo}>
+                        <View style={styles.settingTitleRow}>
+                          <View style={styles.iconContainer}>
+                            <Ionicons name="moon" size={20} color={FreeShowTheme.colors.secondary} />
+                          </View>
+                          <Text style={styles.settingTitle}>Keep Awake</Text>
+                        </View>
+                        <Text style={styles.settingDescription}>
+                          Prevent your device screen from sleeping while the app is open
+                        </Text>
+                      </View>
+                      <Switch
+                        value={keepAwake}
+                        onValueChange={handleKeepAwakeToggle}
+                        trackColor={{
+                          false: FreeShowTheme.colors.primaryLighter,
+                          true: FreeShowTheme.colors.secondary + '60'
+                        }}
+                        thumbColor={keepAwake ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
+                        ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
+                        style={styles.switch}
                       />
-                      <Text style={[
-                        styles.pillText,
-                        navigationLayout === 'bottomBar' && styles.pillTextActive
-                      ]}>
-                        Bottom
-                      </Text>
                     </TouchableOpacity>
+
+                    <View style={styles.settingDivider} />
+
+                    {/* Navigation Layout Selection */}
                     <TouchableOpacity
-                      style={[
-                        styles.pillThird,
-                        styles.pillMiddle,
-                        navigationLayout === 'floating' && styles.pillActive
-                      ]}
-                      onPress={() => handleNavigationLayoutSelect('floating')}
-                      activeOpacity={0.8}
+                      style={styles.settingItem}
+                      activeOpacity={0.7}
+                      onPress={() => { }} // No action needed for the container
                     >
-                      <Ionicons
-                        name="ellipse"
-                        size={14}
-                        color={navigationLayout === 'floating' ? 'white' : FreeShowTheme.colors.secondary}
-                      />
-                      <Text style={[
-                        styles.pillText,
-                        navigationLayout === 'floating' && styles.pillTextActive
-                      ]}>
-                        Float
-                      </Text>
+                      <View style={styles.settingInfo}>
+                        <View style={styles.settingTitleRow}>
+                          <View style={styles.iconContainer}>
+                            <Ionicons name="menu" size={20} color={FreeShowTheme.colors.secondary} />
+                          </View>
+                          <Text style={styles.settingTitle}>Navigation Layout</Text>
+                        </View>
+
+                        <View style={styles.pillContainer}>
+                          <TouchableOpacity
+                            style={[
+                              styles.pillThird,
+                              styles.pillLeft,
+                              navigationLayout === 'bottomBar' && styles.pillActive
+                            ]}
+                            onPress={() => handleNavigationLayoutSelect('bottomBar')}
+                            activeOpacity={0.8}
+                          >
+                            <Ionicons
+                              name="list"
+                              size={14}
+                              color={navigationLayout === 'bottomBar' ? 'white' : FreeShowTheme.colors.secondary}
+                            />
+                            <Text style={[
+                              styles.pillText,
+                              navigationLayout === 'bottomBar' && styles.pillTextActive
+                            ]}>
+                              Bottom
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={[
+                              styles.pillThird,
+                              styles.pillMiddle,
+                              navigationLayout === 'floating' && styles.pillActive
+                            ]}
+                            onPress={() => handleNavigationLayoutSelect('floating')}
+                            activeOpacity={0.8}
+                          >
+                            <Ionicons
+                              name="ellipse"
+                              size={14}
+                              color={navigationLayout === 'floating' ? 'white' : FreeShowTheme.colors.secondary}
+                            />
+                            <Text style={[
+                              styles.pillText,
+                              navigationLayout === 'floating' && styles.pillTextActive
+                            ]}>
+                              Float
+                            </Text>
+                          </TouchableOpacity>
+                          <TouchableOpacity
+                            style={[
+                              styles.pillThird,
+                              styles.pillRight,
+                              navigationLayout === 'sidebar' && styles.pillActive
+                            ]}
+                            onPress={() => handleNavigationLayoutSelect('sidebar')}
+                            activeOpacity={0.8}
+                          >
+                            <Ionicons
+                              name="menu"
+                              size={14}
+                              color={navigationLayout === 'sidebar' ? 'white' : FreeShowTheme.colors.secondary}
+                            />
+                            <Text style={[
+                              styles.pillText,
+                              navigationLayout === 'sidebar' && styles.pillTextActive
+                            ]}>
+                              Side
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[
-                        styles.pillThird,
-                        styles.pillRight,
-                        navigationLayout === 'sidebar' && styles.pillActive
-                      ]}
-                      onPress={() => handleNavigationLayoutSelect('sidebar')}
-                      activeOpacity={0.8}
-                    >
-                      <Ionicons
-                        name="menu"
-                        size={14}
-                        color={navigationLayout === 'sidebar' ? 'white' : FreeShowTheme.colors.secondary}
-                      />
-                      <Text style={[
-                        styles.pillText,
-                        navigationLayout === 'sidebar' && styles.pillTextActive
-                      ]}>
-                        Side
-                      </Text>
-                    </TouchableOpacity>
                   </View>
-                </View>
-              </TouchableOpacity>
-            </View>
+                )
+              }
 
-            {/* Auto Connection Section */}
-            <View style={styles.sectionSeparator}>
-              <View style={styles.separatorLine} />
-              <Text style={styles.separatorText}>AUTO CONNECTION</Text>
-              <View style={styles.separatorLine} />
-            </View>
+              {/* Auto Connection Section */}
+              <View style={styles.sectionSeparator}>
+                <View style={styles.separatorLine} />
+                <Text style={styles.separatorText}>AUTO CONNECTION</Text>
+                <View style={styles.separatorLine} />
+              </View>
 
-            <View style={styles.settingsCard}>
-              {/* Auto-Reconnect Toggle */}
-              <TouchableOpacity
-                style={styles.settingItem}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                    <Text style={styles.settingTitle}>Auto-Reconnect</Text>
-                  </View>
-                  <Text style={styles.settingDescription}>
-                    Automatically reconnect to FreeShow when the connection is lost
-                  </Text>
-                </View>
-                <Switch
-                  value={autoReconnect}
-                  onValueChange={handleAutoReconnectToggle}
-                  trackColor={{
-                    false: FreeShowTheme.colors.primaryLighter,
-                    true: FreeShowTheme.colors.secondary + '60'
-                  }}
-                  thumbColor={autoReconnect ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
-                  ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                  style={styles.switch}
-                />
-              </TouchableOpacity>
-
-          {/* Auto-Launch Interface - only show if auto-reconnect is enabled */}
-          {autoReconnect && (
-            <>
-              <View style={styles.settingDivider} />
-
-              <TouchableOpacity
-                style={styles.settingItem}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="play-circle" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                    <Text style={styles.settingTitle}>Auto-Launch Interface</Text>
-                  </View>
-                  <Text style={styles.settingDescription}>
-                    Automatically open a specific interface when connected
-                  </Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.pickerButton}
-                  onPress={() => setShowLaunchPicker(true)}
-                  activeOpacity={0.8}
-                >
-                  <View style={styles.pickerButtonContent}>
-                    <View style={styles.pickerIcon}>
-                      <Ionicons name={selectedShow.icon as any} size={16} color={selectedShow.color} />
-                    </View>
-                    <Text style={styles.pickerButtonText}>{selectedShow.title}</Text>
-                    <Ionicons name="chevron-down" size={16} color={FreeShowTheme.colors.textSecondary} />
-                  </View>
-                </TouchableOpacity>
-              </TouchableOpacity>
-
-              {/* Auto-Launch Fullscreen - only show if auto-launch is enabled and not 'none' or 'api' */}
-              {autoLaunchInterface !== 'none' && autoLaunchInterface !== 'api' && (
-                <>
-                  <View style={styles.settingDivider} />
-
+              <TVFocusable onPress={() => handleAutoReconnectToggle(!autoReconnect)}>
+                <View style={styles.settingsCard}>
+                  {/* Auto-Reconnect Toggle */}
                   <TouchableOpacity
                     style={styles.settingItem}
                     activeOpacity={0.7}
@@ -379,144 +317,230 @@ const handleKeepAwakeToggle = async (value: boolean) => {
                     <View style={styles.settingInfo}>
                       <View style={styles.settingTitleRow}>
                         <View style={styles.iconContainer}>
-                          <Ionicons name="expand" size={20} color={FreeShowTheme.colors.secondary} />
+                          <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.secondary} />
                         </View>
-                        <Text style={styles.settingTitle}>Auto-Launch Fullscreen</Text>
+                        <Text style={styles.settingTitle}>Auto-Reconnect</Text>
                       </View>
                       <Text style={styles.settingDescription}>
-                        Automatically open the interface in fullscreen mode
+                        Automatically reconnect to FreeShow when the connection is lost
                       </Text>
                     </View>
                     <Switch
-                      value={autoLaunchFullscreen}
-                      onValueChange={handleAutoLaunchFullscreenToggle}
+                      value={autoReconnect}
+                      onValueChange={handleAutoReconnectToggle}
                       trackColor={{
                         false: FreeShowTheme.colors.primaryLighter,
                         true: FreeShowTheme.colors.secondary + '60'
                       }}
-                      thumbColor={autoLaunchFullscreen ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
+                      thumbColor={autoReconnect ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
                       ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
                       style={styles.switch}
                     />
                   </TouchableOpacity>
+                </View>
+              </TVFocusable>
+
+              {/* Auto-Launch Interface - only show if auto-reconnect is enabled */}
+              {autoReconnect && (
+                <>
+                  <View style={styles.spacer} />
+                  <TVFocusable onPress={() => setShowLaunchPicker(true)}>
+                    <View style={styles.settingsCard}>
+                      <TouchableOpacity
+                        style={styles.settingItem}
+                        activeOpacity={0.7}
+                      >
+                        <View style={styles.settingInfo}>
+                          <View style={styles.settingTitleRow}>
+                            <View style={styles.iconContainer}>
+                              <Ionicons name="play-circle" size={20} color={FreeShowTheme.colors.secondary} />
+                            </View>
+                            <Text style={styles.settingTitle}>Auto-Launch Interface</Text>
+                          </View>
+                          <Text style={styles.settingDescription}>
+                            Automatically open a specific interface when connected
+                          </Text>
+                        </View>
+                        <TouchableOpacity
+                          style={styles.pickerButton}
+                          onPress={() => setShowLaunchPicker(true)}
+                          activeOpacity={0.8}
+                        >
+                          <View style={styles.pickerButtonContent}>
+                            <View style={styles.pickerIcon}>
+                              <Ionicons name={selectedShow.icon as any} size={16} color={selectedShow.color} />
+                            </View>
+                            <Text style={styles.pickerButtonText}>{selectedShow.title}</Text>
+                            <Ionicons name="chevron-down" size={16} color={FreeShowTheme.colors.textSecondary} />
+                          </View>
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+                  </TVFocusable>
                 </>
               )}
-            </>
-          )}
-        </View>
 
-            {/* Section Separator */}
-            <View style={styles.sectionSeparator}>
-              <View style={styles.separatorLine} />
-              <Text style={styles.separatorText}>HISTORY</Text>
-              <View style={styles.separatorLine} />
-            </View>
+              {/* Auto-Launch Fullscreen - only show if auto-launch is enabled and not 'none' or 'api' */}
+              {autoLaunchInterface !== 'none' && autoLaunchInterface !== 'api' && (
+                <>
+                  <View style={styles.spacer} />
 
-            {/* Connection History Section */}
-            <View style={styles.settingsCard}>
-              <TouchableOpacity
-                style={styles.settingItem}
-                onPress={() => navigation.navigate('ConnectionHistory')}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="time" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                    <Text style={styles.settingTitle}>Connection History</Text>
+                  <TVFocusable onPress={() => handleAutoLaunchFullscreenToggle(!autoLaunchFullscreen)}>
+                    <View style={styles.settingsCard}>
+
+                    <TouchableOpacity
+                      style={styles.settingItem}
+                      activeOpacity={0.7}
+                    >
+                      <View style={styles.settingInfo}>
+                        <View style={styles.settingTitleRow}>
+                          <View style={styles.iconContainer}>
+                            <Ionicons name="expand" size={20} color={FreeShowTheme.colors.secondary} />
+                          </View>
+                          <Text style={styles.settingTitle}>Auto-Launch Fullscreen</Text>
+                        </View>
+                        <Text style={styles.settingDescription}>
+                          Automatically open the interface in fullscreen mode
+                        </Text>
+                      </View>
+                      <Switch
+                        value={autoLaunchFullscreen}
+                        onValueChange={handleAutoLaunchFullscreenToggle}
+                        trackColor={{
+                          false: FreeShowTheme.colors.primaryLighter,
+                          true: FreeShowTheme.colors.secondary + '60'
+                        }}
+                        thumbColor={autoLaunchFullscreen ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
+                        ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
+                        style={styles.switch}
+                      />
+                    </TouchableOpacity>
                   </View>
-                  <Text style={styles.settingDescription}>
-                    View and manage all past connections ({history.length} total)
-                  </Text>
-                </View>
-                <View style={styles.actionIcon}>
-                  <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.secondary} />
-                </View>
-              </TouchableOpacity>
-            </View>
+                  </TVFocusable>
+                </>
+              )}
 
-            {/* Section Separator */}
-            <View style={styles.sectionSeparator}>
-              <View style={styles.separatorLine} />
-              <Text style={styles.separatorText}>INFO</Text>
-              <View style={styles.separatorLine} />
-            </View>
+              {/* Section Separator */}
+              <View style={styles.sectionSeparator}>
+                <View style={styles.separatorLine} />
+                <Text style={styles.separatorText}>HISTORY</Text>
+                <View style={styles.separatorLine} />
+              </View>
 
-            {/* About Section */}
-            <View style={styles.settingsCard}>
-              <TouchableOpacity
-                style={styles.settingItem}
-                onPress={() => navigation.navigate('About')}
-                activeOpacity={0.7}
-              >
-                <View style={styles.settingInfo}>
-                  <View style={styles.settingTitleRow}>
-                    <View style={styles.iconContainer}>
-                      <Ionicons name="information-circle" size={20} color={FreeShowTheme.colors.secondary} />
+              {/* Connection History Section */}
+              <TVFocusable onPress={() => navigation.navigate('ConnectionHistory')}>
+                <View style={styles.settingsCard}>
+                  <TouchableOpacity
+                    style={styles.settingItem}
+                    onPress={() => navigation.navigate('ConnectionHistory')}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.settingInfo}>
+                      <View style={styles.settingTitleRow}>
+                        <View style={styles.iconContainer}>
+                          <Ionicons name="time" size={20} color={FreeShowTheme.colors.secondary} />
+                        </View>
+                        <Text style={styles.settingTitle}>Connection History</Text>
+                      </View>
+                      <Text style={styles.settingDescription}>
+                        View and manage all past connections ({history.length} total)
+                      </Text>
                     </View>
-                    <Text style={styles.settingTitle}>About</Text>
-                  </View>
-                  <Text style={styles.settingDescription}>
-                    App information, links, and platform availability
-                  </Text>
+                    <View style={styles.actionIcon}>
+                      <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.secondary} />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.actionIcon}>
-                  <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.secondary} />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      </SafeAreaWrapper>
-    </LinearGradient>
+              </TVFocusable>
 
-    {/* Auto-Launch Picker Modal */}
-    <Modal
-      visible={showLaunchPicker}
-      transparent={true}
-      animationType="fade"
-      onRequestClose={() => setShowLaunchPicker(false)}
-    >
+              {/* Section Separator */}
+              <View style={styles.sectionSeparator}>
+                <View style={styles.separatorLine} />
+                <Text style={styles.separatorText}>INFO</Text>
+                <View style={styles.separatorLine} />
+              </View>
+
+              {/* About Section */}
+              <TVFocusable onPress={() => navigation.navigate('About')}>
+                <View style={styles.settingsCard}>
+                  <TouchableOpacity
+                    style={styles.settingItem}
+                    onPress={() => navigation.navigate('About')}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.settingInfo}>
+                      <View style={styles.settingTitleRow}>
+                        <View style={styles.iconContainer}>
+                          <Ionicons name="information-circle" size={20} color={FreeShowTheme.colors.secondary} />
+                        </View>
+                        <Text style={styles.settingTitle}>About</Text>
+                      </View>
+                      <Text style={styles.settingDescription}>
+                        App information, links, and platform availability
+                      </Text>
+                    </View>
+                    <View style={styles.actionIcon}>
+                      <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.secondary} />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </TVFocusable>
+            </ScrollView>
+          </View>
+        </SafeAreaWrapper>
+      </LinearGradient>
+
+      {/* Auto-Launch Picker Modal */}
+      <Modal
+        visible={showLaunchPicker}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setShowLaunchPicker(false)}
+      >
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>Auto-Launch Interface</Text>
-              <TouchableOpacity
-                style={styles.modalCloseButton}
-                onPress={() => setShowLaunchPicker(false)}
-                activeOpacity={0.8}
-              >
-                <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
-              </TouchableOpacity>
+
+              <TVFocusable onPress={() => setShowLaunchPicker(false)}>
+                <TouchableOpacity
+                  style={styles.modalCloseButton}
+                  onPress={() => setShowLaunchPicker(false)}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
+                </TouchableOpacity>
+              </TVFocusable>
             </View>
 
             <ScrollView style={styles.modalList} showsVerticalScrollIndicator={false}>
               {showOptions.map((option) => (
-                <TouchableOpacity
-                  key={option.id}
-                  style={[
-                    styles.modalOption,
-                    autoLaunchInterface === option.id && styles.modalOptionSelected
-                  ]}
-                  onPress={() => handleAutoLaunchSelect(option.id)}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.modalOptionIcon}>
-                    <View style={[styles.optionIconBg, { backgroundColor: option.color + '20' }]}>
-                      <Ionicons name={option.icon as any} size={22} color={option.color} />
+                <TVFocusable onPress={() => handleAutoLaunchSelect(option.id)}>
+                  <TouchableOpacity
+                    key={option.id}
+                    style={[
+                      styles.modalOption,
+                      autoLaunchInterface === option.id && styles.modalOptionSelected
+                    ]}
+                    onPress={() => handleAutoLaunchSelect(option.id)}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.modalOptionIcon}>
+                      <View style={[styles.optionIconBg, { backgroundColor: option.color + '20' }]}>
+                        <Ionicons name={option.icon as any} size={22} color={option.color} />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.modalOptionInfo}>
-                    <Text style={styles.modalOptionTitle}>{option.title}</Text>
-                    <Text style={styles.modalOptionDescription}>{option.description}</Text>
-                  </View>
-                  {autoLaunchInterface === option.id && (
-                    <View style={styles.checkmarkContainer}>
-                      <Ionicons name="checkmark-circle" size={24} color={FreeShowTheme.colors.secondary} />
+                    <View style={styles.modalOptionInfo}>
+                      <Text style={styles.modalOptionTitle}>{option.title}</Text>
+                      <Text style={styles.modalOptionDescription}>{option.description}</Text>
                     </View>
-                  )}
-                </TouchableOpacity>
+                    {autoLaunchInterface === option.id && (
+                      <View style={styles.checkmarkContainer}>
+                        <Ionicons name="checkmark-circle" size={24} color={FreeShowTheme.colors.secondary} />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                </TVFocusable>
               ))}
             </ScrollView>
           </View>
@@ -611,11 +635,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 
+  spacer: {
+    height: FreeShowTheme.spacing.md + 4,
+  },
+
   settingsCard: {
     backgroundColor: FreeShowTheme.colors.primaryDarker,
     borderRadius: 16,
     padding: FreeShowTheme.spacing.md + 4,
-    marginBottom: FreeShowTheme.spacing.sm,
+    // marginBottom: FreeShowTheme.spacing.sm,
     borderWidth: 1,
     borderColor: FreeShowTheme.colors.primaryLighter + '40',
     ...Platform.select({
@@ -630,7 +658,7 @@ const styles = StyleSheet.create({
       },
     }),
   },
-    sectionSeparator: {
+  sectionSeparator: {
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: FreeShowTheme.spacing.md,
@@ -786,7 +814,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-    modalOverlay: {
+  modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     justifyContent: 'center',

@@ -13,6 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
+import TVFocusable from '../components/TVFocusable';
 
 const packageJson = require('../../package.json');
 
@@ -31,154 +32,164 @@ const AboutScreen: React.FC<AboutScreenProps> = ({ navigation }) => {
       style={styles.container}
     >
       <SafeAreaView style={[styles.safeArea, { backgroundColor: 'transparent' }]}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.brandCard}>
-          <LinearGradient
-            colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.brandGradient}
-          >
-            <TouchableOpacity
-              style={styles.backButton}
-              onPress={handleBackPress}
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.brandCard}>
+            <LinearGradient
+              colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.brandGradient}
             >
-              <Ionicons name="arrow-back" size={24} color={FreeShowTheme.colors.text} />
-            </TouchableOpacity>
+              <TVFocusable onPress={handleBackPress}>
+                <TouchableOpacity
+                  style={styles.backButton}
+                  onPress={handleBackPress}
+                >
+                  <Ionicons name="arrow-back" size={24} color={FreeShowTheme.colors.text} />
+                </TouchableOpacity>
+              </TVFocusable>
 
-            <View style={styles.titleSection}>
-              <Text style={styles.headerTitle}>About</Text>
-              <Text style={styles.subtitle}>App information & support</Text>
-            </View>
+              <View style={styles.titleSection}>
+                <Text style={styles.headerTitle}>About</Text>
+                <Text style={styles.subtitle}>App information & support</Text>
+              </View>
 
-            <View style={styles.logoContainer}>
-              <Image 
-                source={require('../../assets/splash-icon.png')}
-                style={styles.logo}
+              <View style={styles.logoContainer}>
+                <Image
+                  source={require('../../assets/splash-icon.png')}
+                  style={styles.logo}
+                  resizeMode="contain"
+                />
+              </View>
+            </LinearGradient>
+          </View>
+        </View>
+
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* App Info Card */}
+          <View style={styles.aboutCard}>
+            <View style={styles.aboutHeader}>
+              <Image
+                source={require('../../assets/icon.png')}
+                style={styles.appIcon}
                 resizeMode="contain"
               />
+              <View style={styles.aboutHeaderText}>
+                <Text style={styles.aboutTitle}>FreeShow Remote</Text>
+                <Text style={styles.aboutVersion}>v{packageJson.version}</Text>
+              </View>
             </View>
-          </LinearGradient>
-        </View>
-      </View>
 
-      <ScrollView 
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* App Info Card */}
-        <View style={styles.aboutCard}>
-          <View style={styles.aboutHeader}>
-            <Image 
-              source={require('../../assets/icon.png')}
-              style={styles.appIcon}
-              resizeMode="contain"
-            />
-            <View style={styles.aboutHeaderText}>
-              <Text style={styles.aboutTitle}>FreeShow Remote</Text>
-              <Text style={styles.aboutVersion}>v{packageJson.version}</Text>
-            </View>
-          </View>
-          
-          <Text style={styles.aboutDescription}>
-            A companion mobile app for FreeShow. 
-            Control your presentations remotely, manage slides, and access various FreeShow interfaces 
-            directly from your mobile device.
-          </Text>
-        </View>
-
-        {/* Links Card */}
-        <View style={styles.linksCard}>
-          <Text style={styles.sectionTitle}>Resources</Text>
-          
-          <TouchableOpacity
-            style={styles.linkButton}
-            onPress={() => Linking.openURL(packageJson.repository.url.replace('.git', ''))}
-          >
-            <Ionicons name="logo-github" size={24} color={FreeShowTheme.colors.text} />
-            <View style={styles.linkContent}>
-              <Text style={styles.linkTitle}>View on GitHub</Text>
-              <Text style={styles.linkDescription}>Source code, issues, and releases</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
-          </TouchableOpacity>
-
-          <View style={styles.linkDivider} />
-
-          <TouchableOpacity
-            style={styles.linkButton}
-            onPress={() => Linking.openURL('https://freeshow.app')}
-          >
-            <Image 
-              source={require('../../assets/freeshow-icon.png')}
-              style={styles.freeshowIcon}
-              resizeMode="contain"
-            />
-            <View style={styles.linkContent}>
-              <Text style={styles.linkTitle}>FreeShow Website</Text>
-              <Text style={styles.linkDescription}>Learn more about FreeShow presentation software</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Support Card */}
-        <View style={styles.supportCard}>
-          <Text style={styles.sectionTitle}>Support FreeShow</Text>
-          
-          <TouchableOpacity
-            style={styles.donationButton}
-            onPress={() => Linking.openURL('https://churchapps.org/partner')}
-          >
-            <Ionicons name="heart" size={24} color="#ff6b6b" />
-            <View style={styles.linkContent}>
-              <Text style={styles.linkTitle}>Support FreeShow Creators</Text>
-              <Text style={styles.linkDescription}>Help fund the development of FreeShow</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Platform Availability Card */}
-        <View style={styles.warningCard}>
-          <View style={styles.warningHeader}>
-            <Ionicons name="warning" size={24} color="#ff9800" />
-            <Text style={styles.warningTitle}>Platform Availability</Text>
-          </View>
-          
-          <View style={styles.platformInfo}>
-            <View style={styles.platformItem}>
-              <Ionicons name="logo-android" size={20} color="#4CAF50" />
-              <Text style={styles.platformText}>Android - Available Now</Text>
-            </View>
-            <View style={styles.platformItem}>
-              <Ionicons name="logo-apple" size={20} color="#FF9800" />
-              <Text style={styles.platformText}>iOS - Not Available</Text>
-            </View>
+            <Text style={styles.aboutDescription}>
+              A companion mobile app for FreeShow.
+              Control your presentations remotely, manage slides, and access various FreeShow interfaces
+              directly from your mobile device.
+            </Text>
           </View>
 
-          <Text style={styles.warningDescription}>
-            Currently only available for Android. The $99/year Apple Developer Program fee makes iOS 
-            distribution unfeasible for this free app.
-          </Text>
-          
-          <Text style={styles.warningCallout}>
-            📱 If you're interested in sponsoring iOS distribution or publishing this on the App Store, 
-            please open an issue on GitHub or contact me!
-          </Text>
-          
-          <Text style={styles.warningFooter}>
-            Android users can download the APK from the GitHub releases page. A Play Store release is planned for the future.
-          </Text>
-        </View>
+          {/* Links Card */}
+          {
+            !Platform.isTV && (
+              <View style={styles.linksCard}>
+                <Text style={styles.sectionTitle}>Resources</Text>
 
-        {/* Made By Section */}
-        <View style={styles.madeBySection}>
-          <Text style={styles.madeByText}>Made by Gladson Sam</Text>
-        </View>
-      </ScrollView>
+                <TouchableOpacity
+                  style={styles.linkButton}
+                  onPress={() => Linking.openURL(packageJson.repository.url.replace('.git', ''))}
+                >
+                  <Ionicons name="logo-github" size={24} color={FreeShowTheme.colors.text} />
+                  <View style={styles.linkContent}>
+                    <Text style={styles.linkTitle}>View on GitHub</Text>
+                    <Text style={styles.linkDescription}>Source code, issues, and releases</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
+                </TouchableOpacity>
+
+                <View style={styles.linkDivider} />
+
+                <TouchableOpacity
+                  style={styles.linkButton}
+                  onPress={() => Linking.openURL('https://freeshow.app')}
+                >
+                  <Image
+                    source={require('../../assets/freeshow-icon.png')}
+                    style={styles.freeshowIcon}
+                    resizeMode="contain"
+                  />
+                  <View style={styles.linkContent}>
+                    <Text style={styles.linkTitle}>FreeShow Website</Text>
+                    <Text style={styles.linkDescription}>Learn more about FreeShow presentation software</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
+                </TouchableOpacity>
+              </View>
+            )
+          }
+
+          {/* Support Card */}
+          {
+            !Platform.isTV && (
+              <View style={styles.supportCard}>
+                <Text style={styles.sectionTitle}>Support FreeShow</Text>
+
+                <TouchableOpacity
+                  style={styles.donationButton}
+                  onPress={() => Linking.openURL('https://churchapps.org/partner')}
+                >
+                  <Ionicons name="heart" size={24} color="#ff6b6b" />
+                  <View style={styles.linkContent}>
+                    <Text style={styles.linkTitle}>Support FreeShow Creators</Text>
+                    <Text style={styles.linkDescription}>Help fund the development of FreeShow</Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.textSecondary} />
+                </TouchableOpacity>
+              </View>
+            )
+          }
+
+          {/* Platform Availability Card */}
+          <View style={styles.warningCard}>
+            <View style={styles.warningHeader}>
+              <Ionicons name="warning" size={24} color="#ff9800" />
+              <Text style={styles.warningTitle}>Platform Availability</Text>
+            </View>
+
+            <View style={styles.platformInfo}>
+              <View style={styles.platformItem}>
+                <Ionicons name="logo-android" size={20} color="#4CAF50" />
+                <Text style={styles.platformText}>Android - Available Now</Text>
+              </View>
+              <View style={styles.platformItem}>
+                <Ionicons name="logo-apple" size={20} color="#FF9800" />
+                <Text style={styles.platformText}>iOS - Not Available</Text>
+              </View>
+            </View>
+
+            <Text style={styles.warningDescription}>
+              Currently only available for Android. The $99/year Apple Developer Program fee makes iOS
+              distribution unfeasible for this free app.
+            </Text>
+
+            <Text style={styles.warningCallout}>
+              📱 If you're interested in sponsoring iOS distribution or publishing this on the App Store,
+              please open an issue on GitHub or contact me!
+            </Text>
+
+            <Text style={styles.warningFooter}>
+              Android users can download the APK from the GitHub releases page. A Play Store release is planned for the future.
+            </Text>
+          </View>
+
+          {/* Made By Section */}
+          <View style={styles.madeBySection}>
+            <Text style={styles.madeByText}>Made by Gladson Sam</Text>
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </LinearGradient>
   );
@@ -251,7 +262,7 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: FreeShowTheme.spacing.lg,
   },
-  
+
   // Cards
   aboutCard: {
     backgroundColor: FreeShowTheme.colors.primaryDarker,
