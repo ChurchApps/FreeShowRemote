@@ -453,38 +453,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                 </View>
               </TVFocusable>
 
-              {/* Section Separator */}
-              <View style={styles.sectionSeparator}>
-                <View style={styles.separatorLine} />
-                <Text style={styles.separatorText}>INFO</Text>
-                <View style={styles.separatorLine} />
-              </View>
-
-              {/* About Section */}
-              <TVFocusable onPress={() => navigation.navigate('About')}>
-                <View style={styles.settingsCard}>
-                  <TouchableOpacity
-                    style={styles.settingItem}
-                    onPress={() => navigation.navigate('About')}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.settingInfo}>
-                      <View style={styles.settingTitleRow}>
-                        <View style={styles.iconContainer}>
-                          <Ionicons name="information-circle" size={20} color={FreeShowTheme.colors.secondary} />
-                        </View>
-                        <Text style={styles.settingTitle}>About</Text>
-                      </View>
-                      <Text style={styles.settingDescription}>
-                        App information, links, and platform availability
-                      </Text>
-                    </View>
-                    <View style={styles.actionIcon}>
-                      <Ionicons name="chevron-forward" size={20} color={FreeShowTheme.colors.secondary} />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </TVFocusable>
             </ScrollView>
           </View>
         </SafeAreaWrapper>
