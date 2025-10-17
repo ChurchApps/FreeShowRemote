@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
+import TVFocusable from './TVFocusable';
 
 interface ErrorModalProps {
   visible: boolean;
@@ -47,12 +48,14 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
               />
             </View>
             <Text style={styles.modalTitle}>{title}</Text>
-            <TouchableOpacity
+            <TVFocusable onPress={onClose}>
+              <TouchableOpacity
               style={styles.closeButton}
               onPress={onClose}
             >
               <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
             </TouchableOpacity>
+            </TVFocusable>
           </View>
           
           <View style={styles.modalBody}>
@@ -60,12 +63,14 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           </View>
           
           <View style={styles.modalButtons}>
-            <TouchableOpacity
+            <TVFocusable onPress={onClose}>
+              <TouchableOpacity
               style={styles.okButton}
               onPress={onClose}
             >
               <Text style={styles.okButtonText}>{buttonText}</Text>
             </TouchableOpacity>
+            </TVFocusable>
           </View>
             </View>
           </TouchableWithoutFeedback>

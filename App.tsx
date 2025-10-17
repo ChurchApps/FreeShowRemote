@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNavigationContainerRef } from '@react-navigation/native';
@@ -17,7 +17,6 @@ import APIScreen from './src/screens/APIScreen';
 
 import SettingsScreen from './src/screens/SettingsScreen';
 import ConnectionHistoryScreen from './src/screens/ConnectionHistoryScreen';
-import AboutScreen from './src/screens/AboutScreen';
 import { FreeShowTheme } from './src/theme/FreeShowTheme';
 import { AppContextProvider, useConnection, useSettings } from './src/contexts';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
@@ -195,7 +194,7 @@ function BottomTabsLayout() {
 
 // Route definitions for sidebar navigation
 const SIDEBAR_ROUTES = ['Interface', 'Connect', 'Settings'];
-const EXTERNAL_ROUTES = ['WebView', 'APIScreen', 'ConnectionHistory', 'About', 'Main'];
+const EXTERNAL_ROUTES = ['WebView', 'APIScreen', 'ConnectionHistory', 'Main'];
 
 // Sidebar Layout with content area
 function SidebarLayout() {
@@ -579,6 +578,10 @@ function MainLayout() {
   // Default to bottom bar if settings not loaded yet
   const navigationLayout: 'bottomBar' | 'sidebar' | 'floating' = settings?.navigationLayout || 'bottomBar';
 
+  if (Platform.isTV) {
+    return <SidebarLayout />
+  }
+
   if (navigationLayout === 'sidebar') {
     return <SidebarLayout />;
   } else if (navigationLayout === 'floating') {
@@ -808,54 +811,6 @@ export default function App() {
                 {(props) => (
                   <ErrorBoundary onError={(error, errorInfo) => ErrorLogger.error('ConnectionHistoryScreen Error', 'App', error, { errorInfo })}>
                     <ConnectionHistoryScreen {...props} />
-                  </ErrorBoundary>
-                )}
-              </Stack.Screen>
-
-              <Stack.Screen
-                name="About"
-                options={{
-                  presentation: 'card',
-                  cardStyleInterpolator: ({ current, layouts }) => ({
-                    cardStyle: {
-                      transform: [
-                        {
-                          translateX: current.progress.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [layouts.screen.width, 0],
-                          }),
-                        },
-                      ],
-                      opacity: current.progress.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [0, 0.8, 1],
-                      }),
-                    },
-                    overlayStyle: {
-                      backgroundColor: 'transparent',
-                    },
-                  }),
-                  transitionSpec: {
-                    open: {
-                      animation: 'timing',
-                      config: {
-                        duration: 100,
-                        easing: require('react-native').Easing.inOut(require('react-native').Easing.linear),
-                      },
-                    },
-                    close: {
-                      animation: 'timing',
-                      config: {
-                        duration: 100,
-                        easing: require('react-native').Easing.inOut(require('react-native').Easing.linear),
-                      },
-                    },
-                  },
-                }}
-              >
-                {(props) => (
-                  <ErrorBoundary onError={(error, errorInfo) => ErrorLogger.error('AboutScreen Error', 'App', error, { errorInfo })}>
-                    <AboutScreen {...props} />
                   </ErrorBoundary>
                 )}
               </Stack.Screen>

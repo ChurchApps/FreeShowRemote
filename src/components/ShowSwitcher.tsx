@@ -15,12 +15,13 @@ import { BlurView } from 'expo-blur';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
 import { ShowOption } from '../types';
 import { configService } from '../config/AppConfig';
+import TVFocusable from './TVFocusable';
 
 const getResponsiveDimensions = () => {
   const { width, height } = Dimensions.get('window');
   const isTablet = Math.min(width, height) > 600;
   const isLandscape = width > height;
-  
+
   return {
     isTablet,
     isLandscape,
@@ -99,29 +100,32 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
 
   return (
     <>
-      <TouchableOpacity
-        style={[
-          styles.titleContainer,
-          {
-            marginHorizontal: dimensions.isTablet ? FreeShowTheme.spacing.lg : FreeShowTheme.spacing.md,
-            gap: dimensions.isTablet ? FreeShowTheme.spacing.sm : FreeShowTheme.spacing.xs,
-          }
-        ]}
-        onPress={handleOpenModal}
-        activeOpacity={1.0}
-      >
-        <Text style={[
-          styles.title,
-          { fontSize: dimensions.isTablet ? FreeShowTheme.fontSize.lg : FreeShowTheme.fontSize.md }
-        ]}>
-          {currentTitle}
-        </Text>
-        <Ionicons 
-          name="chevron-down" 
-          size={dimensions.isTablet ? 20 : 16} 
-          color={FreeShowTheme.colors.text + '99'} 
-        />
-      </TouchableOpacity>
+      <TVFocusable onPress={handleOpenModal} style={{ flex: 1 }}>
+        <TouchableOpacity
+          style={[
+            styles.titleContainer,
+            {
+              marginHorizontal: dimensions.isTablet ? FreeShowTheme.spacing.lg : FreeShowTheme.spacing.md,
+              gap: dimensions.isTablet ? FreeShowTheme.spacing.sm : FreeShowTheme.spacing.xs,
+            }
+          ]}
+          onPress={handleOpenModal}
+          activeOpacity={1.0}
+        >
+          <Text style={[
+            styles.title,
+            { fontSize: dimensions.isTablet ? FreeShowTheme.fontSize.lg : FreeShowTheme.fontSize.md }
+          ]}>
+            {currentTitle}
+          </Text>
+          <Ionicons
+            name="chevron-down"
+            size={dimensions.isTablet ? 20 : 16}
+            color={FreeShowTheme.colors.text + '99'}
+          />
+        </TouchableOpacity>
+      </TVFocusable>
+      <View style={{ flex: 1 }} />
 
       <Modal
         animationType="none"
@@ -133,11 +137,11 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
           styles.modalOverlay,
           { padding: dimensions.isTablet ? FreeShowTheme.spacing.xl : FreeShowTheme.spacing.lg }
         ]}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.backgroundTouchable}
             activeOpacity={1.0}
             onPress={handleCloseModal}
-          />
+          /> */}
           <View style={[
             styles.modalContent,
             {
@@ -157,19 +161,21 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
               ]}>
                 Switch Interface
               </Text>
-              <TouchableOpacity
-                onPress={handleCloseModal}
-                style={[
-                  styles.closeButton,
-                  { padding: dimensions.isTablet ? FreeShowTheme.spacing.sm : FreeShowTheme.spacing.xs }
-                ]}
-              >
-                <Ionicons 
-                  name="close" 
-                  size={dimensions.isTablet ? 28 : 24} 
-                  color={FreeShowTheme.colors.text} 
-                />
-              </TouchableOpacity>
+              <TVFocusable onPress={handleCloseModal}>
+                <TouchableOpacity
+                  onPress={handleCloseModal}
+                  style={[
+                    styles.closeButton,
+                    { padding: dimensions.isTablet ? FreeShowTheme.spacing.sm : FreeShowTheme.spacing.xs }
+                  ]}
+                >
+                  <Ionicons
+                    name="close"
+                    size={dimensions.isTablet ? 28 : 24}
+                    color={FreeShowTheme.colors.text}
+                  />
+                </TouchableOpacity>
+              </TVFocusable>
             </View>
 
             {currentShow && (
@@ -199,84 +205,84 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
                     ]}
                     style={styles.showCardGradient}
                   >
-                        {Platform.OS === 'ios' ? (
-                          <BlurView intensity={15} style={[
-                            styles.showCardBlur,
-                            styles.compactCard,
-                            { padding: FreeShowTheme.spacing.md }
-                          ]}>
-                            <View style={styles.compactCardContent}>
-                              <View style={[
-                                styles.showIconContainer,
-                                styles.compactIcon,
-                                { backgroundColor: currentShow.color + '20' }
-                              ]}>
-                                <Ionicons
-                                  name={currentShow.icon as any}
-                                  size={20}
-                                  color={currentShow.color}
-                                />
-                              </View>
-                              <View style={styles.compactInfo}>
-                                <Text style={[styles.compactTitle, { color: currentShow.color }]}>
-                                  {currentShow.title}
-                                </Text>
-                              </View>
-                              <View style={styles.compactActions}>
-                                {currentShow.port > 0 && (
-                                  <View style={styles.compactPortBadge}>
-                                    <Text style={styles.compactPortText}>{currentShow.port}</Text>
-                                  </View>
-                                )}
-                                <Ionicons
-                                  name="checkmark-circle"
-                                  size={18}
-                                  color={currentShow.color}
-                                />
-                              </View>
-                            </View>
-                          </BlurView>
-                        ) : (
+                    {Platform.OS === 'ios' ? (
+                      <BlurView intensity={15} style={[
+                        styles.showCardBlur,
+                        styles.compactCard,
+                        { padding: FreeShowTheme.spacing.md }
+                      ]}>
+                        <View style={styles.compactCardContent}>
                           <View style={[
-                            styles.showCardContent,
-                            styles.compactCard,
-                            { 
-                              padding: FreeShowTheme.spacing.md,
-                              backgroundColor: 'rgba(255,255,255,0.03)'
-                            }
+                            styles.showIconContainer,
+                            styles.compactIcon,
+                            { backgroundColor: currentShow.color + '20' }
                           ]}>
-                            <View style={styles.compactCardContent}>
-                              <View style={[
-                                styles.showIconContainer,
-                                styles.compactIcon,
-                                { backgroundColor: currentShow.color + '20' }
-                              ]}>
-                                <Ionicons
-                                  name={currentShow.icon as any}
-                                  size={20}
-                                  color={currentShow.color}
-                                />
-                              </View>
-                              <View style={styles.compactInfo}>
-                                <Text style={[styles.compactTitle, { color: currentShow.color }]}>
-                                  {currentShow.title}
-                                </Text>
-                              </View>
-                              <View style={styles.compactActions}>
-                                {currentShow.port > 0 && (
-                                  <View style={styles.compactPortBadge}>
-                                    <Text style={styles.compactPortText}>{currentShow.port}</Text>
-                                  </View>
-                                )}
-                                <Ionicons
-                                  name="checkmark-circle"
-                                  size={18}
-                                  color={currentShow.color}
-                                />
-                              </View>
-                            </View>
+                            <Ionicons
+                              name={currentShow.icon as any}
+                              size={20}
+                              color={currentShow.color}
+                            />
                           </View>
-                        )}
+                          <View style={styles.compactInfo}>
+                            <Text style={[styles.compactTitle, { color: currentShow.color }]}>
+                              {currentShow.title}
+                            </Text>
+                          </View>
+                          <View style={styles.compactActions}>
+                            {currentShow.port > 0 && (
+                              <View style={styles.compactPortBadge}>
+                                <Text style={styles.compactPortText}>{currentShow.port}</Text>
+                              </View>
+                            )}
+                            <Ionicons
+                              name="checkmark-circle"
+                              size={18}
+                              color={currentShow.color}
+                            />
+                          </View>
+                        </View>
+                      </BlurView>
+                    ) : (
+                      <View style={[
+                        styles.showCardContent,
+                        styles.compactCard,
+                        {
+                          padding: FreeShowTheme.spacing.md,
+                          backgroundColor: 'rgba(255,255,255,0.03)'
+                        }
+                      ]}>
+                        <View style={styles.compactCardContent}>
+                          <View style={[
+                            styles.showIconContainer,
+                            styles.compactIcon,
+                            { backgroundColor: currentShow.color + '20' }
+                          ]}>
+                            <Ionicons
+                              name={currentShow.icon as any}
+                              size={20}
+                              color={currentShow.color}
+                            />
+                          </View>
+                          <View style={styles.compactInfo}>
+                            <Text style={[styles.compactTitle, { color: currentShow.color }]}>
+                              {currentShow.title}
+                            </Text>
+                          </View>
+                          <View style={styles.compactActions}>
+                            {currentShow.port > 0 && (
+                              <View style={styles.compactPortBadge}>
+                                <Text style={styles.compactPortText}>{currentShow.port}</Text>
+                              </View>
+                            )}
+                            <Ionicons
+                              name="checkmark-circle"
+                              size={18}
+                              color={currentShow.color}
+                            />
+                          </View>
+                        </View>
+                      </View>
+                    )}
                   </LinearGradient>
                 </View>
               </View>
@@ -299,106 +305,107 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
                 {showOptions.map((show) => {
                   // Skip current show
                   if (show.id === currentShowId) return null;
-                  
+
                   return (
-                    <Pressable
-                      key={show.id}
-                      onPress={() => handleShowSelect(show)}
-                      style={({ pressed }) => [
-                        styles.showCard,
-                        {
-                          marginBottom: dimensions.isTablet ? FreeShowTheme.spacing.md : FreeShowTheme.spacing.sm,
-                          transform: pressed ? [{ scale: 0.98 }] : [{ scale: 1 }],
-                        }
-                      ]}
-                    >
-                      <LinearGradient
-                        colors={[
-                          `${show.color}10`,
-                          `${show.color}05`
+                    <TVFocusable onPress={() => handleShowSelect(show)} key={show.id}>
+                      <Pressable
+                        onPress={() => handleShowSelect(show)}
+                        style={({ pressed }) => [
+                          styles.showCard,
+                          {
+                            marginBottom: dimensions.isTablet ? FreeShowTheme.spacing.md : FreeShowTheme.spacing.sm,
+                            transform: pressed ? [{ scale: 0.98 }] : [{ scale: 1 }],
+                          }
                         ]}
-                        style={styles.showCardGradient}
                       >
-                        {Platform.OS === 'ios' ? (
-                          <BlurView intensity={15} style={[
-                            styles.showCardBlur,
-                            styles.compactCard,
-                            { padding: FreeShowTheme.spacing.md }
-                          ]}>
-                            <View style={styles.compactCardContent}>
-                              <View style={[
-                                styles.showIconContainer,
-                                styles.compactIcon,
-                                { backgroundColor: show.color + '15' }
-                              ]}>
-                                <Ionicons
-                                  name={show.icon as any}
-                                  size={20}
-                                  color={show.color}
-                                />
+                        <LinearGradient
+                          colors={[
+                            `${show.color}10`,
+                            `${show.color}05`
+                          ]}
+                          style={styles.showCardGradient}
+                        >
+                          {Platform.OS === 'ios' ? (
+                            <BlurView intensity={15} style={[
+                              styles.showCardBlur,
+                              styles.compactCard,
+                              { padding: FreeShowTheme.spacing.md }
+                            ]}>
+                              <View style={styles.compactCardContent}>
+                                <View style={[
+                                  styles.showIconContainer,
+                                  styles.compactIcon,
+                                  { backgroundColor: show.color + '15' }
+                                ]}>
+                                  <Ionicons
+                                    name={show.icon as any}
+                                    size={20}
+                                    color={show.color}
+                                  />
+                                </View>
+                                <View style={styles.compactInfo}>
+                                  <Text style={styles.compactTitle}>
+                                    {show.title}
+                                  </Text>
+                                </View>
+                                <View style={styles.compactActions}>
+                                  {show.port > 0 && (
+                                    <View style={styles.compactPortBadge}>
+                                      <Text style={styles.compactPortText}>{show.port}</Text>
+                                    </View>
+                                  )}
+                                  <Ionicons
+                                    name="chevron-forward"
+                                    size={16}
+                                    color={FreeShowTheme.colors.text + '66'}
+                                  />
+                                </View>
                               </View>
-                              <View style={styles.compactInfo}>
-                                <Text style={styles.compactTitle}>
-                                  {show.title}
-                                </Text>
-                              </View>
-                              <View style={styles.compactActions}>
-                                {show.port > 0 && (
-                                  <View style={styles.compactPortBadge}>
-                                    <Text style={styles.compactPortText}>{show.port}</Text>
-                                  </View>
-                                )}
-                                <Ionicons
-                                  name="chevron-forward"
-                                  size={16}
-                                  color={FreeShowTheme.colors.text + '66'}
-                                />
+                            </BlurView>
+                          ) : (
+                            <View style={[
+                              styles.showCardContent,
+                              styles.compactCard,
+                              {
+                                padding: FreeShowTheme.spacing.md,
+                                backgroundColor: 'rgba(255,255,255,0.02)'
+                              }
+                            ]}>
+                              <View style={styles.compactCardContent}>
+                                <View style={[
+                                  styles.showIconContainer,
+                                  styles.compactIcon,
+                                  { backgroundColor: show.color + '15' }
+                                ]}>
+                                  <Ionicons
+                                    name={show.icon as any}
+                                    size={20}
+                                    color={show.color}
+                                  />
+                                </View>
+                                <View style={styles.compactInfo}>
+                                  <Text style={styles.compactTitle}>
+                                    {show.title}
+                                  </Text>
+                                </View>
+                                <View style={styles.compactActions}>
+                                  {show.port > 0 && (
+                                    <View style={styles.compactPortBadge}>
+                                      <Text style={styles.compactPortText}>{show.port}</Text>
+                                    </View>
+                                  )}
+                                  <Ionicons
+                                    name="chevron-forward"
+                                    size={16}
+                                    color={FreeShowTheme.colors.text + '66'}
+                                  />
+                                </View>
                               </View>
                             </View>
-                          </BlurView>
-                        ) : (
-                          <View style={[
-                            styles.showCardContent,
-                            styles.compactCard,
-                            { 
-                              padding: FreeShowTheme.spacing.md,
-                              backgroundColor: 'rgba(255,255,255,0.02)'
-                            }
-                          ]}>
-                            <View style={styles.compactCardContent}>
-                              <View style={[
-                                styles.showIconContainer,
-                                styles.compactIcon,
-                                { backgroundColor: show.color + '15' }
-                              ]}>
-                                <Ionicons
-                                  name={show.icon as any}
-                                  size={20}
-                                  color={show.color}
-                                />
-                              </View>
-                              <View style={styles.compactInfo}>
-                                <Text style={styles.compactTitle}>
-                                  {show.title}
-                                </Text>
-                              </View>
-                              <View style={styles.compactActions}>
-                                {show.port > 0 && (
-                                  <View style={styles.compactPortBadge}>
-                                    <Text style={styles.compactPortText}>{show.port}</Text>
-                                  </View>
-                                )}
-                                <Ionicons
-                                  name="chevron-forward"
-                                  size={16}
-                                  color={FreeShowTheme.colors.text + '66'}
-                                />
-                              </View>
-                            </View>
-                          </View>
-                        )}
-                      </LinearGradient>
-                    </Pressable>
+                          )}
+                        </LinearGradient>
+                      </Pressable>
+                    </TVFocusable>
                   );
                 })}
               </View>

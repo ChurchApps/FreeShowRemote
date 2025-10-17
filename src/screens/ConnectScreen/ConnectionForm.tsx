@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FreeShowTheme } from '../../theme/FreeShowTheme';
@@ -7,6 +7,8 @@ import { useConnection } from '../../contexts';
 import { ValidationService } from '../../services/InputValidationService';
 import { ErrorLogger } from '../../services/ErrorLogger';
 import { configService } from '../../config/AppConfig';
+import FocusableTextInput from '../../components/FocusableTextInput';
+import TVFocusable from '../../components/TVFocusable';
 
 interface ConnectionFormProps {
   host: string;
@@ -73,7 +75,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
   // Update show ports from form fields only when not connected (during connection setup)
   // When connected, ShowSelector controls interface states
   const prevPortsRef = useRef<string>('');
-  
+
   useEffect(() => {
     if (!isConnected) {
       const currentPortsKey = `${remotePort}-${stagePort}-${controlPort}-${outputPort}-${apiPort}`;
@@ -205,11 +207,11 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
       <Text style={styles.cardTitle}>
         {isConnected ? 'Connection Details' : 'Manual Connection'}
       </Text>
-      
+
       <View style={styles.inputContainer}>
         <Text style={styles.inputLabel}>Server Address</Text>
         <View style={styles.inputRow}>
-          <TextInput
+          <FocusableTextInput
             style={styles.textInput}
             value={host}
             onChangeText={setHost}
@@ -222,7 +224,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             accessibilityHint="Enter the IP address or hostname of the FreeShow server"
             keyboardType="default"
           />
-          {!isConnected && (
+          {!isConnected && !Platform.isTV && (
             <TouchableOpacity
               style={styles.inputAction}
               onPress={onShowQRScanner}
@@ -237,20 +239,22 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
       </View>
 
       {/* Advanced Settings Toggle */}
-      <TouchableOpacity 
-        style={styles.advancedToggle}
-        onPress={() => setShowAdvanced(!showAdvanced)}
-        accessibilityRole="button"
-        accessibilityLabel={showAdvanced ? "Hide interface ports" : "Show interface ports"}
-        accessibilityHint="Toggle display of advanced port configuration options"
-      >
-        <Text style={styles.advancedText}>Interface Ports</Text>
-        <Ionicons 
-          name={showAdvanced ? "chevron-up" : "chevron-down"} 
-          size={20} 
-          color={FreeShowTheme.colors.textSecondary} 
-        />
-      </TouchableOpacity>
+      <TVFocusable onPress={() => setShowAdvanced(!showAdvanced)}>
+        <TouchableOpacity
+          style={styles.advancedToggle}
+          onPress={() => setShowAdvanced(!showAdvanced)}
+          accessibilityRole="button"
+          accessibilityLabel={showAdvanced ? "Hide interface ports" : "Show interface ports"}
+          accessibilityHint="Toggle display of advanced port configuration options"
+        >
+          <Text style={styles.advancedText}>Interface Ports</Text>
+          <Ionicons
+            name={showAdvanced ? "chevron-up" : "chevron-down"}
+            size={20}
+            color={FreeShowTheme.colors.textSecondary}
+          />
+        </TouchableOpacity>
+      </TVFocusable>
 
       {/* Advanced Settings */}
       {showAdvanced && (
@@ -259,7 +263,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             <View style={styles.portItem}>
               <Text style={styles.portLabel}>Remote</Text>
               <View style={styles.portInputContainer}>
-                <TextInput
+                <FocusableTextInput
                   style={styles.portInput}
                   value={remotePort}
                   onChangeText={setRemotePort}
@@ -270,12 +274,14 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                   editable={!isConnected}
                 />
                 {remotePort !== '' && !isConnected && (
-                  <TouchableOpacity 
-                    style={styles.clearPortButton}
-                    onPress={() => handleClearPort('remote')}
-                  >
-                    <Ionicons name="close" size={16} color={FreeShowTheme.colors.textSecondary} />
-                  </TouchableOpacity>
+                  <TVFocusable onPress={() => handleClearPort("remote")}>
+                    <TouchableOpacity
+                      style={styles.clearPortButton}
+                      onPress={() => handleClearPort('remote')}
+                    >
+                      <Ionicons name="close" size={16} color={FreeShowTheme.colors.textSecondary} />
+                    </TouchableOpacity>
+                  </TVFocusable>
                 )}
               </View>
             </View>
@@ -283,7 +289,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             <View style={styles.portItem}>
               <Text style={styles.portLabel}>Stage</Text>
               <View style={styles.portInputContainer}>
-                <TextInput
+                <FocusableTextInput
                   style={styles.portInput}
                   value={stagePort}
                   onChangeText={setStagePort}
@@ -294,7 +300,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                   editable={!isConnected}
                 />
                 {stagePort !== '' && !isConnected && (
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.clearPortButton}
                     onPress={() => handleClearPort('stage')}
                   >
@@ -318,7 +324,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                   editable={!isConnected}
                 />
                 {controlPort !== '' && !isConnected && (
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.clearPortButton}
                     onPress={() => handleClearPort('control')}
                   >
@@ -342,7 +348,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                   editable={!isConnected}
                 />
                 {outputPort !== '' && !isConnected && (
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.clearPortButton}
                     onPress={() => handleClearPort('output')}
                   >
@@ -366,7 +372,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                   editable={!isConnected}
                 />
                 {apiPort !== '' && !isConnected && (
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.clearPortButton}
                     onPress={() => handleClearPort('api')}
                   >
@@ -376,7 +382,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
               </View>
             </View>
           </View>
-          
+
           {/* Help text for ports */}
           <View style={styles.portHelpContainer}>
             <Text style={styles.portHelpText}>
@@ -384,16 +390,18 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
               {' '}Leave ports empty to disable. Each port will be tested before connecting.
             </Text>
           </View>
-          
+
           {/* Restore Defaults Button */}
           {!isConnected && (
-            <TouchableOpacity 
-              style={styles.restoreDefaultsButton}
-              onPress={handleRestoreDefaults}
-            >
-              <Ionicons name="refresh" size={16} color={FreeShowTheme.colors.textSecondary} />
-              <Text style={styles.restoreDefaultsText}>Restore Defaults</Text>
-            </TouchableOpacity>
+            <TVFocusable onPress={handleRestoreDefaults}>
+              <TouchableOpacity
+                style={styles.restoreDefaultsButton}
+                onPress={handleRestoreDefaults}
+              >
+                <Ionicons name="refresh" size={16} color={FreeShowTheme.colors.textSecondary} />
+                <Text style={styles.restoreDefaultsText}>Restore Defaults</Text>
+              </TouchableOpacity>
+            </TVFocusable>
           )}
         </View>
       )}
@@ -402,8 +410,8 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
       <View style={styles.actionContainer}>
         {isConnected ? (
           <View style={styles.connectedActions}>
-            <TouchableOpacity 
-              style={styles.secondaryActionButton} 
+            <TouchableOpacity
+              style={styles.secondaryActionButton}
               onPress={onShowShareQR}
               accessibilityRole="button"
               accessibilityLabel="Share connection QR code"
@@ -421,64 +429,70 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              style={styles.secondaryActionButton}
-              onPress={onDisconnect}
-              accessibilityRole="button"
-              accessibilityLabel="Disconnect from server"
-              accessibilityHint="End the current connection to the FreeShow server"
-            >
-              <LinearGradient
-                colors={['#F44336', '#D32F2F']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFill}
-              />
-              <View style={styles.secondaryButtonContent}>
-                <Ionicons name="log-out-outline" size={20} color="white" />
-                <Text style={styles.secondaryButtonText}>Disconnect</Text>
-              </View>
-            </TouchableOpacity>
+            <TVFocusable onPress={onDisconnect}>
+              <TouchableOpacity
+                style={styles.secondaryActionButton}
+                onPress={onDisconnect}
+                accessibilityRole="button"
+                accessibilityLabel="Disconnect from server"
+                accessibilityHint="End the current connection to the FreeShow server"
+              >
+                <LinearGradient
+                  colors={['#F44336', '#D32F2F']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
+                <View style={styles.secondaryButtonContent}>
+                  <Ionicons name="log-out-outline" size={20} color="white" />
+                  <Text style={styles.secondaryButtonText}>Disconnect</Text>
+                </View>
+              </TouchableOpacity>
+            </TVFocusable>
           </View>
         ) : (
           isConnecting ? (
-            <TouchableOpacity
-              style={[styles.actionButton, styles.connectingButton]}
-              onPress={onCancelConnection}
-              accessibilityRole="button"
-              accessibilityLabel="Cancel connection attempt"
-              accessibilityHint="Stop the current connection attempt"
-            >
-              <LinearGradient
-                colors={['#F0008C', '#E0007A']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFill}
-              />
-              <View style={styles.buttonContent}>
-                <Animated.View style={[styles.spinner, { transform: [{ rotate: spinInterpolation }] }]} />
-                <Text style={styles.buttonText}>Connecting to interface</Text>
-              </View>
-            </TouchableOpacity>
+            <TVFocusable onPress={onCancelConnection}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.connectingButton]}
+                onPress={onCancelConnection}
+                accessibilityRole="button"
+                accessibilityLabel="Cancel connection attempt"
+                accessibilityHint="Stop the current connection attempt"
+              >
+                <LinearGradient
+                  colors={['#F0008C', '#E0007A']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
+                <View style={styles.buttonContent}>
+                  <Animated.View style={[styles.spinner, { transform: [{ rotate: spinInterpolation }] }]} />
+                  <Text style={styles.buttonText}>Connecting to interface</Text>
+                </View>
+              </TouchableOpacity>
+            </TVFocusable>
           ) : (
-            <TouchableOpacity
-              style={[styles.actionButton, styles.connectButton]}
-              onPress={handleConnect}
-              accessibilityRole="button"
-              accessibilityLabel="Connect to FreeShow server"
-              accessibilityHint="Attempt to connect to the FreeShow server with the entered details"
-            >
-              <LinearGradient
-                colors={['#F0008C', '#E0007A']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFill}
-              />
-              <View style={styles.buttonContent}>
-                <Ionicons name="wifi" size={24} color="white" />
-                <Text style={styles.buttonText}>Connect</Text>
-              </View>
-            </TouchableOpacity>
+            <TVFocusable onPress={handleConnect}>
+              <TouchableOpacity
+                style={[styles.actionButton, styles.connectButton]}
+                onPress={handleConnect}
+                accessibilityRole="button"
+                accessibilityLabel="Connect to FreeShow server"
+                accessibilityHint="Attempt to connect to the FreeShow server with the entered details"
+              >
+                <LinearGradient
+                  colors={['#F0008C', '#E0007A']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFill}
+                />
+                <View style={styles.buttonContent}>
+                  <Ionicons name="wifi" size={24} color="white" />
+                  <Text style={styles.buttonText}>Connect</Text>
+                </View>
+              </TouchableOpacity>
+            </TVFocusable>
           )
         )}
       </View>
@@ -508,7 +522,7 @@ const styles = StyleSheet.create({
     color: FreeShowTheme.colors.text,
     marginBottom: FreeShowTheme.spacing.lg,
   },
-  
+
   // Input Styles
   inputContainer: {
     marginBottom: FreeShowTheme.spacing.lg,
@@ -538,7 +552,7 @@ const styles = StyleSheet.create({
     padding: FreeShowTheme.spacing.sm,
     marginLeft: FreeShowTheme.spacing.sm,
   },
-  
+
   // Advanced Settings
   advancedToggle: {
     flexDirection: 'row',
@@ -594,7 +608,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: FreeShowTheme.colors.primaryDarker,
   },
-  
+
   // Restore Defaults Button
   restoreDefaultsButton: {
     flexDirection: 'row',
@@ -614,7 +628,7 @@ const styles = StyleSheet.create({
     color: FreeShowTheme.colors.textSecondary,
     marginLeft: FreeShowTheme.spacing.xs,
   },
-  
+
   // Action Buttons
   actionContainer: {
     marginTop: FreeShowTheme.spacing.xl,

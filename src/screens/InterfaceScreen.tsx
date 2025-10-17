@@ -42,7 +42,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { state, actions } = useConnection();
   const { settings } = useSettings();
-  const { isFloatingNav, isTablet, shouldSkipSafeArea } = getNavigationLayoutInfo(settings?.navigationLayout);
+  const { isFloatingNav, isTablet, shouldSkipSafeArea, isTV } = getNavigationLayoutInfo(settings?.navigationLayout);
 
   const { isConnected, connectionHost, connectionName, currentShowPorts, autoConnectAttempted, connectionStatus } = state;
   const { disconnect, updateShowPorts, cancelConnection } = actions;
@@ -262,7 +262,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     >
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       
-              <Animated.View 
+              <Animated.ScrollView 
           style={[
             isFloatingNav ? styles.contentWithFloatingNav : styles.content,
             {
@@ -284,14 +284,14 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
             
             <Animated.View style={[styles.interfacesContainer, { opacity: contentFade, transform: [{ translateY: contentSlide }] }] }>
               {/* First Row - 2 cards */}
-              <View style={[styles.interfacesRow, isTablet && { marginBottom: 12 }]}>
+              <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }]}>
                 {showOptions.slice(0, 2).map((show, index) => (
                   <Animated.View
                     key={show.id}
                     style={[
                       styles.interfaceCardWrapper,
                       styles.halfWidth,
-                      isTablet && styles.halfWidthTablet,
+                      (isTablet || isTV) && styles.halfWidthTablet,
                       {
                         transform: [{
                           translateY: contentSlide.interpolate({
@@ -313,14 +313,14 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
               </View>
 
               {/* Second Row - 2 cards */}
-              <View style={[styles.interfacesRow, isTablet && { marginBottom: 12 }, showOptions.length <= 4 && { marginBottom: 0 }]}>
+              <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }, showOptions.length <= 4 && { marginBottom: 0 }]}>
                 {showOptions.slice(2, 4).map((show, index) => (
                   <Animated.View
                     key={show.id}
                     style={[
                       styles.interfaceCardWrapper,
                       styles.halfWidth,
-                      isTablet && styles.halfWidthTablet,
+                      (isTablet || isTV) && styles.halfWidthTablet,
                       {
                         transform: [{
                           translateY: contentSlide.interpolate({
@@ -335,7 +335,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
                       show={show}
                       onPress={() => handleShowSelect(show)}
                       onLongPress={() => openCompactPopup(show)}
-                      size={isTablet ? 'large' : 'default'}
+                      size={(isTablet || isTV) ? 'large' : 'default'}
                     />
                   </Animated.View>
                 ))}
@@ -343,7 +343,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
 
               {/* Third Row - 1 full width card */}
               {showOptions.length > 4 && (
-                <View style={[styles.interfacesRow, isTablet && { marginBottom: 0 }]}>
+                <View style={[styles.interfacesRow, isTablet && { marginBottom: 0 }, isTV && { marginBottom: 50 }]}>
                   <Animated.View
                     key={showOptions[4].id}
                     style={[
@@ -371,7 +371,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
               )}
             </Animated.View>
           </View>
-        </Animated.View>
+        </Animated.ScrollView>
 
       {/* Modals */}
       <CompactPopup

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
+import TVFocusable from './TVFocusable';
 
 interface ConfirmationModalProps {
   visible: boolean;
@@ -40,9 +41,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
       animationType="none"
       onRequestClose={onCancel}
     >
-      <TouchableWithoutFeedback onPress={onCancel}>
+      <>
         <View style={styles.modalOverlay}>
-          <TouchableWithoutFeedback onPress={() => {}}>
+          {/* <TouchableWithoutFeedback onPress={() => {}}> */}
             <View style={styles.modalContent}>
               <View style={styles.modalHeader}>
                 {icon && (
@@ -58,12 +59,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                   </View>
                 )}
                 <Text style={styles.modalTitle}>{title}</Text>
-                <TouchableOpacity
+                <TVFocusable onPress={onCancel}>
+                  <TouchableOpacity
                   style={styles.closeButton}
                   onPress={onCancel}
                 >
                   <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
                 </TouchableOpacity>
+                </TVFocusable>
               </View>
               
               <View style={styles.modalBody}>
@@ -71,13 +74,18 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               </View>
               
               <View style={styles.modalButtons}>
-                <TouchableOpacity
+                
+                <TVFocusable onPress={onCancel}>
+                  <TouchableOpacity
                   style={[styles.modalButton, styles.cancelButton]}
                   onPress={onCancel}
                 >
                   <Text style={styles.cancelButtonText}>{cancelText}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                </TVFocusable>
+                
+                <TVFocusable onPress={onConfirm}>
+                  <TouchableOpacity
                   style={[
                     styles.modalButton,
                     confirmStyle === 'destructive' ? styles.destructiveButton : styles.confirmButton
@@ -91,11 +99,12 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                     {confirmText}
                   </Text>
                 </TouchableOpacity>
+                </TVFocusable>
               </View>
             </View>
-          </TouchableWithoutFeedback>
+          {/* </TouchableWithoutFeedback> */}
         </View>
-      </TouchableWithoutFeedback>
+      </>
   </Modal>
   );
 };

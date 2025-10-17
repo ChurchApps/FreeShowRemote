@@ -18,6 +18,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
 import { useSettings } from '../contexts';
 import { getNavigationLayoutInfo, getBottomPadding } from '../utils/navigationUtils';
+import TVFocusable from './TVFocusable';
 
 interface ConnectedScreenProps {
   connectionName: string | null;
@@ -47,7 +48,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   const insets = useSafeAreaInsets();
   const { settings } = useSettings();
   const { shouldSkipSafeArea, isFloatingNav: navIsFloating } = getNavigationLayoutInfo(settings?.navigationLayout);
-  
+
   // Use prop value if provided, otherwise use detected value
   const effectiveIsFloatingNav = isFloatingNav || navIsFloating;
 
@@ -56,11 +57,11 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
     return Object.entries(currentShowPorts)
       .filter(([name, port]) => {
         // Filter out non-port properties like hasEnabledInterfaces
-        return name !== 'hasEnabledInterfaces' && 
-               name !== 'validatedPorts' && 
-               port && 
-               port > 0 && 
-               typeof port === 'number';
+        return name !== 'hasEnabledInterfaces' &&
+          name !== 'validatedPorts' &&
+          port &&
+          port > 0 &&
+          typeof port === 'number';
       }).length;
   };
 
@@ -69,15 +70,15 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
     return Object.entries(currentShowPorts)
       .filter(([name, port]) => {
         // Filter out non-port properties like hasEnabledInterfaces
-        return name !== 'hasEnabledInterfaces' && 
-               name !== 'validatedPorts' && 
-               port && 
-               port > 0 && 
-               typeof port === 'number';
+        return name !== 'hasEnabledInterfaces' &&
+          name !== 'validatedPorts' &&
+          port &&
+          port > 0 &&
+          typeof port === 'number';
       })
-      .map(([name, port]) => ({ 
-        name: name.toUpperCase() === 'API' ? 'API' : name, 
-        port 
+      .map(([name, port]) => ({
+        name: name.toUpperCase() === 'API' ? 'API' : name,
+        port
       }));
   };
 
@@ -96,7 +97,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                   <Text style={styles.statusText}>Connected</Text>
                 </View>
               </View>
-              
+
               <View style={styles.connectionDetails}>
                 <TouchableOpacity style={styles.detailRow} onPress={onEditNickname}>
                   <Ionicons name="wifi" size={20} color={FreeShowTheme.colors.secondary} />
@@ -107,7 +108,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                     </Text>
                   </View>
                 </TouchableOpacity>
-                
+
                 {connectionHost && (
                   <View style={styles.detailRow}>
                     <Ionicons name="globe-outline" size={20} color={FreeShowTheme.colors.secondary} />
@@ -117,7 +118,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                     </View>
                   </View>
                 )}
-                
+
                 <View style={styles.detailRow}>
                   <Ionicons name="layers-outline" size={20} color={FreeShowTheme.colors.secondary} />
                   <View style={styles.detailContent}>
@@ -138,7 +139,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                 <Text style={styles.statusText}>Connected</Text>
               </View>
             </View>
-            
+
             <View style={styles.connectionDetails}>
               <TouchableOpacity style={styles.detailRow} onPress={onEditNickname}>
                 <Ionicons name="wifi" size={20} color={FreeShowTheme.colors.secondary} />
@@ -149,7 +150,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                   </Text>
                 </View>
               </TouchableOpacity>
-              
+
               {connectionHost && (
                 <View style={styles.detailRow}>
                   <Ionicons name="globe-outline" size={20} color={FreeShowTheme.colors.secondary} />
@@ -159,7 +160,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                   </View>
                 </View>
               )}
-              
+
               <View style={styles.detailRow}>
                 <Ionicons name="layers-outline" size={20} color={FreeShowTheme.colors.secondary} />
                 <View style={styles.detailContent}>
@@ -189,7 +190,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                 <Ionicons name="settings-outline" size={24} color={FreeShowTheme.colors.secondary} />
                 <Text style={styles.portsTitle}>Interface Ports</Text>
               </View>
-              
+
               <View style={styles.portsGrid}>
                 {getActivePortsList().map(({ name, port }) => {
                   if (!port || port <= 0 || isNaN(port)) return null;
@@ -209,7 +210,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
               <Ionicons name="settings-outline" size={24} color={FreeShowTheme.colors.secondary} />
               <Text style={styles.portsTitle}>Interface Ports</Text>
             </View>
-            
+
             <View style={styles.portsGrid}>
               {getActivePortsList().map(({ name, port }) => {
                 if (!port || port <= 0 || isNaN(port)) return null;
@@ -230,41 +231,45 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   const ActionsCard = () => (
     <View style={styles.actionsCard}>
       <Text style={styles.actionsTitle}>Quick Actions</Text>
-      
+
       <View style={styles.actionButtons}>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={onShowQRCode}
-          activeOpacity={0.7}
-        >
-          <View style={styles.actionButtonContent}>
-            <View style={[styles.actionIcon, { backgroundColor: 'rgba(33, 150, 243, 0.15)' }]}>
-              <Ionicons name="qr-code" size={24} color="#2196F3" />
+        <TVFocusable onPress={onShowQRCode}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={onShowQRCode}
+            activeOpacity={0.7}
+          >
+            <View style={styles.actionButtonContent}>
+              <View style={[styles.actionIcon, { backgroundColor: 'rgba(33, 150, 243, 0.15)' }]}>
+                <Ionicons name="qr-code" size={24} color="#2196F3" />
+              </View>
+              <View style={styles.actionTextContainer}>
+                <Text style={styles.actionButtonTitle}>Share QR Code</Text>
+                <Text style={styles.actionButtonDescription}>Let others connect easily</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="rgba(255,255,255,0.3)" />
             </View>
-            <View style={styles.actionTextContainer}>
-              <Text style={styles.actionButtonTitle}>Share QR Code</Text>
-              <Text style={styles.actionButtonDescription}>Let others connect easily</Text>
+          </TouchableOpacity>
+        </TVFocusable>
+
+        <TVFocusable onPress={onDisconnect}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={onDisconnect}
+            activeOpacity={0.7}
+          >
+            <View style={styles.actionButtonContent}>
+              <View style={[styles.actionIcon, { backgroundColor: 'rgba(239, 83, 80, 0.15)' }]}>
+                <Ionicons name="power" size={24} color="#EF5350" />
+              </View>
+              <View style={styles.actionTextContainer}>
+                <Text style={styles.actionButtonTitle}>Disconnect</Text>
+                <Text style={styles.actionButtonDescription}>End current session</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color="rgba(255,255,255,0.3)" />
             </View>
-            <Ionicons name="chevron-forward" size={20} color="rgba(255,255,255,0.3)" />
-          </View>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={onDisconnect}
-          activeOpacity={0.7}
-        >
-          <View style={styles.actionButtonContent}>
-            <View style={[styles.actionIcon, { backgroundColor: 'rgba(239, 83, 80, 0.15)' }]}>
-              <Ionicons name="power" size={24} color="#EF5350" />
-            </View>
-            <View style={styles.actionTextContainer}>
-              <Text style={styles.actionButtonTitle}>Disconnect</Text>
-              <Text style={styles.actionButtonDescription}>End current session</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="rgba(255,255,255,0.3)" />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </TVFocusable>
       </View>
     </View>
   );
@@ -301,7 +306,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
 
               {/* Logo - Right */}
               <View style={styles.logoContainer}>
-                <Image 
+                <Image
                   source={require('../../assets/splash-icon.png')}
                   style={styles.logo}
                   resizeMode="contain"
@@ -336,7 +341,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingBottom: 20,
   },
-  
+
   // Brand Header Card
   brandCard: {
     borderRadius: 16,
@@ -389,7 +394,7 @@ const styles = StyleSheet.create({
   cardsContainer: {
     gap: FreeShowTheme.spacing.lg,
   },
-  
+
   // Connection Info Card
   infoCard: {
     borderRadius: 12,
@@ -445,7 +450,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'white',
   },
-  
+
   // Ports Card
   portsCard: {
     borderRadius: 12,
@@ -502,7 +507,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
   },
-  
+
   // Actions Card
   actionsCard: {
     gap: 16,

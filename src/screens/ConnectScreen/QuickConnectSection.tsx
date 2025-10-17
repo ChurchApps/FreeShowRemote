@@ -7,6 +7,7 @@ import { DiscoveredFreeShowInstance } from '../../services/AutoDiscoveryService'
 import { ConnectionHistory } from '../../repositories';
 import { configService } from '../../config/AppConfig';
 import ErrorModal from '../../components/ErrorModal';
+import TVFocusable from '../../components/TVFocusable';
 
 interface QuickConnectSectionProps {
   history: ConnectionHistory[];
@@ -146,7 +147,8 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
           <View style={styles.discoverySection}>
             <View style={styles.discoverySectionHeader}>
               <Text style={styles.discoveryTitle}>Network Scan</Text>
-              <TouchableOpacity
+              <TVFocusable onPress={handleScanPress}>
+                <TouchableOpacity
                 onPress={handleScanPress}
                 style={[
                   styles.discoveryToggle,
@@ -187,6 +189,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
                   </Text>
                 </View>
               </TouchableOpacity>
+              </TVFocusable>
             </View>
             {isExpoGo && showExpoMockNotice && (
               <View style={styles.mockNotice}>
@@ -300,17 +303,20 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
           <View style={styles.recentSection}>
             <View style={styles.recentSectionHeader}>
               <Text style={styles.recentTitle}>Recent Connections</Text>
-              <TouchableOpacity 
+              <TVFocusable onPress={onClearAllHistory}>
+                <TouchableOpacity 
                 onPress={onClearAllHistory}
                 style={styles.clearAllButton}
               >
                 <Ionicons name="trash-outline" size={16} color={FreeShowTheme.colors.textSecondary} />
                 <Text style={styles.clearAllText}>Clear All</Text>
               </TouchableOpacity>
+              </TVFocusable>
             </View>
             <View style={styles.recentDevices}>
               {recentHistory.map((item: ConnectionHistory, _index: number) => (
-                <TouchableOpacity
+                <TVFocusable onPress={() => onHistoryConnect(item)} key={item.id}>
+                  <TouchableOpacity
                   key={item.id}
                   style={styles.recentDevice}
                   onPress={() => onHistoryConnect(item)}
@@ -344,6 +350,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
                     </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
+                </TVFocusable>
               ))}
             </View>
           </View>

@@ -86,8 +86,16 @@
         }
       ],
       [
-        "expo-build-properties",
+        "@react-native-tvos/config-tv",
         {
+          "androidTVBanner": "./assets/freeshow-icon.png",
+          "removeFlipperOnAndroid": true,
+          "androidTVIcon": "./assets/freeshow-icon.png"
+        }
+      ],
+      [
+        "expo-build-properties",
+        { 
           "android": {
             "usesCleartextTraffic": true,
             "networkSecurityConfig": "./android/network_security_config.xml",
