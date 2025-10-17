@@ -19,38 +19,36 @@
       }
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "channel": "preview"
     },
-    "production": {
+    "production-ios": {
       "autoIncrement": true,
+      "channel": "production",
+      "distribution": "store",
       "ios": {
         "simulator": false,
         "buildConfiguration": "Release"
-      },
+      }
+    },
+    "production-android-aab": {
+      "autoIncrement": true,
+      "channel": "production",
+      "distribution": "store",
       "android": {
         "buildType": "app-bundle",
         "gradleCommand": ":app:bundleRelease"
       }
     },
-    "production-aab": {
-      "extends": "production",
+    "production-android-apk": {
+      "autoIncrement": true,
+      "channel": "production",
+      "distribution": "store",
       "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
       }
     }
   },
-  "submit": {
-    "production": {
-      "ios": {
-        "appleId": "your-apple-id@example.com",
-        "ascAppId": "your-app-store-connect-app-id",
-        "appleTeamId": "your-apple-team-id"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-service-account.json",
-        "track": "production"
-      }
-    }
-  }
+  "submit": {}
 }

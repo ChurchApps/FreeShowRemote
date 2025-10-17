@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import * as Updates from 'expo-updates';
 
 import ConnectScreen from './src/screens/ConnectScreen';
 import InterfaceScreen from './src/screens/InterfaceScreen';
@@ -606,7 +607,7 @@ const FreeShowNavigationTheme = {
 };
 
 export default function App() {
-  
+
   // Initialize configuration on app startup
   useEffect(() => {
     const initializeApp = async () => {
@@ -619,6 +620,34 @@ export default function App() {
     };
 
     initializeApp();
+  }, []);
+
+  // Check for OTA updates on app launch
+  useEffect(() => {
+    const checkForUpdates = async () => {
+      // Only check for updates in production builds (not in development)
+      if (__DEV__) {
+        return;
+      }
+
+      try {
+        const update = await Updates.checkForUpdateAsync();
+
+        if (update.isAvailable) {
+          ErrorLogger.info('Update available, downloading...', 'App');
+          await Updates.fetchUpdateAsync();
+          ErrorLogger.info('Update downloaded, reloading app...', 'App');
+          // Reload the app to apply the update
+          await Updates.reloadAsync();
+        } else {
+          ErrorLogger.info('App is up to date', 'App');
+        }
+      } catch (error) {
+        ErrorLogger.error('Error checking for updates', 'App', error instanceof Error ? error : new Error(String(error)));
+      }
+    };
+
+    checkForUpdates();
   }, []);
 
   // Store quick action for auto-connect
