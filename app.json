@@ -159,7 +159,6 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "buildCacheProvider": "eas",
     "owner": "churchapps"
   }
 }
