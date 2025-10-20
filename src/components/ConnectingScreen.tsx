@@ -1,21 +1,21 @@
-import React, { useEffect, useRef } from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useRef } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
   Animated,
-  StatusBar,
   Pressable,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { getBottomPadding } from "../utils/navigationUtils"
 
 interface ConnectingScreenProps {
   onCancel: () => void;
   connectionStatus: string;
-  isFloatingNav?: boolean;
 }
 
 /**
@@ -24,8 +24,7 @@ interface ConnectingScreenProps {
  */
 const ConnectingScreen: React.FC<ConnectingScreenProps> = ({ 
   onCancel, 
-  connectionStatus, 
-  isFloatingNav = false 
+  connectionStatus
 }) => {
   const insets = useSafeAreaInsets();
 
@@ -78,7 +77,7 @@ const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
           styles.connectingContainer,
           { 
             paddingTop: insets.top,
-            paddingBottom: isFloatingNav ? 120 : 40,
+            paddingBottom: getBottomPadding(),
           },
           {
             opacity: 1,

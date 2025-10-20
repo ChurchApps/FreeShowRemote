@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef } from 'react'
 import {
   Animated,
-  Platform,
   TouchableOpacity as OriginalOpacity,
   TouchableOpacityProps,
-  ViewStyle,
-} from 'react-native';
+  ViewStyle
+} from 'react-native'
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface TVTouchableOpacityProps extends TouchableOpacityProps {
   containerStyle?: ViewStyle | ViewStyle[];
@@ -39,7 +39,8 @@ const TouchableOpacity: React.FC<TVTouchableOpacityProps> = ({
     Animated.timing(opacityAnim, { toValue: 0, duration: 100, useNativeDriver: true }).start();
   };
 
-  if (!Platform.isTV) {
+  const isTV = getDeviceType().isTV;
+  if (!isTV) {
     return <OriginalOpacity {...rest} style={style}>{children}</OriginalOpacity>;
   }
 

@@ -1,33 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, Platform } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
-import { createNavigationContainerRef } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import * as Updates from 'expo-updates';
+import { Ionicons } from '@expo/vector-icons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNavigationContainerRef, DarkTheme, NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import { LinearGradient } from 'expo-linear-gradient'
+import { StatusBar } from 'expo-status-bar'
+import * as Updates from 'expo-updates'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import ConnectScreen from './src/screens/ConnectScreen';
-import InterfaceScreen from './src/screens/InterfaceScreen';
-import WebViewScreen from './src/screens/WebViewScreen';
-import APIScreen from './src/screens/APIScreen';
+import APIScreen from './src/screens/APIScreen'
+import ConnectScreen from './src/screens/ConnectScreen'
+import InterfaceScreen from './src/screens/InterfaceScreen'
+import WebViewScreen from './src/screens/WebViewScreen'
 
-import SettingsScreen from './src/screens/SettingsScreen';
-import ConnectionHistoryScreen from './src/screens/ConnectionHistoryScreen';
-import { FreeShowTheme } from './src/theme/FreeShowTheme';
-import { AppContextProvider, useConnection, useSettings } from './src/contexts';
-import { ErrorBoundary } from './src/components/ErrorBoundary';
-import { Sidebar, SidebarTraditional } from './src/components/Sidebar';
-import { ErrorLogger } from './src/services/ErrorLogger';
-import { configService } from './src/config/AppConfig';
-import { useAutoConnectExpected } from './src/hooks/useAutoConnect';
-import { getTabIcon } from './src/utils/tabConfig';
-import * as QuickActions from 'expo-quick-actions';
-import { QuickActionData } from './src/services/QuickActionsService';
+import * as QuickActions from 'expo-quick-actions'
+import { ErrorBoundary } from './src/components/ErrorBoundary'
+import { Sidebar, SidebarTraditional } from './src/components/Sidebar'
+import { configService } from './src/config/AppConfig'
+import { AppContextProvider } from './src/contexts'
+import { useAutoConnectExpected } from './src/hooks/useAutoConnect'
+import ConnectionHistoryScreen from './src/screens/ConnectionHistoryScreen'
+import SettingsScreen from './src/screens/SettingsScreen'
+import { ErrorLogger } from './src/services/ErrorLogger'
+import { FreeShowTheme } from './src/theme/FreeShowTheme'
+import { getDeviceType } from "./src/utils/navigationUtils"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,145 +50,6 @@ const SettingsScreenWrapped = (props: any) => (
     <SettingsScreen {...props} />
   </ErrorBoundary>
 );
-
-interface TabBarProps {
-  state: any;
-  descriptors: any;
-  navigation: any;
-}
-
-// Custom Tab Bar Component
-function CustomTabBar({ state, descriptors, navigation }: TabBarProps) {
-  const insets = useSafeAreaInsets();
-  const { state: connectionState } = useConnection();
-  const { isConnected, connectionStatus } = connectionState;
-
-  return (
-    <View style={{
-      backgroundColor: FreeShowTheme.colors.primaryDarkest,
-      borderTopColor: FreeShowTheme.colors.primaryLighter,
-      borderTopWidth: 2,
-      paddingBottom: Math.max(insets.bottom, 12), // Use system navigation bar height or minimum 12
-      paddingTop: 4,
-      flexDirection: 'row',
-      alignItems: 'center',
-      minHeight: 80,
-    }}>
-      {state.routes.map((route: any, index: number) => {
-        const { options } = descriptors[route.key];
-        const label = options.tabBarLabel !== undefined ? options.tabBarLabel : options.title !== undefined ? options.title : route.name;
-        const isFocused = state.index === index;
-        const { iconName, iconColor } = getTabIcon(route.name, isFocused, isConnected, connectionStatus);
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return (
-          <TouchableOpacity
-            key={route.name}
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 8,
-            }}
-          >
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <Ionicons name={iconName} size={24} color={iconColor} />
-              <Text style={{
-                color: iconColor,
-                fontSize: 12,
-                marginTop: 4,
-                fontWeight: isFocused ? '600' : '400',
-              }}>
-                {label}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
-
-function BottomTabsLayout() {
-  const autoConnectExpected = useAutoConnectExpected();
-
-  // Always call all hooks first
-  const initialRouteName = React.useMemo(() => {
-    return "Interface";
-  }, [autoConnectExpected]);
-
-  React.useEffect(() => {
-    if (autoConnectExpected !== null) {
-      ErrorLogger.info(`[Navigation] Initial route determined: ${initialRouteName}`, 'App', {
-        autoConnectExpected,
-        initialRouteName
-      });
-    }
-  }, [autoConnectExpected, initialRouteName]);
-
-  // Show loading if not ready
-  if (autoConnectExpected === null) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: FreeShowTheme.colors.primary }}>
-        <Text style={{ color: FreeShowTheme.colors.text }}>Loading...</Text>
-      </View>
-    );
-  }
-
-  return (
-    <Tab.Navigator
-      initialRouteName={initialRouteName}
-      tabBar={(props) => <CustomTabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        lazy: false, // Load all screens immediately to prevent flicker
-      }}
-    >
-      <Tab.Screen
-        name="Interface"
-        component={InterfaceScreenComponent}
-        options={{ tabBarLabel: 'Interface' }}
-      />
-      <Tab.Screen
-        name="Connect"
-        component={ConnectScreenWrapped}
-        options={{ tabBarLabel: 'Connect' }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsScreenWrapped}
-        options={{ tabBarLabel: 'Settings' }}
-      />
-    </Tab.Navigator>
-  );
-}
 
 // Route definitions for sidebar navigation
 const SIDEBAR_ROUTES = ['Interface', 'Connect', 'Settings'];
@@ -574,21 +432,12 @@ function FloatingNavLayout() {
 
 // Main layout component that chooses between sidebar, bottom tabs, or floating nav
 function MainLayout() {
-  const { settings } = useSettings();
+  const isTV = getDeviceType().isTV;
 
-  // Default to bottom bar if settings not loaded yet
-  const navigationLayout: 'bottomBar' | 'sidebar' | 'floating' = settings?.navigationLayout || 'bottomBar';
-
-  if (Platform.isTV) {
+  if (isTV) {
     return <SidebarLayout />
-  }
-
-  if (navigationLayout === 'sidebar') {
-    return <SidebarLayout />;
-  } else if (navigationLayout === 'floating') {
-    return <FloatingNavLayout />;
   } else {
-    return <BottomTabsLayout />;
+    return <FloatingNavLayout />
   }
 }
 

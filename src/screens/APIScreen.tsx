@@ -1,26 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
   ActivityIndicator,
-  TextInput,
   Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
   TouchableWithoutFeedback,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { io, Socket } from 'socket.io-client';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { ErrorLogger } from '../services/ErrorLogger';
-import { useConnection, useSettings } from '../contexts';
-import { getNavigationLayoutInfo } from '../utils/navigationUtils';
-import ShowSwitcher from '../components/ShowSwitcher';
-import { ShowOption } from '../types';
-import ErrorModal from '../components/ErrorModal';
-import { configService } from '../config/AppConfig';
+  View
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { io, Socket } from 'socket.io-client'
+import ErrorModal from '../components/ErrorModal'
+import ShowSwitcher from '../components/ShowSwitcher'
+import { configService } from '../config/AppConfig'
+import { useConnection } from '../contexts'
+import { ErrorLogger } from '../services/ErrorLogger'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { ShowOption } from '../types'
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface APIScreenProps {
   route: {
@@ -34,11 +34,10 @@ interface APIScreenProps {
 
 const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
   const { state } = useConnection();
-  const { settings } = useSettings();
   const { connectionHost, isConnected, currentShowPorts } = state;
   const { title = 'FreeShow Remote' } = route.params || {};
-  const { shouldSkipSafeArea } = getNavigationLayoutInfo(settings?.navigationLayout);
-  const SafeAreaWrapper = shouldSkipSafeArea ? View : SafeAreaView;
+  const isTV = getDeviceType().isTV;
+  const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   // State management
   const [socketConnected, setSocketConnected] = useState(false);
@@ -354,7 +353,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
   // Show API not available UI if connected but API is disabled
   if (!isApiAvailable) {
     return (
-      <SafeAreaWrapper style={styles.safeArea} {...(!shouldSkipSafeArea && { edges: ['top', 'left', 'right'] })}>
+      <SafeAreaWrapper style={styles.safeArea} {...(isTV && { edges: ['top', 'left', 'right'] })}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.closeButton} onPress={() => navigation.goBack()}>
             <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
