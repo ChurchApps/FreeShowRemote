@@ -1,39 +1,35 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Animated } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
-  StyleSheet,
-  KeyboardAvoidingView,
+  Animated, KeyboardAvoidingView,
   Platform,
-  ScrollView,
-  View,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
+  ScrollView, StyleSheet, View
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import ConfirmationModal from '../components/ConfirmationModal'
+import ConnectedScreen from '../components/ConnectedScreen'
+import ErrorModal from '../components/ErrorModal'
+import QRScannerModal from '../components/QRScannerModal'
+import ShareQRModal from '../components/ShareQRModal'
+import { configService } from '../config/AppConfig'
 import {
   useConnection,
   useDiscovery,
-  useSettings,
   useDiscoveryActions,
-} from '../contexts';
-import { getNavigationLayoutInfo } from '../utils/navigationUtils';
-import { DiscoveredFreeShowInstance } from '../services/AutoDiscoveryService';
-import { ConnectionHistory, settingsRepository } from '../repositories';
-import QRScannerModal from '../components/QRScannerModal';
-import { ErrorLogger } from '../services/ErrorLogger';
-import ShareQRModal from '../components/ShareQRModal';
-import { ValidationService } from '../services/InputValidationService';
-import { interfacePingService } from '../services/InterfacePingService';
-import { configService } from '../config/AppConfig';
-import ConfirmationModal from '../components/ConfirmationModal';
-import ErrorModal from '../components/ErrorModal';
-import { useAppLaunch } from '../hooks/useAppLaunch';
-import Header from './ConnectScreen/Header';
-import QuickConnectSection from './ConnectScreen/QuickConnectSection';
-import ConnectionForm from './ConnectScreen/ConnectionForm';
-import HelpSection from './ConnectScreen/HelpSection';
-import EditNicknameModal from './ConnectScreen/EditNicknameModal';
-import ConnectedScreen from '../components/ConnectedScreen';
+  useSettings,
+} from '../contexts'
+import { useAppLaunch } from '../hooks/useAppLaunch'
+import { ConnectionHistory, settingsRepository } from '../repositories'
+import { DiscoveredFreeShowInstance } from '../services/AutoDiscoveryService'
+import { ErrorLogger } from '../services/ErrorLogger'
+import { ValidationService } from '../services/InputValidationService'
+import { interfacePingService } from '../services/InterfacePingService'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import ConnectionForm from './ConnectScreen/ConnectionForm'
+import EditNicknameModal from './ConnectScreen/EditNicknameModal'
+import Header from './ConnectScreen/Header'
+import HelpSection from './ConnectScreen/HelpSection'
+import QuickConnectSection from './ConnectScreen/QuickConnectSection'
 
 interface ConnectScreenProps {
   navigation: any;
@@ -101,9 +97,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   } = actions;
   
   const { history, actions: historyActions, settings } = useSettings();
-  
-  // Check if we're using floating navigation layout
-  const isFloatingNav = settings?.navigationLayout === 'floating';
   
   const discovery = useDiscovery();
   const discoveryActions = useDiscoveryActions();
@@ -730,7 +723,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           
           handleEditNickname(currentConnection);
         }}
-        isFloatingNav={isFloatingNav}
       />
       
       <EditNicknameModal
@@ -744,8 +736,8 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     </>
   ) : null;
 
-  const { shouldSkipSafeArea } = getNavigationLayoutInfo(settings?.navigationLayout);
-  const SafeAreaWrapper = shouldSkipSafeArea ? View : SafeAreaView;
+  const isTV = Platform.isTV;
+  const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   // Render disconnected screen when not connected
   const disconnectedContent = !isConnected ? (
@@ -760,7 +752,7 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         >
         <ScrollView
           style={styles.scrollView}
-          contentContainerStyle={isFloatingNav ? styles.scrollContentWithFloatingNav : styles.scrollContent}
+          contentContainerStyle={isTV ? styles.scrollContent : styles.scrollContentWithFloatingNav}
           showsVerticalScrollIndicator={false}
         >
             <Header

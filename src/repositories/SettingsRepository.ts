@@ -1,7 +1,7 @@
-import { IStorageRepository, StorageKeys } from './IStorageRepository';
-import { storageRepository } from './AsyncStorageRepository';
-import { ErrorLogger } from '../services/ErrorLogger';
-import { configService } from '../config/AppConfig';
+import { configService } from '../config/AppConfig'
+import { ErrorLogger } from '../services/ErrorLogger'
+import { storageRepository } from './AsyncStorageRepository'
+import { IStorageRepository, StorageKeys } from './IStorageRepository'
 
 // Types for settings domain
 export interface AppSettings {
@@ -11,7 +11,6 @@ export interface AppSettings {
   autoLaunchInterface: 'none' | 'remote' | 'stage' | 'control' | 'output' | 'api';
   autoLaunchFullscreen: boolean;
   connectionTimeout: number; // in seconds
-  navigationLayout: 'bottomBar' | 'sidebar' | 'floating';
   keepAwake: boolean;
 }
 
@@ -55,7 +54,6 @@ export class SettingsRepository {
           autoLaunchInterface: 'none',
           autoLaunchFullscreen: false,
           connectionTimeout: 10,
-          navigationLayout: 'bottomBar',
           keepAwake: false,
         };
         await this.setAppSettings(defaultSettings);

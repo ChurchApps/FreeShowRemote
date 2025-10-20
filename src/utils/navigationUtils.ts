@@ -1,30 +1,25 @@
 import { Dimensions, Platform } from 'react-native';
 
-export interface NavigationLayoutInfo {
-  isFloatingNav: boolean;
-  isMobileSidebar: boolean;
-  isTablet: boolean;
-  shouldSkipSafeArea: boolean;
+export interface DevideType {
   isTV: boolean;
+  isTablet: boolean;
+  isPhone: boolean;
 }
 
-export const getNavigationLayoutInfo = (navigationLayout?: 'bottomBar' | 'sidebar' | 'floating'): NavigationLayoutInfo => {
+export const getDeviceType = (): DevideType => {
   const screenWidth = Dimensions.get('window').width;
   const isTV = Platform.isTV;
   const isTablet = screenWidth >= 768 && !isTV;
-  const isFloatingNav = navigationLayout === 'floating';
-  const isMobileSidebar = navigationLayout === 'sidebar' && !isTablet;
-  const shouldSkipSafeArea = isFloatingNav || isMobileSidebar;
+  const isPhone = !isTV && !isTablet;
 
   return {
-    isFloatingNav,
-    isMobileSidebar,
-    isTablet,
     isTV,
-    shouldSkipSafeArea,
+    isTablet,
+    isPhone,
   };
 };
 
-export const getBottomPadding = (isFloatingNav: boolean): number => {
-  return isFloatingNav ? 120 : 40;
+export const getBottomPadding = (): number => {
+  const isTV = Platform.isTV;
+  return isTV ? 40 : 120;
 };

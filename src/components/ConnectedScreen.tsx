@@ -1,24 +1,22 @@
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import { BlurView } from 'expo-blur'
+import { LinearGradient } from 'expo-linear-gradient'
+import React from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  ScrollView,
   Dimensions,
-  Platform,
-  TouchableOpacity,
   Image,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { useSettings } from '../contexts';
-import { getNavigationLayoutInfo, getBottomPadding } from '../utils/navigationUtils';
-import TVFocusable from './TVFocusable';
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { getBottomPadding } from '../utils/navigationUtils'
+import TVFocusable from './TVFocusable'
 
 interface ConnectedScreenProps {
   connectionName: string | null;
@@ -33,7 +31,6 @@ interface ConnectedScreenProps {
   onDisconnect: () => void;
   onShowQRCode: () => void;
   onEditNickname: () => void;
-  isFloatingNav?: boolean;
 }
 
 const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
@@ -42,15 +39,10 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   currentShowPorts,
   onDisconnect,
   onShowQRCode,
-  onEditNickname,
-  isFloatingNav = false,
+  onEditNickname
 }) => {
+  const isTV = Platform.isTV;
   const insets = useSafeAreaInsets();
-  const { settings } = useSettings();
-  const { shouldSkipSafeArea, isFloatingNav: navIsFloating } = getNavigationLayoutInfo(settings?.navigationLayout);
-
-  // Use prop value if provided, otherwise use detected value
-  const effectiveIsFloatingNav = isFloatingNav || navIsFloating;
 
   const getActivePortsCount = () => {
     if (!currentShowPorts) return 0;
@@ -277,13 +269,13 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   return (
     <LinearGradient
       colors={FreeShowTheme.gradients.appBackground}
-      style={[styles.container, !shouldSkipSafeArea && { paddingTop: insets.top }]}
+      style={[styles.container, isTV && { paddingTop: insets.top }]}
     >
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingBottom: getBottomPadding(effectiveIsFloatingNav) }
+          { paddingBottom: getBottomPadding() }
         ]}
         showsVerticalScrollIndicator={false}
       >

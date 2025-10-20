@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useEffect, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  Switch,
-  ScrollView,
-  TouchableOpacity,
-  Modal,
-  Platform,
   Dimensions,
   Image,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { useSettings } from '../contexts';
-import { getNavigationLayoutInfo } from '../utils/navigationUtils';
-import { configService } from '../config/AppConfig';
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { ShowOption } from '../types';
-import TVFocusable from '../components/TVFocusable';
+  Modal,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import TVFocusable from '../components/TVFocusable'
+import { configService } from '../config/AppConfig'
+import { useSettings } from '../contexts'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { ShowOption } from '../types'
 
 interface SettingsScreenProps {
   navigation: any;
@@ -32,7 +31,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const [autoReconnect, setAutoReconnect] = useState(settings?.autoReconnect || false);
   const [autoLaunchInterface, setAutoLaunchInterface] = useState(settings?.autoLaunchInterface || 'none');
   const [autoLaunchFullscreen, setAutoLaunchFullscreen] = useState(settings?.autoLaunchFullscreen || false);
-  const [navigationLayout, setNavigationLayout] = useState<'bottomBar' | 'sidebar' | 'floating'>(settings?.navigationLayout || 'bottomBar');
   const [keepAwake, setKeepAwake] = useState(settings?.keepAwake || false);
   const [showLaunchPicker, setShowLaunchPicker] = useState(false);
 
@@ -60,7 +58,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       setAutoReconnect(settings.autoReconnect || false);
       setAutoLaunchInterface(settings.autoLaunchInterface || 'none');
       setAutoLaunchFullscreen(settings.autoLaunchFullscreen || false);
-      setNavigationLayout(settings.navigationLayout || 'bottomBar');
       setKeepAwake(settings.keepAwake || false);
     }
   }, [settings]);
@@ -121,11 +118,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     await actions.updateSettings({ autoLaunchFullscreen: value });
   };
 
-  const handleNavigationLayoutSelect = async (layout: 'bottomBar' | 'sidebar' | 'floating') => {
-    setNavigationLayout(layout);
-    await actions.updateSettings({ navigationLayout: layout });
-  };
-
   const getSelectedShow = () => {
     return showOptions.find(option => option.id === autoLaunchInterface) || showOptions[0];
   };
@@ -133,8 +125,8 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const selectedShow = getSelectedShow();
 
 
-  const { shouldSkipSafeArea } = getNavigationLayoutInfo(navigationLayout);
-  const SafeAreaWrapper = shouldSkipSafeArea ? View : SafeAreaView;
+  const isTV = Platform.isTV;
+  const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   return (
     <>
@@ -146,7 +138,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
           <View style={styles.animatedContainer}>
             <ScrollView
               style={styles.scrollView}
-              contentContainerStyle={navigationLayout === 'floating' ? styles.scrollContentWithFloatingNav : styles.scrollContent}
+              contentContainerStyle={isTV ? styles.scrollContent : styles.scrollContentWithFloatingNav}
               showsVerticalScrollIndicator={false}
               bounces={false}
             >
@@ -213,89 +205,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                       />
                     </TouchableOpacity>
 
-                    <View style={styles.settingDivider} />
-
-                    {/* Navigation Layout Selection */}
-                    <TouchableOpacity
-                      style={styles.settingItem}
-                      activeOpacity={0.7}
-                      onPress={() => { }} // No action needed for the container
-                    >
-                      <View style={styles.settingInfo}>
-                        <View style={styles.settingTitleRow}>
-                          <View style={styles.iconContainer}>
-                            <Ionicons name="menu" size={20} color={FreeShowTheme.colors.secondary} />
-                          </View>
-                          <Text style={styles.settingTitle}>Navigation Layout</Text>
-                        </View>
-
-                        <View style={styles.pillContainer}>
-                          <TouchableOpacity
-                            style={[
-                              styles.pillThird,
-                              styles.pillLeft,
-                              navigationLayout === 'bottomBar' && styles.pillActive
-                            ]}
-                            onPress={() => handleNavigationLayoutSelect('bottomBar')}
-                            activeOpacity={0.8}
-                          >
-                            <Ionicons
-                              name="list"
-                              size={14}
-                              color={navigationLayout === 'bottomBar' ? 'white' : FreeShowTheme.colors.secondary}
-                            />
-                            <Text style={[
-                              styles.pillText,
-                              navigationLayout === 'bottomBar' && styles.pillTextActive
-                            ]}>
-                              Bottom
-                            </Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            style={[
-                              styles.pillThird,
-                              styles.pillMiddle,
-                              navigationLayout === 'floating' && styles.pillActive
-                            ]}
-                            onPress={() => handleNavigationLayoutSelect('floating')}
-                            activeOpacity={0.8}
-                          >
-                            <Ionicons
-                              name="ellipse"
-                              size={14}
-                              color={navigationLayout === 'floating' ? 'white' : FreeShowTheme.colors.secondary}
-                            />
-                            <Text style={[
-                              styles.pillText,
-                              navigationLayout === 'floating' && styles.pillTextActive
-                            ]}>
-                              Float
-                            </Text>
-                          </TouchableOpacity>
-                          <TouchableOpacity
-                            style={[
-                              styles.pillThird,
-                              styles.pillRight,
-                              navigationLayout === 'sidebar' && styles.pillActive
-                            ]}
-                            onPress={() => handleNavigationLayoutSelect('sidebar')}
-                            activeOpacity={0.8}
-                          >
-                            <Ionicons
-                              name="menu"
-                              size={14}
-                              color={navigationLayout === 'sidebar' ? 'white' : FreeShowTheme.colors.secondary}
-                            />
-                            <Text style={[
-                              styles.pillText,
-                              navigationLayout === 'sidebar' && styles.pillTextActive
-                            ]}>
-                              Side
-                            </Text>
-                          </TouchableOpacity>
-                        </View>
-                      </View>
-                    </TouchableOpacity>
+                    {/* <View style={styles.settingDivider} /> */}
                   </View>
                 )
               }

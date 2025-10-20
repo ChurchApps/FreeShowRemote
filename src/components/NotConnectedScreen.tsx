@@ -1,21 +1,21 @@
-import React from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import React from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
   Animated,
-  StatusBar,
   Pressable,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import TVFocusable from './TVFocusable';
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { getBottomPadding } from "../utils/navigationUtils"
+import TVFocusable from './TVFocusable'
 
 interface NotConnectedScreenProps {
   onNavigateToConnect: () => void;
-  isFloatingNav?: boolean;
 }
 
 /**
@@ -23,8 +23,7 @@ interface NotConnectedScreenProps {
  * Shows when the app is not connected to FreeShow with option to connect
  */
 const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
-  onNavigateToConnect,
-  isFloatingNav = false
+  onNavigateToConnect
 }) => {
   const insets = useSafeAreaInsets();
 
@@ -40,7 +39,7 @@ const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
           styles.notConnectedContainer,
           {
             paddingTop: insets.top,
-            paddingBottom: isFloatingNav ? 120 : 40,
+            paddingBottom: getBottomPadding(),
           },
           {
             opacity: 1,

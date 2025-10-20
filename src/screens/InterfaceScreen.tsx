@@ -1,33 +1,26 @@
-import React, { useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  StatusBar,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as Clipboard from 'expo-clipboard';
-import { Linking } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect } from 'react';
+import { Animated, Linking, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { useConnection, useSettings } from '../contexts';
-import { getNavigationLayoutInfo } from '../utils/navigationUtils';
-import { ShowOption } from '../types';
 import { configService } from '../config/AppConfig';
-import { ErrorLogger } from '../services/ErrorLogger';
+import { useConnection } from '../contexts';
+import { useAppLaunch } from '../hooks/useAppLaunch';
 import { useInterfaceNavigation } from '../hooks/useInterfaceNavigation';
 import { useModalState } from '../hooks/useModalState';
-import { useAppLaunch } from '../hooks/useAppLaunch';
+import { ErrorLogger } from '../services/ErrorLogger';
+import { FreeShowTheme } from '../theme/FreeShowTheme';
+import { ShowOption } from '../types';
+import { getDeviceType } from '../utils/navigationUtils';
 
-import ConfirmationModal from '../components/ConfirmationModal';
-import ErrorModal from '../components/ErrorModal';
 import CompactPopup from '../components/CompactPopup';
-import EnableInterfaceModal from '../components/EnableInterfaceModal';
-import InterfaceHeader from '../components/InterfaceHeader';
-import InterfaceCard from '../components/InterfaceCard';
+import ConfirmationModal from '../components/ConfirmationModal';
 import ConnectingScreen from '../components/ConnectingScreen';
+import EnableInterfaceModal from '../components/EnableInterfaceModal';
+import ErrorModal from '../components/ErrorModal';
+import InterfaceCard from '../components/InterfaceCard';
+import InterfaceHeader from '../components/InterfaceHeader';
 import NotConnectedScreen from '../components/NotConnectedScreen';
 
 interface InterfaceScreenProps {
@@ -41,10 +34,16 @@ interface InterfaceScreenProps {
 const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const insets = useSafeAreaInsets();
   const { state, actions } = useConnection();
-  const { settings } = useSettings();
-  const { isFloatingNav, isTablet, shouldSkipSafeArea, isTV } = getNavigationLayoutInfo(settings?.navigationLayout);
+  const { isTablet, isTV } = getDeviceType();
 
-  const { isConnected, connectionHost, connectionName, currentShowPorts, autoConnectAttempted, connectionStatus } = state;
+  const {
+    isConnected,
+    connectionHost,
+    connectionName,
+    currentShowPorts,
+    autoConnectAttempted,
+    connectionStatus,
+  } = state;
   const { disconnect, updateShowPorts, cancelConnection } = actions;
 
   // Separate animation values for main content to avoid being consumed by placeholder
@@ -53,11 +52,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
 
   // Custom hooks for modal, navigation, and app launch management
   const modalState = useModalState();
-  const navigationHandlers = useInterfaceNavigation(
-    navigation,
-    connectionHost,
-    isConnected
-  );
+  const navigationHandlers = useInterfaceNavigation(navigation, connectionHost, isConnected);
   const appLaunch = useAppLaunch();
 
   // Animate only once per cold start (session). Otherwise render instantly.
@@ -102,7 +97,9 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const showOptions = React.useMemo(() => {
     const defaultPorts = configService.getDefaultShowPorts();
     const currentPorts = currentShowPorts || defaultPorts;
-    const options = configService.createShowOptions(currentPorts as unknown as Record<string, number>);
+    const options = configService.createShowOptions(
+      currentPorts as unknown as Record<string, number>
+    );
     return configService.separateInterfaceOptions(options).allOptions;
   }, [currentShowPorts]);
 
@@ -171,11 +168,11 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const getDefaultPortForInterface = (interfaceId: string): string => {
     const defaultPorts = configService.getDefaultShowPorts();
     const portMap: Record<string, number> = {
-      'api': defaultPorts.api,
-      'remote': defaultPorts.remote,
-      'stage': defaultPorts.stage,
-      'control': defaultPorts.control,
-      'output': defaultPorts.output,
+      api: defaultPorts.api,
+      remote: defaultPorts.remote,
+      stage: defaultPorts.stage,
+      control: defaultPorts.control,
+      output: defaultPorts.output,
     };
     return String(portMap[interfaceId] ?? defaultPorts.api);
   };
@@ -207,11 +204,12 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
       await updateShowPorts(updatedPorts);
       modalState.hideCompactPopup();
     } catch (error) {
-      ErrorLogger.error('Failed to disable interface', 'InterfaceScreen', error instanceof Error ? error : new Error(String(error)));
-      modalState.showErrorModal(
-        'Error',
-        'Failed to disable interface. Please try again.'
+      ErrorLogger.error(
+        'Failed to disable interface',
+        'InterfaceScreen',
+        error instanceof Error ? error : new Error(String(error))
       );
+      modalState.showErrorModal('Error', 'Failed to disable interface. Please try again.');
     }
   };
 
@@ -222,7 +220,10 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
 
     const portNumber = parseInt(port, 10);
     if (isNaN(portNumber) || portNumber < 1 || portNumber > 65535) {
-      modalState.showErrorModal('Invalid Port', 'Please enter a valid port number between 1 and 65535');
+      modalState.showErrorModal(
+        'Invalid Port',
+        'Please enter a valid port number between 1 and 65535'
+      );
       return;
     }
 
@@ -235,143 +236,166 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   };
 
   // Initial auto-reconnect in progress: show clean loading instead of Not Connected
-  if (!isConnected && !autoConnectAttempted && (connectionStatus === 'connecting' || connectionStatus === 'disconnected' || connectionStatus === 'error')) {
-    return (
-      <ConnectingScreen 
-        onCancel={cancelConnection} 
-        connectionStatus={connectionStatus}
-        isFloatingNav={isFloatingNav}
-      />
-    );
+  if (
+    !isConnected &&
+    !autoConnectAttempted &&
+    (connectionStatus === 'connecting' ||
+      connectionStatus === 'disconnected' ||
+      connectionStatus === 'error')
+  ) {
+    return <ConnectingScreen onCancel={cancelConnection} connectionStatus={connectionStatus} />;
   }
 
   // Not connected state after auto-reconnect attempt is done
   if (!isConnected) {
-    return (
-      <NotConnectedScreen 
-        onNavigateToConnect={navigationHandlers.navigateToConnect}
-        isFloatingNav={isFloatingNav}
-      />
-    );
+    return <NotConnectedScreen onNavigateToConnect={navigationHandlers.navigateToConnect} />;
   }
 
   return (
     <LinearGradient
       colors={FreeShowTheme.gradients.appBackground}
-      style={[styles.container, !shouldSkipSafeArea && { paddingTop: insets.top }]}
+      style={[styles.container, isTV && { paddingTop: insets.top }]}
     >
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      
-              <Animated.ScrollView 
-          style={[
-            isFloatingNav ? styles.contentWithFloatingNav : styles.content,
-            {
-              opacity: contentFade,
-              transform: [{ translateY: contentSlide }],
-            }
-          ]}
-        >
-          {/* Interface Header */}
-          <InterfaceHeader
-            connectionName={connectionName}
-            connectionHost={connectionHost}
-            onDisconnect={handleDisconnect}
-          />
 
-          {/* Interface Cards */}
-          <View style={styles.interfacesSection}>
-            <Text style={[styles.sectionTitleLarge, isTablet && styles.sectionTitleLargeTablet]} accessibilityRole="header">Available Interfaces</Text>
-            
-            <Animated.View style={[styles.interfacesContainer, { opacity: contentFade, transform: [{ translateY: contentSlide }] }] }>
-              {/* First Row - 2 cards */}
-              <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }]}>
-                {showOptions.slice(0, 2).map((show, index) => (
-                  <Animated.View
-                    key={show.id}
-                    style={[
-                      styles.interfaceCardWrapper,
-                      styles.halfWidth,
-                      (isTablet || isTV) && styles.halfWidthTablet,
-                      {
-                        transform: [{
+      <Animated.ScrollView
+        style={[
+          isTV ? styles.content : styles.contentWithFloatingNav,
+          {
+            opacity: contentFade,
+            transform: [{ translateY: contentSlide }],
+          },
+        ]}
+      >
+        {/* Interface Header */}
+        <InterfaceHeader
+          connectionName={connectionName}
+          connectionHost={connectionHost}
+          onDisconnect={handleDisconnect}
+        />
+
+        {/* Interface Cards */}
+        <View style={styles.interfacesSection}>
+          <Text
+            style={[styles.sectionTitleLarge, isTablet && styles.sectionTitleLargeTablet]}
+            accessibilityRole="header"
+          >
+            Available Interfaces
+          </Text>
+
+          <Animated.View
+            style={[
+              styles.interfacesContainer,
+              { opacity: contentFade, transform: [{ translateY: contentSlide }] },
+            ]}
+          >
+            {/* First Row - 2 cards */}
+            <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }]}>
+              {showOptions.slice(0, 2).map((show, index) => (
+                <Animated.View
+                  key={show.id}
+                  style={[
+                    styles.interfaceCardWrapper,
+                    styles.halfWidth,
+                    (isTablet || isTV) && styles.halfWidthTablet,
+                    {
+                      transform: [
+                        {
                           translateY: contentSlide.interpolate({
                             inputRange: [0, 50],
-                            outputRange: [0, 50 + (index * 5)],
-                          })
-                        }]
-                      }
-                    ]}
-                  >
-                    <InterfaceCard
-                      show={show}
-                      onPress={() => handleShowSelect(show)}
-                      onLongPress={() => openCompactPopup(show)}
-                      size={isTablet ? 'large' : 'default'}
-                    />
-                  </Animated.View>
-                ))}
+                            outputRange: [0, 50 + index * 5],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <InterfaceCard
+                    show={show}
+                    onPress={() => handleShowSelect(show)}
+                    onLongPress={() => openCompactPopup(show)}
+                    size={isTablet ? 'large' : 'default'}
+                  />
+                </Animated.View>
+              ))}
+            </View>
+
+            {/* Second Row - 2 cards */}
+            <View
+              style={[
+                styles.interfacesRow,
+                (isTablet || isTV) && { marginBottom: 12 },
+                showOptions.length <= 4 && { marginBottom: 0 },
+              ]}
+            >
+              {showOptions.slice(2, 4).map((show, index) => (
+                <Animated.View
+                  key={show.id}
+                  style={[
+                    styles.interfaceCardWrapper,
+                    styles.halfWidth,
+                    (isTablet || isTV) && styles.halfWidthTablet,
+                    {
+                      transform: [
+                        {
+                          translateY: contentSlide.interpolate({
+                            inputRange: [0, 50],
+                            outputRange: [0, 50 + (index + 2) * 5],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <InterfaceCard
+                    show={show}
+                    onPress={() => handleShowSelect(show)}
+                    onLongPress={() => openCompactPopup(show)}
+                    size={isTablet || isTV ? 'large' : 'default'}
+                  />
+                </Animated.View>
+              ))}
+            </View>
+
+            {/* Third Row - 1 full width card */}
+            {showOptions.length > 4 && (
+              <View
+                style={[
+                  styles.interfacesRow,
+                  isTablet && { marginBottom: 0 },
+                  isTV && { marginBottom: 50 },
+                ]}
+              >
+                <Animated.View
+                  key={showOptions[4].id}
+                  style={[
+                    styles.interfaceCardWrapper,
+                    styles.fullWidth,
+                    { marginBottom: 0 },
+                    {
+                      transform: [
+                        {
+                          translateY: contentSlide.interpolate({
+                            inputRange: [0, 50],
+                            outputRange: [0, 50 + 4 * 5],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
+                >
+                  <InterfaceCard
+                    show={showOptions[4]}
+                    onPress={() => handleShowSelect(showOptions[4])}
+                    onLongPress={() => openCompactPopup(showOptions[4])}
+                    size={isTablet ? 'large' : 'default'}
+                  />
+                </Animated.View>
               </View>
-
-              {/* Second Row - 2 cards */}
-              <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }, showOptions.length <= 4 && { marginBottom: 0 }]}>
-                {showOptions.slice(2, 4).map((show, index) => (
-                  <Animated.View
-                    key={show.id}
-                    style={[
-                      styles.interfaceCardWrapper,
-                      styles.halfWidth,
-                      (isTablet || isTV) && styles.halfWidthTablet,
-                      {
-                        transform: [{
-                          translateY: contentSlide.interpolate({
-                            inputRange: [0, 50],
-                            outputRange: [0, 50 + ((index + 2) * 5)],
-                          })
-                        }]
-                      }
-                    ]}
-                  >
-                    <InterfaceCard
-                      show={show}
-                      onPress={() => handleShowSelect(show)}
-                      onLongPress={() => openCompactPopup(show)}
-                      size={(isTablet || isTV) ? 'large' : 'default'}
-                    />
-                  </Animated.View>
-                ))}
-              </View>
-
-              {/* Third Row - 1 full width card */}
-              {showOptions.length > 4 && (
-                <View style={[styles.interfacesRow, isTablet && { marginBottom: 0 }, isTV && { marginBottom: 50 }]}>
-                  <Animated.View
-                    key={showOptions[4].id}
-                    style={[
-                      styles.interfaceCardWrapper,
-                      styles.fullWidth,
-                      { marginBottom: 0 },
-                      {
-                        transform: [{
-                          translateY: contentSlide.interpolate({
-                            inputRange: [0, 50],
-                            outputRange: [0, 50 + (4 * 5)],
-                          })
-                        }]
-                      }
-                    ]}
-                  >
-                    <InterfaceCard
-                      show={showOptions[4]}
-                      onPress={() => handleShowSelect(showOptions[4])}
-                      onLongPress={() => openCompactPopup(showOptions[4])}
-                      size={isTablet ? 'large' : 'default'}
-                    />
-                  </Animated.View>
-                </View>
-              )}
-            </Animated.View>
-          </View>
-        </Animated.ScrollView>
+            )}
+          </Animated.View>
+        </View>
+      </Animated.ScrollView>
 
       {/* Modals */}
       <CompactPopup
@@ -417,9 +441,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   );
 };
 
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -436,16 +457,14 @@ const styles = StyleSheet.create({
     paddingTop: FreeShowTheme.spacing.md,
     paddingBottom: 120,
   },
-  
 
-  
   // Interfaces Section
   interfacesSection: {
     flex: 1,
     paddingHorizontal: 0,
     justifyContent: 'space-between',
   },
-  // (removed tablet offset) 
+  // (removed tablet offset)
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
@@ -467,14 +486,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  
+
   interfacesRow: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 8,
   },
-  
+
   // Interface Cards
   interfaceCardWrapper: {
     marginBottom: 8,
@@ -500,7 +519,6 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
 
-  
   // Loading State
   loadingContainer: {
     flex: 1,
@@ -512,7 +530,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-
 });
 
 export default InterfaceScreen;
