@@ -20,6 +20,7 @@ import { configService } from '../config/AppConfig'
 import { useSettings } from '../contexts'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
 import { ShowOption } from '../types'
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface SettingsScreenProps {
   navigation: any;
@@ -125,7 +126,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const selectedShow = getSelectedShow();
 
 
-  const isTV = Platform.isTV;
+  const isTV = getDeviceType().isTV;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   return (
@@ -174,7 +175,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
               {/* Settings Card */}
               {
-                !Platform.isTV && (
+                !isTV && (
                   <View style={styles.settingsCard}>
                     {/* Keep Awake Toggle */}
                     <TouchableOpacity

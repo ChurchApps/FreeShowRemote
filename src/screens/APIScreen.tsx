@@ -3,14 +3,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
   Modal,
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { io, Socket } from 'socket.io-client'
@@ -21,6 +20,7 @@ import { useConnection } from '../contexts'
 import { ErrorLogger } from '../services/ErrorLogger'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
 import { ShowOption } from '../types'
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface APIScreenProps {
   route: {
@@ -36,7 +36,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
   const { state } = useConnection();
   const { connectionHost, isConnected, currentShowPorts } = state;
   const { title = 'FreeShow Remote' } = route.params || {};
-  const isTV = Platform.isTV;
+  const isTV = getDeviceType().isTV;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   // State management

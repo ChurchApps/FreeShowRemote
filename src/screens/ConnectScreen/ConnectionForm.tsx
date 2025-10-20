@@ -1,14 +1,15 @@
-import React, { useEffect, useCallback, useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Animated, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { FreeShowTheme } from '../../theme/FreeShowTheme';
-import { useConnection } from '../../contexts';
-import { ValidationService } from '../../services/InputValidationService';
-import { ErrorLogger } from '../../services/ErrorLogger';
-import { configService } from '../../config/AppConfig';
-import FocusableTextInput from '../../components/FocusableTextInput';
-import TVFocusable from '../../components/TVFocusable';
+import { Ionicons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import React, { useCallback, useEffect, useRef } from 'react'
+import { Animated, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import FocusableTextInput from '../../components/FocusableTextInput'
+import TVFocusable from '../../components/TVFocusable'
+import { configService } from '../../config/AppConfig'
+import { useConnection } from '../../contexts'
+import { ErrorLogger } from '../../services/ErrorLogger'
+import { ValidationService } from '../../services/InputValidationService'
+import { FreeShowTheme } from '../../theme/FreeShowTheme'
+import { getDeviceType } from "../../utils/navigationUtils"
 
 interface ConnectionFormProps {
   host: string;
@@ -62,6 +63,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
   const connection = useConnection();
   const { updateShowPorts } = connection.actions;
   const defaultPorts = configService.getDefaultShowPorts();
+  const isTV = getDeviceType().isTV
 
   // Convert port strings to numbers for show ports
   const getShowPorts = useCallback(() => ({
@@ -224,7 +226,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             accessibilityHint="Enter the IP address or hostname of the FreeShow server"
             keyboardType="default"
           />
-          {!isConnected && !Platform.isTV && (
+          {!isConnected && !isTV && (
             <TouchableOpacity
               style={styles.inputAction}
               onPress={onShowQRScanner}

@@ -1,28 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { Ionicons } from '@expo/vector-icons'
+import * as Clipboard from 'expo-clipboard'
+import * as ScreenOrientation from 'expo-screen-orientation'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   ActivityIndicator,
-  Linking,
-  TouchableWithoutFeedback,
   Dimensions,
-  Platform,
-} from 'react-native';
-import * as Clipboard from 'expo-clipboard';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { WebView } from 'react-native-webview';
-import { Ionicons } from '@expo/vector-icons';
-import * as ScreenOrientation from 'expo-screen-orientation';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import ShowSwitcher from '../components/ShowSwitcher';
-import { useConnection } from '../contexts';
-import { configService } from '../config/AppConfig';
-import { ErrorLogger } from '../services/ErrorLogger';
-import { ShowOption } from '../types';
-import ErrorModal from '../components/ErrorModal';
-import TVFocusable from '../components/TVFocusable';
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { WebView } from 'react-native-webview'
+import ErrorModal from '../components/ErrorModal'
+import ShowSwitcher from '../components/ShowSwitcher'
+import TVFocusable from '../components/TVFocusable'
+import { configService } from '../config/AppConfig'
+import { useConnection } from '../contexts'
+import { ErrorLogger } from '../services/ErrorLogger'
+import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { ShowOption } from '../types'
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface WebViewScreenProps {
   navigation: any;
@@ -37,6 +37,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
   const [error, setError] = useState<string | null>(null);
   const [isFullScreen, setIsFullScreen] = useState(initialFullscreen);
   const [currentOrientation, setCurrentOrientation] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
+  const isTV = getDeviceType().isTV;
   const webViewRef = useRef<WebView>(null);
   const [errorModal, setErrorModal] = useState<{ visible: boolean, title: string, message: string }>({
     visible: false,
@@ -431,7 +432,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
           </TVFocusable>
 
           {
-            !Platform.isTV && (
+            !isTV && (
               <TouchableOpacity
                 style={styles.openBrowserButton}
                 onPress={handleOpenInBrowser}
@@ -452,7 +453,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
           )}
 
           {
-            !Platform.isTV && (
+            !isTV && (
               <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
                 <Ionicons
                   name={isFullScreen ? "contract" : "expand"}

@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
 import * as Updates from 'expo-updates'
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Platform, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import APIScreen from './src/screens/APIScreen'
@@ -24,6 +24,7 @@ import ConnectionHistoryScreen from './src/screens/ConnectionHistoryScreen'
 import SettingsScreen from './src/screens/SettingsScreen'
 import { ErrorLogger } from './src/services/ErrorLogger'
 import { FreeShowTheme } from './src/theme/FreeShowTheme'
+import { getDeviceType } from "./src/utils/navigationUtils"
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -431,7 +432,9 @@ function FloatingNavLayout() {
 
 // Main layout component that chooses between sidebar, bottom tabs, or floating nav
 function MainLayout() {
-  if (Platform.isTV) {
+  const isTV = getDeviceType().isTV;
+
+  if (isTV) {
     return <SidebarLayout />
   } else {
     return <FloatingNavLayout />

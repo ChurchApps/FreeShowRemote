@@ -15,7 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { FreeShowTheme } from '../theme/FreeShowTheme'
-import { getBottomPadding } from '../utils/navigationUtils'
+import { getBottomPadding, getDeviceType } from '../utils/navigationUtils'
 import TVFocusable from './TVFocusable'
 
 interface ConnectedScreenProps {
@@ -41,7 +41,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   onShowQRCode,
   onEditNickname
 }) => {
-  const isTV = Platform.isTV;
+  const isTV = getDeviceType().isTV;
   const insets = useSafeAreaInsets();
 
   const getActivePortsCount = () => {

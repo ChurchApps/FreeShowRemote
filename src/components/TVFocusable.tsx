@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Animated, Platform, Pressable, ViewStyle } from 'react-native';
+import { getDeviceType } from "../utils/navigationUtils"
 
 interface TVFocusableProps {
   children: React.ReactNode;
@@ -46,7 +47,8 @@ const TVFocusable: React.FC<TVFocusableProps> = ({
     ]).start();
   };
 
-  if (Platform.isTV === false) {
+  const isTV = getDeviceType().isTV;
+  if (isTV === false) {
     return children as React.ReactElement;
   } 
 
@@ -62,14 +64,14 @@ const TVFocusable: React.FC<TVFocusableProps> = ({
         style={style}
         onPress={handlePress}
         onLongPress={onLongPress}
-        focusable={Platform.isTV}
-        onFocus={Platform.isTV ? handleFocus : undefined}
-        onBlur={Platform.isTV ? handleBlur : undefined}
+        focusable={isTV}
+        onFocus={isTV ? handleFocus : undefined}
+        onBlur={isTV ? handleBlur : undefined}
         disabled={disabled}
       >
         <>
           {children}
-          {Platform.isTV && (
+          {isTV && (
             <Animated.View
               pointerEvents="none"
               style={{

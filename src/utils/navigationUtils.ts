@@ -1,12 +1,12 @@
 import { Dimensions, Platform } from 'react-native';
 
-export interface DevideType {
+export interface DeviceType {
   isTV: boolean;
   isTablet: boolean;
   isPhone: boolean;
 }
 
-export const getDeviceType = (): DevideType => {
+export const getDeviceType = (): DeviceType => {
   const screenWidth = Dimensions.get('window').width;
   const isTV = Platform.isTV;
   const isTablet = screenWidth >= 768 && !isTV;
@@ -20,6 +20,6 @@ export const getDeviceType = (): DevideType => {
 };
 
 export const getBottomPadding = (): number => {
-  const isTV = Platform.isTV;
+  const isTV = getDeviceType().isTV;
   return isTV ? 40 : 120;
 };

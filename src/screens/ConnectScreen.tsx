@@ -25,6 +25,7 @@ import { ErrorLogger } from '../services/ErrorLogger'
 import { ValidationService } from '../services/InputValidationService'
 import { interfacePingService } from '../services/InterfacePingService'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
+import { getDeviceType } from "../utils/navigationUtils"
 import ConnectionForm from './ConnectScreen/ConnectionForm'
 import EditNicknameModal from './ConnectScreen/EditNicknameModal'
 import Header from './ConnectScreen/Header'
@@ -736,7 +737,7 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     </>
   ) : null;
 
-  const isTV = Platform.isTV;
+  const isTV = getDeviceType().isTV;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   // Render disconnected screen when not connected
