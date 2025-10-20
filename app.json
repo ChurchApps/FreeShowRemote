@@ -76,10 +76,15 @@
       ],
       "package": "app.freeshow.remote",
       "allowBackup": false,
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#0a0a0f"
+      }
     },
     "plugins": [
       "expo-system-ui",
+      "./plugins/withTVLauncher.js",
       [
         "expo-camera",
         {
@@ -96,8 +101,9 @@
       ],
       [
         "expo-build-properties",
-        { 
+        {
           "android": {
+            "minSdkVersion": 24,
             "usesCleartextTraffic": true,
             "networkSecurityConfig": "./android/network_security_config.xml",
             "manifestQueries": {
@@ -115,7 +121,29 @@
                   }
                 }
               ]
-            }
+            },
+            "usesFeatures": [
+              {
+                "name": "android.hardware.touchscreen",
+                "required": false
+              },
+              {
+                "name": "android.software.leanback",
+                "required": false
+              },
+              {
+                "name": "android.hardware.camera",
+                "required": false
+              },
+              {
+                "name": "android.hardware.camera.autofocus",
+                "required": false
+              },
+              {
+                "name": "android.hardware.microphone",
+                "required": false
+              }
+            ]
           },
           "ios": {
             "infoPlist": {
