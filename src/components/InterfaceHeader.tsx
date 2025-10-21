@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     gap: 14,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 16,
   },
   statusCardGradientTablet: {
     padding: 20,
