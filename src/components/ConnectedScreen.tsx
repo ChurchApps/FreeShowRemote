@@ -346,6 +346,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: 'rgba(240, 0, 140, 0.15)',
+    borderRadius: 16,
     gap: 16,
   },
   titleSection: {

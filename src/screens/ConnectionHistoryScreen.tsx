@@ -465,6 +465,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(240, 0, 140, 0.15)',
+    borderRadius: 16,
     gap: 12,
   },
   backButton: {
