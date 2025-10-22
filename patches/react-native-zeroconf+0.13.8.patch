@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-zeroconf/android/build.gradle b/node_modules/react-native-zeroconf/android/build.gradle
+index c9802d6..72ff403 100644
+--- a/node_modules/react-native-zeroconf/android/build.gradle
++++ b/node_modules/react-native-zeroconf/android/build.gradle
+@@ -25,7 +25,7 @@ android {
+         versionCode 1
+         versionName "1.0"
+         ndk {
+-            abiFilters "armeabi-v7a", "x86"
++            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+         }
+     }
+ 
+@@ -38,12 +38,16 @@ android {
+ repositories {
+   google()
+   mavenCentral()
++  // JitPack for 16KB-compatible RxDNSSD fork
++  maven { url 'https://jitpack.io' }
+ }
+ 
+ dependencies {
+     implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+     // https://mvnrepository.com/artifact/com.github.andriydruk/rx2dnssd
+-    api group: 'com.github.andriydruk', name: 'rx2dnssd', version: '0.9.16'
++    // Updated to use fork with 16KB page size support for Android 15+
++    // See: https://github.com/balthazar/react-native-zeroconf/issues/192
++    api 'com.github.jwh-hutchison:RxDNSSD:0.9.20'
+     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+     api group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+ }
