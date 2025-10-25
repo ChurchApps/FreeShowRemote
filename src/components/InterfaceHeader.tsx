@@ -120,6 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: 'rgba(240, 0, 140, 0.15)',
+    borderRadius: 16,
     gap: 16,
   },
   titleSection: {
@@ -186,6 +187,7 @@ const styles = StyleSheet.create({
     gap: 14,
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 16,
   },
   statusCardGradientTablet: {
     padding: 20,
