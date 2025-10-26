@@ -95,4 +95,4 @@ Please consider supporting our work. It takes a lot of time and effort to develo
 
 ## Credits
 
-Special thanks to [GladsomeSam](https://github.com/gladsonsam) for doing the development work to create the initial version of this project.
+Special thanks to [Gladson Sam](https://github.com/gladsonsam) for doing the development work to create the initial version of this project.
