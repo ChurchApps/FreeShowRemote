@@ -38,7 +38,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
   const [connectionToRemove, setConnectionToRemove] = useState<string | null>(null);
-  const [isPingingHost, setIsPingingHost] = useState(false);
+  const [isPingingHost, setIsPingingHost] = useState<string | null>(null);
   const [errorModal, setErrorModal] = useState<{ visible: boolean, title: string, message: string }>({
     visible: false,
     title: '',
@@ -210,7 +210,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                     }
 
                     // Ping host to check if it's reachable
-                    setIsPingingHost(true);
+                    setIsPingingHost(item.id);
                     try {
                       const pingResult = await interfacePingService.pingHost(sanitizedHost);
 
@@ -223,7 +223,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                         return;
                       }
                     } finally {
-                      setIsPingingHost(false);
+                      setIsPingingHost(null);
                     }
 
                     ErrorLogger.info('Attempting connection from history with validated inputs', 'ConnectionHistoryScreen',
@@ -246,7 +246,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                       }
                     }
                   } catch (error) {
-                    setIsPingingHost(false);
+                    setIsPingingHost(null);
                     ErrorLogger.error('History connection failed', 'ConnectionHistoryScreen', error instanceof Error ? error : new Error(String(error)));
                     setErrorModal({
                       visible: true,
@@ -255,7 +255,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                     });
                   }
                 }}
-                disabled={isPingingHost}
+                disabled={isPingingHost === item.id}
               >
                 <View style={styles.historyItemHeader}>
                   <View style={styles.historyItemIcon}>
@@ -271,7 +271,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                     </Text>
                   </View>
                   <View style={styles.historyItemActions}>
-                    {isPingingHost ? (
+                    {isPingingHost === item.id ? (
                       <ActivityIndicator size="small" color={FreeShowTheme.colors.secondary} />
                     ) : (
                       <>
@@ -279,16 +279,15 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                           onPress={() => {
                             handleEditNickname(item);
                           }}
-                          style={styles.editButton}
                         >
                           <TouchableOpacity
-                            // style={styles.editButton}
+                            style={styles.editButton}
                             onPress={(e) => {
                               e.stopPropagation();
                               handleEditNickname(item);
                             }}
                           >
-                            <Ionicons name="create-outline" size={18} color={FreeShowTheme.colors.textSecondary} />
+                            <Ionicons name="create-outline" size={20} color={FreeShowTheme.colors.textSecondary} />
                           </TouchableOpacity>
                         </TVFocusable>
 
@@ -516,14 +515,22 @@ const styles = StyleSheet.create({
     gap: FreeShowTheme.spacing.sm,
   },
   editButton: {
-    padding: FreeShowTheme.spacing.sm,
+    padding: FreeShowTheme.spacing.md,
     borderRadius: FreeShowTheme.borderRadius.sm,
     backgroundColor: FreeShowTheme.colors.primary,
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteButton: {
-    padding: FreeShowTheme.spacing.sm,
+    padding: FreeShowTheme.spacing.md,
     borderRadius: FreeShowTheme.borderRadius.sm,
     backgroundColor: FreeShowTheme.colors.primary,
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   portsContainer: {
     paddingHorizontal: FreeShowTheme.spacing.lg,

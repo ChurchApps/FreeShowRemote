@@ -56,7 +56,7 @@ const EditNicknameModal: React.FC<EditNicknameModalProps> = ({
     <Modal
       visible={visible}
       transparent={true}
-      animationType="fade"
+      animationType="none"
       onRequestClose={handleCancel}
     >
       <View style={styles.modalOverlay}>
