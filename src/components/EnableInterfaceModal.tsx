@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
 import { ShowOption } from '../types';
@@ -95,7 +94,7 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
 
           {/* Action buttons */}
           <View style={styles.enableActions}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.enableActionButton, styles.enableCancelButton]}
               onPress={onCancel}
               accessibilityRole="button"
@@ -104,18 +103,13 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
               <Text style={[styles.enableActionButtonText, styles.enableCancelButtonText]}>Cancel</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={styles.enableActionButton}
+            <TouchableOpacity
+              style={[styles.enableActionButton, styles.enableSaveButton]}
               onPress={handleSave}
               accessibilityRole="button"
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              <LinearGradient
-                colors={['#8B5CF6', '#A855F7']}
-                style={styles.enableSaveGradient}
-              >
-                <Text style={styles.enableActionButtonText}>Save</Text>
-              </LinearGradient>
+              <Text style={styles.enableActionButtonText}>Save</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -237,6 +231,11 @@ const styles = StyleSheet.create({
   },
   enableSaveButton: {
     backgroundColor: FreeShowTheme.colors.secondary,
+    paddingVertical: FreeShowTheme.spacing.lg,
+    paddingHorizontal: FreeShowTheme.spacing.lg,
+    borderRadius: FreeShowTheme.borderRadius.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   enableCancelButton: {
     backgroundColor: FreeShowTheme.colors.text + '08',

@@ -249,8 +249,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                 </BlurView>
               </View>
 
-              {/* Removed separate connection URL box - URL lives in header */}
-
               {/* Actions */}
               <View style={styles.compactActions}>
                 {isDisabled ? (
@@ -263,22 +261,19 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                       }
                     }}
                     accessibilityRole="button"
-                    activeOpacity={0.8}
+                    activeOpacity={0.7}
                   >
-                    <LinearGradient
-                      colors={['#8B5CF6', '#A855F7']}
-                      style={styles.compactEnableButton}
-                    >
+                    <View style={styles.compactSecondaryButton}>
                       <View style={styles.compactButtonContent}>
                         <View style={styles.compactButtonIconContainer}>
-                          <Ionicons name="add-circle" size={24} color="white" />
+                          <Ionicons name="add-circle-outline" size={24} color="rgba(255,255,255,0.8)" />
                         </View>
                         <View style={styles.compactButtonTextContainer}>
-                          <Text style={styles.compactActionButtonText}>Enable Interface</Text>
-                          <Text style={styles.compactActionButtonSubtext}>Start this interface</Text>
+                          <Text style={styles.compactSecondaryButtonText}>Enable Interface</Text>
+                          <Text style={styles.compactSecondaryButtonSubtext}>Start this interface</Text>
                         </View>
                       </View>
-                    </LinearGradient>
+                    </View>
                   </TouchableOpacity>
                 ) : (
                   onDisableInterface && (
@@ -441,14 +436,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 4,
   },
-  simpleStatusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#2ECC40',
-    marginTop: FreeShowTheme.spacing.sm,
-    alignSelf: 'center',
-  },
   disabledStatusDot: {
     width: 8,
     height: 8,
@@ -456,80 +443,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#F44336',
     marginTop: FreeShowTheme.spacing.sm,
     alignSelf: 'center',
-  },
-  compactIpContainer: {
-    marginBottom: 24,
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  compactIpBlur: {
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.1)',
-    overflow: 'hidden',
-  },
-  compactIpRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 20,
-    backgroundColor: 'rgba(255,255,255,0.05)',
-  },
-  compactStatusIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: FreeShowTheme.spacing.lg,
-    paddingVertical: FreeShowTheme.spacing.xs,
-    paddingHorizontal: FreeShowTheme.spacing.sm,
-    backgroundColor: '#2ECC4020',
-    borderRadius: FreeShowTheme.borderRadius.md,
-    borderWidth: 1,
-    borderColor: '#2ECC4040',
-  },
-  compactStatusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#2ECC40',
-    marginRight: FreeShowTheme.spacing.xs,
-  },
-  compactStatusText: {
-    fontSize: FreeShowTheme.fontSize.xs,
-    color: '#2ECC40',
-    fontFamily: FreeShowTheme.fonts.system,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  compactIpTextContainer: {
-    flex: 1,
-  },
-  compactIpLabel: {
-    fontSize: FreeShowTheme.fontSize.xs,
-    color: FreeShowTheme.colors.text + '80',
-    fontFamily: FreeShowTheme.fonts.system,
-    fontWeight: '600',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 2,
-  },
-  compactIpText: {
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.text + 'DD',
-    fontFamily: FreeShowTheme.fonts.system,
-    fontWeight: '600',
-    lineHeight: 22,
-    flexShrink: 1,
-  },
-  compactClipboardButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    backgroundColor: 'rgba(168, 85, 247, 0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(168, 85, 247, 0.3)',
   },
   compactIconButton: {
     width: 36,
@@ -540,12 +453,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(168,85,247,0.15)',
     borderWidth: 1,
     borderColor: 'rgba(168,85,247,0.3)',
-  },
-  compactClipboardText: {
-    fontSize: 14,
-    color: '#A855F7',
-    fontWeight: '600',
-    marginLeft: 6,
   },
   compactActions: {
     flexDirection: 'column',

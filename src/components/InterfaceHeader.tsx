@@ -9,6 +9,7 @@ interface InterfaceHeaderProps {
   connectionName: string | null;
   connectionHost: string | null;
   onDisconnect: () => void;
+  onEditConnectionName?: () => void;
 }
 
 /**
@@ -19,6 +20,7 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
   connectionName,
   connectionHost,
   onDisconnect,
+  onEditConnectionName,
 }) => {
   const screenWidth = Dimensions.get('window').width;
   const isTablet = screenWidth >= 768;
@@ -73,9 +75,18 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
                 CONNECTED
               </Text>
             </View>
-            <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
-              {connectionName || connectionHost || 'Connected'}
-            </Text>
+            <TVFocusable onPress={onEditConnectionName}>
+              <Pressable
+                style={({ pressed }) => [
+                  pressed && onEditConnectionName && styles.connectionNamePressed
+                ]}
+                onPress={onEditConnectionName}
+              >
+                <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
+                  {connectionName || connectionHost || 'Connected'}
+                </Text>
+              </Pressable>
+            </TVFocusable>
           </View>
 
           {/* Disconnect Button */}
@@ -87,12 +98,9 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
             ]}
             onPress={onDisconnect}
           >
-            <LinearGradient
-              colors={['rgba(239, 83, 80, 0.2)', 'rgba(239, 83, 80, 0.1)']}
-              style={styles.actionButtonGradient}
-            >
+            <View style={styles.actionButtonGradient}>
               <Ionicons name="power" size={isTablet ? 22 : 20} color="#EF5350" />
-            </LinearGradient>
+            </View>
           </Pressable>
           </TVFocusable>
         </LinearGradient>
@@ -159,20 +167,23 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   actionButton: {
+    width: 44,
+    height: 44,
     borderRadius: 12,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(239, 83, 80, 0.25)',
   },
   actionButtonPressed: {
     opacity: 0.7,
   },
   actionButtonGradient: {
-    width: 44,
-    height: 44,
+    flex: 1,
+    width: '100%',
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(239, 83, 80, 0.25)',
+    backgroundColor: 'rgba(239, 83, 80, 0.15)',
   },
 
   // Status Card
@@ -222,6 +233,9 @@ const styles = StyleSheet.create({
   },
   statusLabelTablet: {
     fontSize: 13,
+  },
+  connectionNamePressed: {
+    opacity: 0.7,
   },
   connectionName: {
     fontSize: 17,

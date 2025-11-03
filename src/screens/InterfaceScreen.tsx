@@ -1,14 +1,15 @@
 import * as Clipboard from 'expo-clipboard';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Animated, Linking, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { configService } from '../config/AppConfig';
-import { useConnection } from '../contexts';
+import { useConnection, useSettings } from '../contexts';
 import { useAppLaunch } from '../hooks/useAppLaunch';
 import { useInterfaceNavigation } from '../hooks/useInterfaceNavigation';
 import { useModalState } from '../hooks/useModalState';
+import { settingsRepository } from '../repositories';
 import { ErrorLogger } from '../services/ErrorLogger';
 import { FreeShowTheme } from '../theme/FreeShowTheme';
 import { ShowOption } from '../types';
@@ -17,6 +18,8 @@ import { getDeviceType } from '../utils/navigationUtils';
 import CompactPopup from '../components/CompactPopup';
 import ConfirmationModal from '../components/ConfirmationModal';
 import ConnectingScreen from '../components/ConnectingScreen';
+import DisabledInterfaceModal from '../components/DisabledInterfaceModal';
+import EditNicknameModal from '../components/EditNicknameModal';
 import EnableInterfaceModal from '../components/EnableInterfaceModal';
 import ErrorModal from '../components/ErrorModal';
 import InterfaceCard from '../components/InterfaceCard';
@@ -45,6 +48,11 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     connectionStatus,
   } = state;
   const { disconnect, updateShowPorts, cancelConnection } = actions;
+
+  // Edit connection name state
+  const { history, actions: settingsActions } = useSettings();
+  const [showEditNickname, setShowEditNickname] = useState(false);
+  const [editingConnection, setEditingConnection] = useState<any>(null);
 
   // Separate animation values for main content to avoid being consumed by placeholder
   const contentFade = React.useRef(new Animated.Value(0)).current;
@@ -105,6 +113,11 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
 
   // Use navigation hook for interface selection
   const handleShowSelect = (show: ShowOption) => {
+    // Check if interface is disabled
+    if (!show.port || show.port === 0) {
+      modalState.showDisabledInterfaceModal(show);
+      return;
+    }
     navigationHandlers.handleShowSelect(show);
   };
 
@@ -164,7 +177,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Helper function to get default port for interface
+  // Helper function to get default port for an interface
   const getDefaultPortForInterface = (interfaceId: string): string => {
     const defaultPorts = configService.getDefaultShowPorts();
     const portMap: Record<string, number> = {
@@ -177,10 +190,84 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     return String(portMap[interfaceId] ?? defaultPorts.api);
   };
 
-  // Handle enabling an interface
-  const handleEnableInterface = (show: ShowOption) => {
+  // Handle clicking on a disabled interface
+  const handleDisabledInterfaceClick = (show: ShowOption) => {
+    modalState.showDisabledInterfaceModal(show);
+  };
+
+  // Handle enabling a disabled interface from CompactPopup (go directly to port input)
+  const handleEnableInterfaceFromPopup = (show: ShowOption) => {
     const defaultPort = getDefaultPortForInterface(show.id);
     modalState.showEnableInterfaceModal(show, defaultPort);
+  };
+
+  // Handle editing connection name
+  const handleEditConnectionName = useCallback(() => {
+    if (!connectionHost) return;
+    
+    // Find the connection in history to get its ID
+    const historyItem = history.find(h => h.host === connectionHost);
+    if (!historyItem) return;
+
+    setEditingConnection(historyItem);
+    setShowEditNickname(true);
+  }, [connectionHost, history]);
+
+  const handleNicknameSaved = useCallback(async (nickname: string) => {
+    // Refresh history and update connection name
+    await settingsActions.refreshHistory();
+    actions.updateConnectionName(nickname);
+    setEditingConnection(null);
+  }, [settingsActions, actions]);
+
+  const handleEditError = useCallback((error: string) => {
+    modalState.showErrorModal('Error', error);
+  }, [modalState]);
+
+  const handleCloseEditModal = useCallback(() => {
+    setShowEditNickname(false);
+    setEditingConnection(null);
+  }, []);
+
+  // Handle enabling a disabled interface from DisabledInterfaceModal (show port input modal)
+  const handleEnableDisabledInterface = () => {
+    const show = modalState.disabledInterfaceModal.show;
+    if (!show) return;
+
+    const defaultPort = getDefaultPortForInterface(show.id);
+    
+    // Hide disabled modal and show port input modal
+    modalState.hideDisabledInterfaceModal();
+    modalState.showEnableInterfaceModal(show, defaultPort);
+  };
+
+  // Handle saving the port from the enable interface modal
+  const handleEnableInterfaceSave = async (port: string) => {
+    const show = modalState.enableInterfaceModal.show;
+    if (!show || !port || !currentShowPorts) return;
+
+    const portNumber = parseInt(port, 10);
+    if (isNaN(portNumber) || portNumber < 1 || portNumber > 65535) {
+      modalState.showErrorModal(
+        'Invalid Port',
+        'Please enter a valid port number between 1 and 65535'
+      );
+      return;
+    }
+
+    try {
+      const updatedPorts = { ...currentShowPorts };
+      updatedPorts[show.id as keyof typeof updatedPorts] = portNumber;
+      await updateShowPorts(updatedPorts);
+      modalState.hideEnableInterfaceModal();
+    } catch (error) {
+      ErrorLogger.error(
+        'Failed to enable interface',
+        'InterfaceScreen',
+        error instanceof Error ? error : new Error(String(error))
+      );
+      modalState.showErrorModal('Error', 'Failed to enable interface. Please try again.');
+    }
   };
 
   // Handle disabling an interface
@@ -211,28 +298,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
       );
       modalState.showErrorModal('Error', 'Failed to disable interface. Please try again.');
     }
-  };
-
-  // Handle interface modal actions
-  const handleEnableInterfaceSave = (port: string) => {
-    const show = modalState.enableInterfaceModal.show;
-    if (!show || !port) return;
-
-    const portNumber = parseInt(port, 10);
-    if (isNaN(portNumber) || portNumber < 1 || portNumber > 65535) {
-      modalState.showErrorModal(
-        'Invalid Port',
-        'Please enter a valid port number between 1 and 65535'
-      );
-      return;
-    }
-
-    if (!currentShowPorts) return;
-
-    const updatedPorts = { ...currentShowPorts };
-    updatedPorts[show.id as keyof typeof updatedPorts] = portNumber;
-    updateShowPorts(updatedPorts);
-    modalState.hideEnableInterfaceModal();
   };
 
   // Initial auto-reconnect in progress: show clean loading instead of Not Connected
@@ -272,6 +337,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
           connectionName={connectionName}
           connectionHost={connectionHost}
           onDisconnect={handleDisconnect}
+          onEditConnectionName={handleEditConnectionName}
         />
 
         {/* Interface Cards */}
@@ -406,7 +472,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         onCopyToClipboard={copyToClipboard}
         onOpenInBrowser={openInBrowser}
         onOpenShow={handleShowSelect}
-        onEnableInterface={handleEnableInterface}
+        onEnableInterface={handleEnableInterfaceFromPopup}
         onDisableInterface={handleDisableInterface}
       />
 
@@ -422,7 +488,15 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         onCancel={modalState.hideDisconnectConfirmModal}
       />
 
-      {/* Enable Interface Modal */}
+      {/* Disabled Interface Modal */}
+      <DisabledInterfaceModal
+        visible={modalState.disabledInterfaceModal.visible}
+        show={modalState.disabledInterfaceModal.show}
+        onEnable={handleEnableDisabledInterface}
+        onCancel={modalState.hideDisabledInterfaceModal}
+      />
+
+      {/* Enable Interface Modal (Port Input) */}
       <EnableInterfaceModal
         visible={modalState.enableInterfaceModal.visible}
         show={modalState.enableInterfaceModal.show}
@@ -436,6 +510,15 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         title={navigationHandlers.errorModal.title}
         message={navigationHandlers.errorModal.message}
         onClose={navigationHandlers.hideError}
+      />
+
+      {/* Edit Nickname Modal */}
+      <EditNicknameModal
+        visible={showEditNickname}
+        connection={editingConnection}
+        onClose={handleCloseEditModal}
+        onSaved={handleNicknameSaved}
+        onError={handleEditError}
       />
     </LinearGradient>
   );

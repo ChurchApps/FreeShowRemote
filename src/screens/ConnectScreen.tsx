@@ -8,6 +8,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import ConfirmationModal from '../components/ConfirmationModal'
 import ConnectedScreen from '../components/ConnectedScreen'
+import EditNicknameModal from '../components/EditNicknameModal'
 import ErrorModal from '../components/ErrorModal'
 import QRScannerModal from '../components/QRScannerModal'
 import ShareQRModal from '../components/ShareQRModal'
@@ -27,7 +28,6 @@ import { interfacePingService } from '../services/InterfacePingService'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
 import { getDeviceType } from "../utils/navigationUtils"
 import ConnectionForm from './ConnectScreen/ConnectionForm'
-import EditNicknameModal from './ConnectScreen/EditNicknameModal'
 import Header from './ConnectScreen/Header'
 import HelpSection from './ConnectScreen/HelpSection'
 import QuickConnectSection from './ConnectScreen/QuickConnectSection'
@@ -51,7 +51,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   const [showShareQR, setShowShareQR] = useState(false);
   const [showEditNickname, setShowEditNickname] = useState(false);
   const [editingConnection, setEditingConnection] = useState<ConnectionHistory | null>(null);
-  const [editNicknameText, setEditNicknameText] = useState('');
   const [showQrModalVisible, setShowQrModalVisible] = useState(false);
   const [connectionPulse] = useState(new Animated.Value(1));
   const [animatedScanProgress] = useState(new Animated.Value(0));
@@ -260,7 +259,7 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       setHost(sanitizedHost);
       
       // Validate and update interface ports from stored history
-      let validatedShowPorts;
+      let desiredPorts;
       
       if (historyItem.showPorts) {
         const showPortsValidation = ValidationService.validateShowPorts(historyItem.showPorts);
@@ -268,69 +267,66 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           ErrorLogger.warn('History item has invalid show ports, using defaults', 'ConnectScreen', 
             new Error(`Invalid ports: ${JSON.stringify(historyItem.showPorts)}`)
           );
-          validatedShowPorts = configService.getDefaultShowPorts();
+          desiredPorts = configService.getDefaultShowPorts();
         } else {
-          validatedShowPorts = showPortsValidation.sanitizedValue;
+          desiredPorts = showPortsValidation.sanitizedValue;
         }
         
-        // Update UI with validated ports
-        setRemotePort(validatedShowPorts.remote ? String(validatedShowPorts.remote) : '');
-        setStagePort(validatedShowPorts.stage ? String(validatedShowPorts.stage) : '');
-        setControlPort(validatedShowPorts.control ? String(validatedShowPorts.control) : '');
-        setOutputPort(validatedShowPorts.output ? String(validatedShowPorts.output) : '');
-        setApiPort(validatedShowPorts.api ? String(validatedShowPorts.api) : '');
+        // Update UI with desired ports
+        setRemotePort(desiredPorts.remote ? String(desiredPorts.remote) : '');
+        setStagePort(desiredPorts.stage ? String(desiredPorts.stage) : '');
+        setControlPort(desiredPorts.control ? String(desiredPorts.control) : '');
+        setOutputPort(desiredPorts.output ? String(desiredPorts.output) : '');
+        setApiPort(desiredPorts.api ? String(desiredPorts.api) : '');
       } else {
         // Use default ports if none stored
-        validatedShowPorts = configService.getDefaultShowPorts();
-        setRemotePort(String(validatedShowPorts.remote));
-        setStagePort(String(validatedShowPorts.stage));
-        setControlPort(String(validatedShowPorts.control));
-        setOutputPort(String(validatedShowPorts.output));
-        setApiPort(String(validatedShowPorts.api));
+        desiredPorts = configService.getDefaultShowPorts();
+        setRemotePort(String(desiredPorts.remote));
+        setStagePort(String(desiredPorts.stage));
+        setControlPort(String(desiredPorts.control));
+        setOutputPort(String(desiredPorts.output));
+        setApiPort(String(desiredPorts.api));
       }
       
-      // Ping host to check if it's reachable
+      ErrorLogger.info('Attempting connection from history with interface validation', 'ConnectScreen', {
+        host: sanitizedHost,
+        desiredPorts: desiredPorts,
+        nickname: historyItem.nickname
+      });
+
+      // Use connectWithValidation to run standard interface checks
       setIsPingingInterfaces(true);
       try {
-        const pingResult = await interfacePingService.pingHost(sanitizedHost);
+        const result = await connectWithValidation(sanitizedHost, desiredPorts, historyItem.nickname);
         
-        if (!pingResult.isReachable) {
+        if (result.success) {
+          // Navigation is handled by connectWithValidation or connection state change
+          // Navigate to Interface screen (works for both sidebar and bottom tab layouts)
+          if (navigation && typeof navigation.navigate === 'function') {
+            navigation.navigate('Interface');
+          } else {
+            ErrorLogger.warn('Connected successfully, but no navigation function available', 'ConnectScreen');
+          }
+        } else {
+          // Show error from validation
           setErrorModal({
             visible: true,
-            title: 'Host Not Reachable',
-            message: `Cannot reach ${sanitizedHost}. Please check that the host is online and accessible from your network.`
+            title: 'Connection Failed',
+            message: result.error || 'Failed to connect to the device'
           });
-          return;
         }
       } finally {
         setIsPingingInterfaces(false);
       }
-
-      ErrorLogger.info('Attempting connection from history with validated inputs', 'ConnectScreen', 
-        new Error(`Host: ${sanitizedHost}, Ports: ${JSON.stringify(validatedShowPorts)}`)
-      );
-
-      const defaultPort = configService.getNetworkConfig().defaultPort;
-      const connected = await connect(sanitizedHost, defaultPort, historyItem.nickname);
-      
-      if (connected) {
-        // Update show ports after successful connection
-        try {
-          await updateShowPorts(validatedShowPorts);
-        } catch (error) {
-          ErrorLogger.error('Failed to update show ports after history connection', 'ConnectScreen', error instanceof Error ? error : new Error(String(error)));
-        }
-        // Navigate to Interface screen (works for both sidebar and bottom tab layouts)
-        if (navigation && typeof navigation.navigate === 'function') {
-          navigation.navigate('Interface');
-        } else {
-          ErrorLogger.warn('Connected successfully, but no navigation function available', 'ConnectScreen');
-        }
-      }
     } catch (error) {
       ErrorLogger.error('History connection failed', 'ConnectScreen', error instanceof Error ? error : new Error(String(error)));
+      setErrorModal({
+        visible: true,
+        title: 'Connection Error',
+        message: 'An unexpected error occurred while connecting'
+      });
     }
-  }, [history, connect, updateShowPorts, navigation]);
+  }, [history, connectWithValidation, navigation]);
 
   const handleDisconnect = () => {
     disconnect();
@@ -411,55 +407,55 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
   const handleEditNickname = (item: ConnectionHistory) => {
     setEditingConnection(item);
-    setEditNicknameText(item.nickname || item.host);
     setShowEditNickname(true);
   };
 
-  const handleSaveNickname = async () => {
-    if (!editingConnection) return;
+  const handleEditConnectionName = useCallback(() => {
+    if (!connectionHost) return;
     
-    try {
-      // Check if this connection exists in history
-      const existsInHistory = history.some(item => item.id === editingConnection.id);
-      
-      if (!existsInHistory) {
-        // Add the connection to history first if it doesn't exist
-        await settingsRepository.addToConnectionHistory(
-          editingConnection.host,
-          editingConnection.showPorts?.api || configService.getNetworkConfig().defaultPort,
-          editNicknameText, // Use the new nickname
-          editingConnection.showPorts
-        );
-      } else {
-        // Update existing connection nickname
-        await settingsRepository.updateConnectionNickname(editingConnection.id, editNicknameText);
-      }
-      
-      await historyActions.refreshHistory(); // Use the destructured action
-      
-      // Update the connection name in the connection state if this is the current connection
-      if (isConnected && editingConnection.host === connectionHost) {
-        actions.updateConnectionName(editNicknameText);
-      }
-      
-      setShowEditNickname(false);
-      setEditingConnection(null);
-      setEditNicknameText('');
-    } catch (error) {
-      ErrorLogger.error('Failed to update nickname', 'ConnectScreen', error instanceof Error ? error : new Error(String(error)));
-      setErrorModal({
-        visible: true,
-        title: 'Error',
-        message: 'Failed to update connection name'
-      });
+    // Find the connection in history to get its ID
+    const historyItem = history.find(h => h.host === connectionHost);
+    if (historyItem) {
+      handleEditNickname(historyItem);
+    } else {
+      // If not in history yet, create a placeholder with the current connection details
+      const placeholderItem: ConnectionHistory = {
+        id: '', // Will be generated when saved
+        host: connectionHost,
+        showPorts: currentShowPorts || configService.getDefaultShowPorts(),
+        lastUsed: new Date().toISOString(),
+        nickname: connectionName || connectionHost,
+        successfulConnections: 0,
+      };
+      setEditingConnection(placeholderItem);
+      setShowEditNickname(true);
     }
-  };
+  }, [connectionHost, connectionName, currentShowPorts, history]);
 
-  const handleCancelEdit = () => {
+  const handleNicknameSaved = useCallback(async (nickname: string) => {
+    // Refresh history
+    await historyActions.refreshHistory();
+    
+    // Update the connection name in the connection state if this is the current connection
+    if (isConnected && editingConnection?.host === connectionHost) {
+      actions.updateConnectionName(nickname);
+    }
+    
+    setEditingConnection(null);
+  }, [historyActions, isConnected, editingConnection, connectionHost, actions]);
+
+  const handleEditError = useCallback((error: string) => {
+    setErrorModal({
+      visible: true,
+      title: 'Error',
+      message: error
+    });
+  }, []);
+
+  const handleCloseEditModal = useCallback(() => {
     setShowEditNickname(false);
     setEditingConnection(null);
-    setEditNicknameText('');
-  };
+  }, []);
 
   const handleClearAllHistory = () => {
     setShowClearAllConfirm(true);
@@ -728,11 +724,10 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       
       <EditNicknameModal
         visible={showEditNickname}
-        editingConnection={editingConnection}
-        editNicknameText={editNicknameText}
-        setEditNicknameText={setEditNicknameText}
-        onSave={handleSaveNickname}
-        onCancel={handleCancelEdit}
+        connection={editingConnection}
+        onClose={handleCloseEditModal}
+        onSaved={handleNicknameSaved}
+        onError={handleEditError}
       />
     </>
   ) : null;
@@ -764,6 +759,7 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
               shouldAnimate={appLaunch.isLoading() ? false : appLaunch.shouldAnimate()}
               connectionStatus={connectionStatus}
               currentShowPorts={currentShowPorts}
+              onEditConnectionName={handleEditConnectionName}
             />
 
           {/* Quick Connect Section - Only show when not connected */}
@@ -814,11 +810,10 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
         <EditNicknameModal
           visible={showEditNickname}
-          editingConnection={editingConnection}
-          editNicknameText={editNicknameText}
-          setEditNicknameText={setEditNicknameText}
-          onSave={handleSaveNickname}
-          onCancel={handleCancelEdit}
+          connection={editingConnection}
+          onClose={handleCloseEditModal}
+          onSaved={handleNicknameSaved}
+          onError={handleEditError}
         />
 
         <QRScannerModal
@@ -887,11 +882,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: FreeShowTheme.spacing.lg,
+    paddingHorizontal: FreeShowTheme.spacing.lg,
+    paddingTop: FreeShowTheme.spacing.md,
     paddingBottom: FreeShowTheme.spacing.xxxl,
   },
   scrollContentWithFloatingNav: {
-    padding: FreeShowTheme.spacing.lg,
+    paddingHorizontal: FreeShowTheme.spacing.lg,
+    paddingTop: FreeShowTheme.spacing.md,
     paddingBottom: 120,
   },
 });

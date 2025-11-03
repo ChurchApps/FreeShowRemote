@@ -450,18 +450,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: FreeShowTheme.spacing.lg,
+    paddingHorizontal: FreeShowTheme.spacing.lg,
+    paddingTop: FreeShowTheme.spacing.md,
     paddingBottom: FreeShowTheme.spacing.xxxl,
     flexGrow: 1,
   },
   scrollContentWithFloatingNav: {
-    padding: FreeShowTheme.spacing.lg,
+    paddingHorizontal: FreeShowTheme.spacing.lg,
+    paddingTop: FreeShowTheme.spacing.md,
     paddingBottom: 120,
     flexGrow: 1,
   },
   header: {
     paddingHorizontal: 0,
     paddingBottom: 20,
+    gap: 16,
   },
 
   // Brand Header Card

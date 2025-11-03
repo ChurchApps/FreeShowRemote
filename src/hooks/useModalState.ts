@@ -25,7 +25,13 @@ export const useModalState = () => {
     show: ShowOption | null;
   }>({ visible: false, show: null });
 
-  // Enable interface modal
+  // Disabled interface modal
+  const [disabledInterfaceModal, setDisabledInterfaceModal] = useState<{
+    visible: boolean;
+    show: ShowOption | null;
+  }>({ visible: false, show: null });
+
+  // Enable interface modal (for port input)
   const [enableInterfaceModal, setEnableInterfaceModal] = useState<{
     visible: boolean;
     show: ShowOption | null;
@@ -75,11 +81,25 @@ export const useModalState = () => {
   };
 
   /**
+   * Shows disabled interface modal
+   */
+  const showDisabledInterfaceModal = (show: ShowOption) => {
+    setDisabledInterfaceModal({ visible: true, show });
+    hideCompactPopup(); // Close compact popup when opening disabled modal
+  };
+
+  /**
+   * Hides disabled interface modal
+   */
+  const hideDisabledInterfaceModal = () => {
+    setDisabledInterfaceModal({ visible: false, show: null });
+  };
+
+  /**
    * Shows enable interface modal with default port
    */
   const showEnableInterfaceModal = (show: ShowOption, defaultPort: string) => {
     setEnableInterfaceModal({ visible: true, show, port: defaultPort });
-    hideCompactPopup(); // Close compact popup when opening enable modal
   };
 
   /**
@@ -94,6 +114,7 @@ export const useModalState = () => {
     showDisconnectConfirm,
     errorModal,
     compactPopup,
+    disabledInterfaceModal,
     enableInterfaceModal,
 
     // Modal handlers
@@ -103,6 +124,8 @@ export const useModalState = () => {
     hideErrorModal,
     showCompactPopup,
     hideCompactPopup,
+    showDisabledInterfaceModal,
+    hideDisabledInterfaceModal,
     showEnableInterfaceModal,
     hideEnableInterfaceModal,
   };
