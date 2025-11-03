@@ -259,7 +259,7 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       setHost(sanitizedHost);
       
       // Validate and update interface ports from stored history
-      let validatedShowPorts;
+      let desiredPorts;
       
       if (historyItem.showPorts) {
         const showPortsValidation = ValidationService.validateShowPorts(historyItem.showPorts);
@@ -267,69 +267,66 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           ErrorLogger.warn('History item has invalid show ports, using defaults', 'ConnectScreen', 
             new Error(`Invalid ports: ${JSON.stringify(historyItem.showPorts)}`)
           );
-          validatedShowPorts = configService.getDefaultShowPorts();
+          desiredPorts = configService.getDefaultShowPorts();
         } else {
-          validatedShowPorts = showPortsValidation.sanitizedValue;
+          desiredPorts = showPortsValidation.sanitizedValue;
         }
         
-        // Update UI with validated ports
-        setRemotePort(validatedShowPorts.remote ? String(validatedShowPorts.remote) : '');
-        setStagePort(validatedShowPorts.stage ? String(validatedShowPorts.stage) : '');
-        setControlPort(validatedShowPorts.control ? String(validatedShowPorts.control) : '');
-        setOutputPort(validatedShowPorts.output ? String(validatedShowPorts.output) : '');
-        setApiPort(validatedShowPorts.api ? String(validatedShowPorts.api) : '');
+        // Update UI with desired ports
+        setRemotePort(desiredPorts.remote ? String(desiredPorts.remote) : '');
+        setStagePort(desiredPorts.stage ? String(desiredPorts.stage) : '');
+        setControlPort(desiredPorts.control ? String(desiredPorts.control) : '');
+        setOutputPort(desiredPorts.output ? String(desiredPorts.output) : '');
+        setApiPort(desiredPorts.api ? String(desiredPorts.api) : '');
       } else {
         // Use default ports if none stored
-        validatedShowPorts = configService.getDefaultShowPorts();
-        setRemotePort(String(validatedShowPorts.remote));
-        setStagePort(String(validatedShowPorts.stage));
-        setControlPort(String(validatedShowPorts.control));
-        setOutputPort(String(validatedShowPorts.output));
-        setApiPort(String(validatedShowPorts.api));
+        desiredPorts = configService.getDefaultShowPorts();
+        setRemotePort(String(desiredPorts.remote));
+        setStagePort(String(desiredPorts.stage));
+        setControlPort(String(desiredPorts.control));
+        setOutputPort(String(desiredPorts.output));
+        setApiPort(String(desiredPorts.api));
       }
       
-      // Ping host to check if it's reachable
+      ErrorLogger.info('Attempting connection from history with interface validation', 'ConnectScreen', {
+        host: sanitizedHost,
+        desiredPorts: desiredPorts,
+        nickname: historyItem.nickname
+      });
+
+      // Use connectWithValidation to run standard interface checks
       setIsPingingInterfaces(true);
       try {
-        const pingResult = await interfacePingService.pingHost(sanitizedHost);
+        const result = await connectWithValidation(sanitizedHost, desiredPorts, historyItem.nickname);
         
-        if (!pingResult.isReachable) {
+        if (result.success) {
+          // Navigation is handled by connectWithValidation or connection state change
+          // Navigate to Interface screen (works for both sidebar and bottom tab layouts)
+          if (navigation && typeof navigation.navigate === 'function') {
+            navigation.navigate('Interface');
+          } else {
+            ErrorLogger.warn('Connected successfully, but no navigation function available', 'ConnectScreen');
+          }
+        } else {
+          // Show error from validation
           setErrorModal({
             visible: true,
-            title: 'Host Not Reachable',
-            message: `Cannot reach ${sanitizedHost}. Please check that the host is online and accessible from your network.`
+            title: 'Connection Failed',
+            message: result.error || 'Failed to connect to the device'
           });
-          return;
         }
       } finally {
         setIsPingingInterfaces(false);
       }
-
-      ErrorLogger.info('Attempting connection from history with validated inputs', 'ConnectScreen', 
-        new Error(`Host: ${sanitizedHost}, Ports: ${JSON.stringify(validatedShowPorts)}`)
-      );
-
-      const defaultPort = configService.getNetworkConfig().defaultPort;
-      const connected = await connect(sanitizedHost, defaultPort, historyItem.nickname);
-      
-      if (connected) {
-        // Update show ports after successful connection
-        try {
-          await updateShowPorts(validatedShowPorts);
-        } catch (error) {
-          ErrorLogger.error('Failed to update show ports after history connection', 'ConnectScreen', error instanceof Error ? error : new Error(String(error)));
-        }
-        // Navigate to Interface screen (works for both sidebar and bottom tab layouts)
-        if (navigation && typeof navigation.navigate === 'function') {
-          navigation.navigate('Interface');
-        } else {
-          ErrorLogger.warn('Connected successfully, but no navigation function available', 'ConnectScreen');
-        }
-      }
     } catch (error) {
       ErrorLogger.error('History connection failed', 'ConnectScreen', error instanceof Error ? error : new Error(String(error)));
+      setErrorModal({
+        visible: true,
+        title: 'Connection Error',
+        message: 'An unexpected error occurred while connecting'
+      });
     }
-  }, [history, connect, updateShowPorts, navigation]);
+  }, [history, connectWithValidation, navigation]);
 
   const handleDisconnect = () => {
     disconnect();
