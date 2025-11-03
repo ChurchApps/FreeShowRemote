@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from '
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../../theme/FreeShowTheme';
+import TVFocusable from '../../components/TVFocusable';
 
 interface HeaderProps {
   isConnected: boolean;
@@ -19,6 +20,7 @@ interface HeaderProps {
     api: number;
   } | null;
   onDisconnect?: () => void;
+  onEditConnectionName?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -30,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   connectionStatus = 'disconnected',
   currentShowPorts,
   onDisconnect,
+  onEditConnectionName,
 }) => {
   const status = React.useMemo((): {
     color: string;
@@ -158,9 +161,18 @@ const Header: React.FC<HeaderProps> = ({
                 </Text>
               </View>
               {(connectionStatus === 'connected' || isConnected) && (
-                <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
-                  {connectionName || connectionHost || 'Connected'}
-                </Text>
+                <TVFocusable onPress={onEditConnectionName}>
+                  <Pressable
+                    style={({ pressed }) => [
+                      pressed && onEditConnectionName && styles.connectionNamePressed
+                    ]}
+                    onPress={onEditConnectionName}
+                  >
+                    <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
+                      {connectionName || connectionHost || 'Connected'}
+                    </Text>
+                  </Pressable>
+                </TVFocusable>
               )}
               {isConnected && currentShowPorts && (
                 <View style={styles.portsContainer}>
@@ -304,6 +316,9 @@ const styles = StyleSheet.create({
   },
   statusLabelTablet: {
     fontSize: 13,
+  },
+  connectionNamePressed: {
+    opacity: 0.7,
   },
   connectionName: {
     fontSize: 17,

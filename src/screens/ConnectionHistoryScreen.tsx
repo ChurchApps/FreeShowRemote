@@ -5,8 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
-  Modal,
-  TextInput,
   Platform,
   Image,
   ActivityIndicator,
@@ -18,6 +16,7 @@ import { FreeShowTheme } from '../theme/FreeShowTheme';
 import { useSettings, useConnection } from '../contexts';
 import { ConnectionHistory, settingsRepository } from '../repositories';
 import ConfirmationModal from '../components/ConfirmationModal';
+import EditNicknameModal from '../components/EditNicknameModal';
 import ErrorModal from '../components/ErrorModal';
 import { ValidationService } from '../services/InputValidationService';
 import { configService } from '../config/AppConfig';
@@ -36,7 +35,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
 
   const [showEditNickname, setShowEditNickname] = useState(false);
   const [editingConnection, setEditingConnection] = useState<ConnectionHistory | null>(null);
-  const [editNicknameText, setEditNicknameText] = useState('');
   const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
   const [connectionToRemove, setConnectionToRemove] = useState<string | null>(null);
@@ -95,29 +93,26 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
 
   const handleEditNickname = (item: ConnectionHistory) => {
     setEditingConnection(item);
-    setEditNicknameText(item.nickname || item.host);
     setShowEditNickname(true);
   };
 
-  const handleSaveNickname = useCallback(async () => {
-    if (!editingConnection) return;
-
-    try {
-      await settingsRepository.updateConnectionNickname(editingConnection.id, editNicknameText);
-      await actions.refreshHistory();
-      setShowEditNickname(false);
-      setEditingConnection(null);
-      setEditNicknameText('');
-    } catch (error) {
-      ErrorLogger.error('Failed to update nickname', 'ConnectionHistoryScreen', error instanceof Error ? error : new Error(String(error)));
-      // You could add an error modal here if needed, for now just log the error
-    }
-  }, [editingConnection, editNicknameText, actions]);
-
-  const handleCancelEdit = () => {
+  const handleNicknameSaved = useCallback(async () => {
+    await actions.refreshHistory();
     setShowEditNickname(false);
     setEditingConnection(null);
-    setEditNicknameText('');
+  }, [actions]);
+
+  const handleEditError = (error: string) => {
+    setErrorModal({
+      visible: true,
+      title: 'Error',
+      message: `Failed to update nickname: ${error}`
+    });
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditNickname(false);
+    setEditingConnection(null);
   };
 
   return (
@@ -354,56 +349,13 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
         )}
 
         {/* Edit Nickname Modal */}
-        <Modal
+        <EditNicknameModal
+          connection={editingConnection}
           visible={showEditNickname}
-          transparent={true}
-          animationType="fade"
-          onRequestClose={handleCancelEdit}
-        >
-          <View style={styles.modalOverlay}>
-            <View style={styles.editModalContent}>
-              <View style={styles.editModalHeader}>
-                <Text style={styles.editModalTitle}>Edit Connection Name</Text>
-                <TouchableOpacity
-                  style={styles.editModalCloseButton}
-                  onPress={handleCancelEdit}
-                >
-                  <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.editModalBody}>
-                <Text style={styles.editModalLabel}>
-                  Connection: {editingConnection?.host}
-                </Text>
-                <TextInput
-                  style={styles.editModalInput}
-                  value={editNicknameText}
-                  onChangeText={setEditNicknameText}
-                  placeholder="Enter connection name"
-                  placeholderTextColor={FreeShowTheme.colors.textSecondary}
-                  autoFocus={true}
-                  selectTextOnFocus={true}
-                />
-              </View>
-
-              <View style={styles.editModalButtons}>
-                <TouchableOpacity
-                  style={[styles.editModalButton, styles.editModalCancelButton]}
-                  onPress={handleCancelEdit}
-                >
-                  <Text style={styles.editModalCancelText}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.editModalButton, styles.editModalSaveButton]}
-                  onPress={handleSaveNickname}
-                >
-                  <Text style={styles.editModalSaveText}>Save</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
+          onClose={handleCloseEditModal}
+          onSaved={handleNicknameSaved}
+          onError={handleEditError}
+        />
 
         {/* Remove Connection Confirmation Modal */}
         <ConfirmationModal
@@ -543,32 +495,30 @@ const styles = StyleSheet.create({
   },
   historyItemInfo: {
     flex: 1,
+    gap: 3,
   },
   historyItemHost: {
     fontSize: FreeShowTheme.fontSize.lg,
     fontWeight: '600',
     color: FreeShowTheme.colors.text,
-    marginBottom: 8,
   },
   historyItemIP: {
-    fontSize: FreeShowTheme.fontSize.sm,
-    color: FreeShowTheme.colors.textSecondary,
-    marginBottom: 2,
+    fontSize: FreeShowTheme.fontSize.xs,
+    color: FreeShowTheme.colors.textSecondary + 'DD',
   },
   historyItemTime: {
-    fontSize: FreeShowTheme.fontSize.sm,
-    color: FreeShowTheme.colors.textSecondary,
-    marginTop: 0,
+    fontSize: FreeShowTheme.fontSize.xs,
+    color: FreeShowTheme.colors.textSecondary + 'CC',
   },
   historyItemActions: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: FreeShowTheme.spacing.sm,
   },
   editButton: {
     padding: FreeShowTheme.spacing.sm,
     borderRadius: FreeShowTheme.borderRadius.sm,
     backgroundColor: FreeShowTheme.colors.primary,
-    marginRight: FreeShowTheme.spacing.xs,
   },
   deleteButton: {
     padding: FreeShowTheme.spacing.sm,
@@ -607,10 +557,11 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   portValue: {
-    fontSize: FreeShowTheme.fontSize.sm,
+    fontSize: FreeShowTheme.fontSize.md,
     fontWeight: '600',
-    color: FreeShowTheme.colors.secondary,
-    fontFamily: 'monospace',
+    color: FreeShowTheme.colors.text + 'DD',
+    fontFamily: FreeShowTheme.fonts.system,
+    lineHeight: 20,
   },
   emptyState: {
     flex: 1,
@@ -630,84 +581,6 @@ const styles = StyleSheet.create({
     color: FreeShowTheme.colors.textSecondary,
     textAlign: 'center',
     lineHeight: 22,
-  },
-
-  // Edit Modal Styles
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  editModalContent: {
-    backgroundColor: FreeShowTheme.colors.primaryDarker,
-    borderRadius: FreeShowTheme.borderRadius.lg,
-    padding: FreeShowTheme.spacing.lg,
-    margin: FreeShowTheme.spacing.lg,
-    minWidth: 280,
-    maxWidth: 400,
-    width: '80%',
-  },
-  editModalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: FreeShowTheme.spacing.lg,
-  },
-  editModalTitle: {
-    fontSize: FreeShowTheme.fontSize.lg,
-    fontWeight: '600',
-    color: FreeShowTheme.colors.text,
-  },
-  editModalCloseButton: {
-    padding: FreeShowTheme.spacing.xs,
-  },
-  editModalBody: {
-    marginBottom: FreeShowTheme.spacing.lg,
-  },
-  editModalLabel: {
-    fontSize: FreeShowTheme.fontSize.sm,
-    color: FreeShowTheme.colors.textSecondary,
-    marginBottom: FreeShowTheme.spacing.sm,
-  },
-  editModalInput: {
-    backgroundColor: FreeShowTheme.colors.primary,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    padding: FreeShowTheme.spacing.md,
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.text,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-  },
-  editModalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    gap: FreeShowTheme.spacing.sm,
-  },
-  editModalButton: {
-    paddingHorizontal: FreeShowTheme.spacing.lg,
-    paddingVertical: FreeShowTheme.spacing.sm,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    minWidth: 80,
-    alignItems: 'center',
-  },
-  editModalCancelButton: {
-    backgroundColor: FreeShowTheme.colors.primary,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-  },
-  editModalSaveButton: {
-    backgroundColor: FreeShowTheme.colors.secondary,
-  },
-  editModalCancelText: {
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.textSecondary,
-    fontWeight: '500',
-  },
-  editModalSaveText: {
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.text,
-    fontWeight: '600',
   },
 });
 

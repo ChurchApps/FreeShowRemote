@@ -738,24 +738,47 @@ export const ConnectionProvider: React.FC<ConnectionProviderProps> = ({
         const history = await settingsRepository.getConnectionHistory();
         const connectionData = history.find((item: any) => item.id === params.connectionId);
         
-        if (connectionData) {
-          // Validate and connect with full connection data
-          const defaultPort = configService.getNetworkConfig().defaultPort;
-          const validatedShowPorts = connectionData.showPorts || configService.getDefaultShowPorts();
-          
-          // Connect to the server
-          const connected = await connect(params.host, defaultPort, params.nickname);
-          
-          if (connected) {
-            // Update show ports after connection
-            await updateShowPorts(validatedShowPorts);
-            ErrorLogger.info('[QuickActions] Successfully auto-connected', logContext);
-          }
-        } else {
+        if (!connectionData) {
           ErrorLogger.warn('[QuickActions] Connection not found in history', logContext);
+          setState(prev => ({
+            ...prev,
+            connectionStatus: 'error',
+            lastError: 'Connection not found in history',
+            autoConnectAttempted: true,
+          }));
+          return;
+        }
+        
+        // Get the desired ports from connection history
+        const desiredPorts = connectionData.showPorts || configService.getDefaultShowPorts();
+        
+        // Use connectWithValidation to ensure the device is reachable and validate ports
+        ErrorLogger.info('[QuickActions] Validating connection before connecting', logContext, {
+          host: params.host,
+          desiredPorts,
+        });
+        
+        const result = await connectWithValidation(params.host, desiredPorts, params.nickname);
+        
+        if (result.success) {
+          ErrorLogger.info('[QuickActions] Successfully auto-connected with validation', logContext);
+        } else {
+          ErrorLogger.warn('[QuickActions] Validation failed', logContext, new Error(result.error || 'Failed to connect'));
+          setState(prev => ({
+            ...prev,
+            connectionStatus: 'error',
+            lastError: result.error || 'Failed to connect',
+            autoConnectAttempted: true,
+          }));
         }
       } catch (error) {
         ErrorLogger.error('[QuickActions] Failed to auto-connect', logContext, error instanceof Error ? error : new Error(String(error)));
+        setState(prev => ({
+          ...prev,
+          connectionStatus: 'error',
+          lastError: error instanceof Error ? error.message : 'Connection failed',
+          autoConnectAttempted: true,
+        }));
       } finally {
         // Clear the quick action reference
         if (quickActionRef) {
@@ -770,7 +793,7 @@ export const ConnectionProvider: React.FC<ConnectionProviderProps> = ({
     }, 800);
     
     return () => clearTimeout(timeout);
-  }, [quickActionRef, connect, updateShowPorts, logContext]);
+  }, [quickActionRef, connectWithValidation, logContext]);
 
   const actions: ConnectionActions = {
     connect,

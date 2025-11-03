@@ -649,6 +649,9 @@ export default function App() {
                 name="ConnectionHistory"
                 options={{
                   presentation: 'card',
+                  cardStyle: {
+                    backgroundColor: 'transparent',
+                  },
                   cardStyleInterpolator: ({ current, layouts }) => ({
                     cardStyle: {
                       transform: [
@@ -659,13 +662,12 @@ export default function App() {
                           }),
                         },
                       ],
-                      opacity: current.progress.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [0, 0.8, 1],
-                      }),
                     },
                     overlayStyle: {
-                      backgroundColor: 'transparent',
+                      opacity: current.progress.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 0.5],
+                      }),
                     },
                   }),
                   transitionSpec: {
@@ -673,14 +675,14 @@ export default function App() {
                       animation: 'timing',
                       config: {
                         duration: 100,
-                        easing: require('react-native').Easing.inOut(require('react-native').Easing.linear),
+                        easing: require('react-native').Easing.out(require('react-native').Easing.cubic),
                       },
                     },
                     close: {
                       animation: 'timing',
                       config: {
                         duration: 100,
-                        easing: require('react-native').Easing.inOut(require('react-native').Easing.linear),
+                        easing: require('react-native').Easing.in(require('react-native').Easing.cubic),
                       },
                     },
                   },
