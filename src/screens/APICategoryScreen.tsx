@@ -11,12 +11,12 @@ import ConfirmRunModal from '../components/api/ConfirmRunModal'
 import { useFreeShowApi } from '../hooks/useFreeShowApi'
 
 interface Props {
-  route: { params?: { categoryId?: string, openCommandId?: string } }
+  route: { params?: { categoryId?: string, highlightCommandId?: string } }
   navigation: any
 }
 
 const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
-  const { categoryId, openCommandId } = route.params || {}
+  const { categoryId, highlightCommandId } = route.params || {}
   const { favorites, toggleActionId } = useApiFavorites()
   const { send } = useFreeShowApi()
   const [activeCommandId, setActiveCommandId] = useState<string | null>(null)
@@ -28,17 +28,33 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
   }, [categoryId])
   const activeCommand = useMemo(() => category?.commands.find(c => c.id === activeCommandId) || null, [category, activeCommandId])
 
+  const scrollRef = React.useRef<ScrollView>(null)
+  const [blinkOn, setBlinkOn] = useState(false)
   React.useEffect(() => {
-    if (!category || !openCommandId) return
-    const cmd = category.commands.find(c => c.id === openCommandId)
-    if (!cmd) return
-    const hasParams = !!cmd.params && Object.keys(cmd.params).length > 0
-    if (hasParams) {
-      setActiveCommandId(cmd.id)
-    } else {
-      setConfirmCommandId(cmd.id)
+    if (!category || !highlightCommandId) return
+    const index = category.commands.findIndex(c => c.id === highlightCommandId)
+    if (index < 0) return
+    // Approximate item height to scroll into view
+    const approxItemHeight = 64
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: Math.max(0, index * approxItemHeight - 40), animated: true })
+    }, 50)
+  }, [category, highlightCommandId])
+
+  // Blink effect for highlighted command (single short flash)
+  React.useEffect(() => {
+    if (!highlightCommandId) return
+    setBlinkOn(false)
+    let endTimeout: NodeJS.Timeout | null = null
+    const startTimeout = setTimeout(() => {
+      setBlinkOn(true)
+      endTimeout = setTimeout(() => setBlinkOn(false), 320)
+    }, 120)
+    return () => {
+      clearTimeout(startTimeout)
+      if (endTimeout) clearTimeout(endTimeout)
     }
-  }, [category, openCommandId])
+  }, [highlightCommandId])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: FreeShowTheme.colors.primary }}>
@@ -51,9 +67,18 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
         </View>
       </View>
 
-      <ScrollView style={{ flex: 1, padding: FreeShowTheme.spacing.lg }}>
-        {category?.commands.map(cmd => (
-          <View key={cmd.id} style={{ marginBottom: FreeShowTheme.spacing.md }}>
+      <ScrollView ref={scrollRef} style={{ flex: 1, padding: FreeShowTheme.spacing.lg }}>
+        {category?.commands.map(cmd => {
+          const isHighlighted = highlightCommandId === cmd.id
+          return (
+          <View
+            key={cmd.id}
+            style={{
+              marginBottom: FreeShowTheme.spacing.md,
+              borderRadius: FreeShowTheme.borderRadius.lg,
+              position: 'relative',
+            }}
+          >
             <CommandCard
               command={cmd}
               isFavorite={!!favorites.find(f => f.type === 'action' && f.actionId === cmd.id && (!cmd.params || Object.keys(cmd.params).length === 0))}
@@ -74,8 +99,19 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
                 }
               }}
             />
+            {isHighlighted && blinkOn && (
+              <View style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: FreeShowTheme.colors.secondary + '55',
+                borderRadius: FreeShowTheme.borderRadius.lg,
+              }} />
+            )}
           </View>
-        ))}
+        )})}
       </ScrollView>
 
       {activeCommand && (

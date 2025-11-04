@@ -589,7 +589,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                     onPress={() => {
                       setShowSearch(false)
                       setSearchQuery('')
-                      navigation.navigate('APICategory', { categoryId: cat.id, openCommandId: cmd.id })
+                      navigation.navigate('APICategory', { categoryId: cat.id, highlightCommandId: cmd.id })
                     }}
                   >
                     <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>{cmd.label}</Text>
