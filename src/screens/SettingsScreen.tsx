@@ -202,7 +202,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         }}
                         thumbColor={keepAwake ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
                         ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                        style={styles.switch}
                       />
                     </TouchableOpacity>
 
@@ -245,7 +244,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                       }}
                       thumbColor={autoReconnect ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
                       ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                      style={styles.switch}
                     />
                   </TouchableOpacity>
                 </View>
@@ -323,7 +321,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         }}
                         thumbColor={autoLaunchFullscreen ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
                         ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                        style={styles.switch}
                       />
                     </TouchableOpacity>
                   </View>
@@ -600,9 +597,6 @@ const styles = StyleSheet.create({
     color: FreeShowTheme.colors.textSecondary,
     lineHeight: 20,
     opacity: 0.8,
-  },
-  switch: {
-    transform: [{ scale: 0.9 }],
   },
   pillContainer: {
     flexDirection: 'row',
