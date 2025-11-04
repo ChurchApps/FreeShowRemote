@@ -2,11 +2,9 @@ import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   ActivityIndicator,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View
@@ -52,13 +50,8 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
   // State management
   const [socketConnected, setSocketConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   
-  // Advanced mode state
-  const [customCommand, setCustomCommand] = useState('');
-  const [apiResponse, setApiResponse] = useState<string>('');
-  const [shows, setShows] = useState<any[]>([]);
   const [showCustom, setShowCustom] = useState(false);
   const [activeCommandId, setActiveCommandId] = useState<string | null>(null);
   const [confirmCommandId, setConfirmCommandId] = useState<string | null>(null);
@@ -208,9 +201,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
         }
       });
 
-      socketRef.current.on('data', (response) => {
-        handleApiResponse(response);
-      });
+      // No-op: we don't need to process inbound data here for UI
 
     } catch (error) {
       ErrorLogger.error('Failed to setup WebSocket connection', 'APIScreen', error instanceof Error ? error : new Error(String(error)));
@@ -238,52 +229,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     hasShownErrorRef.current = false;
   };
 
-  const handleApiResponse = (response: any) => {
-    try {
-      let data;
-      if (typeof response === 'string') {
-        try {
-          data = JSON.parse(response);
-        } catch {
-          data = response;
-        }
-      } else {
-        data = response;
-      }
-
-      ErrorLogger.debug('API Response received', 'APIScreen', { data });
-      setApiResponse(JSON.stringify(data, null, 2));
-
-      // Handle shows data for advanced mode
-      if (data && typeof data === 'object' && isShowsData(data)) {
-        const showsList: any[] = [];
-        for (const [showId, showData] of Object.entries(data)) {
-          if (showData && typeof showData === 'object') {
-            showsList.push({
-              id: showId,
-              name: (showData as any).name || showId,
-            });
-          }
-        }
-        setShows(showsList);
-      }
-    } catch (error) {
-              ErrorLogger.error('Error parsing API response', 'APIScreen', error instanceof Error ? error : new Error(String(error)));
-      setApiResponse(`Parse error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  };
-
-  const isShowsData = (data: any): boolean => {
-    if (!data || typeof data !== 'object') return false;
-    const firstKey = Object.keys(data)[0];
-    if (!firstKey) return false;
-    const firstItem = data[firstKey];
-    return firstItem && (
-      Object.prototype.hasOwnProperty.call(firstItem, 'name') || 
-      Object.prototype.hasOwnProperty.call(firstItem, 'slides') ||
-      Object.prototype.hasOwnProperty.call(firstItem, 'category')
-    );
-  };
+  // No response parsing required in this screen
 
   const sendApiCommand = async (action: string, data: any = {}, showAlert: boolean = true): Promise<void> => {
     if (!connectionHost || !socketRef.current || !socketRef.current.connected) {
@@ -316,28 +262,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     }
   };
 
-  // Core remote functions
-  const handleNextSlide = () => sendApiCommand('next_slide');
-  const handlePreviousSlide = () => sendApiCommand('previous_slide');
-  const handleNextProject = () => sendApiCommand('next_project_item');
-  const handlePreviousProject = () => sendApiCommand('previous_project_item');
   const handleClearAll = () => sendApiCommand('clear_all');
-
-  // Advanced functions
-  const handleCustomCommand = () => {
-    if (!customCommand.trim()) return;
-    
-    try {
-      const parsed = JSON.parse(customCommand);
-      if (parsed.action) {
-        sendApiCommand(parsed.action, parsed.data || {}, false);
-      } else {
-        sendApiCommand(customCommand.trim(), {}, false);
-      }
-    } catch {
-      sendApiCommand(customCommand.trim(), {}, false);
-    }
-  };
 
   // New UX helpers
   const { favorites, toggleActionId, removeFavorite } = useApiFavorites();
@@ -549,124 +474,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
           <ActivityIndicator size="small" color={FreeShowTheme.colors.secondary} />
         </View>
       )}
-
-      {/* Advanced Modal */}
-      <Modal
-        visible={showAdvanced}
-        animationType="slide"
-        presentationStyle="pageSheet"
-        onRequestClose={() => setShowAdvanced(false)}
-      >
-        <SafeAreaView style={styles.advancedContainer}>
-          <View style={styles.advancedHeader}>
-            <Text style={styles.advancedTitle}>Advanced API Controls</Text>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => setShowAdvanced(false)}
-            >
-              <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView style={styles.advancedContent}>
-            {/* Connection Status */}
-            <View style={styles.advancedSection}>
-              <Text style={styles.advancedSectionTitle}>Connection Status</Text>
-              <View style={styles.statusRow}>
-                <Text style={styles.statusLabel}>WebSocket:</Text>
-                <View style={styles.statusIndicator}>
-                  <View style={[styles.statusDot, { backgroundColor: socketConnected ? '#28a745' : '#dc3545' }]} />
-                  <Text style={styles.statusText}>{socketConnected ? 'Connected' : 'Disconnected'}</Text>
-                </View>
-              </View>
-            </View>
-
-            {/* Quick Data Loading */}
-            <View style={styles.advancedSection}>
-              <Text style={styles.advancedSectionTitle}>Data Loading</Text>
-              <View style={styles.advancedButtonRow}>
-                <TouchableOpacity 
-                  style={styles.advancedModalButton}
-                  onPress={() => sendApiCommand('get_shows', {}, false)}
-                  disabled={isConnecting || !socketConnected}
-                >
-                  <Text style={styles.advancedButtonText}>Load Shows</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                  style={styles.advancedModalButton}
-                  onPress={() => sendApiCommand('get_projects', {}, false)}
-                  disabled={isConnecting || !socketConnected}
-                >
-                  <Text style={styles.advancedButtonText}>Load Projects</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* Custom Command */}
-            <View style={styles.advancedSection}>
-              <Text style={styles.advancedSectionTitle}>Custom API Command</Text>
-              <View style={styles.customCommandContainer}>
-                <TextInput
-                  style={styles.customCommandInput}
-                  value={customCommand}
-                  onChangeText={setCustomCommand}
-                  placeholder='e.g., get_shows or {"action":"get_slide","showId":"show1"}'
-                  placeholderTextColor={FreeShowTheme.colors.textSecondary}
-                  multiline
-                />
-                <TouchableOpacity
-                  style={[styles.sendButton, !customCommand.trim() && styles.sendButtonDisabled]}
-                  onPress={handleCustomCommand}
-                  disabled={isConnecting || !customCommand.trim() || !socketConnected}
-                >
-                  <Ionicons name="send" size={20} color="white" />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            {/* API Response */}
-            <View style={styles.advancedSection}>
-              <Text style={styles.advancedSectionTitle}>API Response</Text>
-              <ScrollView style={styles.responseContainer} nestedScrollEnabled>
-                <Text style={styles.responseText}>{apiResponse || 'No response yet'}</Text>
-              </ScrollView>
-            </View>
-
-            {/* Shows List (if loaded) */}
-            {shows.length > 0 && (
-              <View style={styles.advancedSection}>
-                <Text style={styles.advancedSectionTitle}>Shows ({shows.length})</Text>
-                {shows.slice(0, 10).map((show) => (
-                  <TouchableOpacity
-                    key={show.id}
-                    style={styles.showItem}
-                    onPress={() => sendApiCommand('name_select_show', { value: show.name }, false)}
-                    disabled={isConnecting}
-                  >
-                    <Text style={styles.showItemText}>{show.name}</Text>
-                    <Ionicons name="chevron-forward" size={16} color={FreeShowTheme.colors.textSecondary} />
-                  </TouchableOpacity>
-                ))}
-                {shows.length > 10 && (
-                  <Text style={styles.moreItemsText}>... and {shows.length - 10} more shows</Text>
-                )}
-              </View>
-            )}
-
-            {/* Clear All in Advanced Mode too */}
-            <View style={styles.advancedSection}>
-              <TouchableOpacity 
-                style={[styles.clearAllButton, !socketConnected && styles.clearAllButtonDisabled]}
-                onPress={handleClearAll}
-                disabled={isConnecting || !socketConnected}
-              >
-                <Ionicons name="close-circle" size={24} color="white" />
-                <Text style={styles.clearAllButtonText}>Clear All</Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </SafeAreaView>
-      </Modal>
 
       {/* New Modals */}
       {activeCommandId && findCommandById(activeCommandId)?.command && (
@@ -933,149 +740,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  // Advanced Modal Styles
-  advancedContainer: {
-    flex: 1,
-    backgroundColor: FreeShowTheme.colors.primary,
-  },
-  advancedHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: FreeShowTheme.spacing.lg,
-    paddingVertical: FreeShowTheme.spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: FreeShowTheme.colors.primaryLighter,
-  },
-  advancedTitle: {
-    fontSize: FreeShowTheme.fontSize.xl,
-    fontWeight: '600',
-    color: FreeShowTheme.colors.text,
-  },
-  advancedContent: {
-    flex: 1,
-    padding: FreeShowTheme.spacing.lg,
-  },
-  advancedSection: {
-    marginBottom: FreeShowTheme.spacing.xl,
-    backgroundColor: FreeShowTheme.colors.primaryDarker,
-    borderRadius: FreeShowTheme.borderRadius.lg,
-    padding: FreeShowTheme.spacing.lg,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-  },
-  advancedSectionTitle: {
-    fontSize: FreeShowTheme.fontSize.md,
-    fontWeight: '600',
-    color: FreeShowTheme.colors.text,
-    marginBottom: FreeShowTheme.spacing.md,
-  },
-  statusRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  statusLabel: {
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.textSecondary,
-  },
-  statusIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: FreeShowTheme.spacing.xs,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  statusText: {
-    fontSize: FreeShowTheme.fontSize.md,
-    color: FreeShowTheme.colors.text,
-    fontWeight: '600',
-  },
-  advancedButtonRow: {
-    flexDirection: 'row',
-    gap: FreeShowTheme.spacing.md,
-  },
-  advancedModalButton: {
-    flex: 1,
-    backgroundColor: FreeShowTheme.colors.secondary,
-    paddingVertical: FreeShowTheme.spacing.md,
-    paddingHorizontal: FreeShowTheme.spacing.md,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    alignItems: 'center',
-  },
-  advancedButtonText: {
-    color: 'white',
-    fontSize: FreeShowTheme.fontSize.sm,
-    fontWeight: '600',
-  },
-  customCommandContainer: {
-    flexDirection: 'row',
-    gap: FreeShowTheme.spacing.md,
-    alignItems: 'flex-start',
-  },
-  customCommandInput: {
-    flex: 1,
-    backgroundColor: FreeShowTheme.colors.primary,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    padding: FreeShowTheme.spacing.md,
-    color: FreeShowTheme.colors.text,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-    maxHeight: 100,
-    fontSize: FreeShowTheme.fontSize.sm,
-  },
-  sendButton: {
-    backgroundColor: FreeShowTheme.colors.secondary,
-    paddingVertical: FreeShowTheme.spacing.md,
-    paddingHorizontal: FreeShowTheme.spacing.md,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sendButtonDisabled: {
-    backgroundColor: '#6c757d',
-    opacity: 0.6,
-  },
-  responseContainer: {
-    backgroundColor: FreeShowTheme.colors.primary,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    padding: FreeShowTheme.spacing.md,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-    maxHeight: 200,
-  },
-  responseText: {
-    fontSize: FreeShowTheme.fontSize.xs,
-    color: FreeShowTheme.colors.text,
-    fontFamily: 'monospace',
-  },
-  showItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: FreeShowTheme.spacing.md,
-    paddingHorizontal: FreeShowTheme.spacing.md,
-    backgroundColor: FreeShowTheme.colors.primary,
-    borderRadius: FreeShowTheme.borderRadius.md,
-    marginBottom: FreeShowTheme.spacing.sm,
-    borderWidth: 1,
-    borderColor: FreeShowTheme.colors.primaryLighter,
-  },
-  showItemText: {
-    fontSize: FreeShowTheme.fontSize.sm,
-    color: FreeShowTheme.colors.text,
-    fontWeight: '500',
-  },
-  moreItemsText: {
-    fontSize: FreeShowTheme.fontSize.sm,
-    color: FreeShowTheme.colors.textSecondary,
-    textAlign: 'center',
-    padding: FreeShowTheme.spacing.md,
-    fontStyle: 'italic',
   },
   
   // Fullscreen styles
