@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { Modal, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import * as Clipboard from 'expo-clipboard'
 import { Ionicons } from '@expo/vector-icons'
 import { FreeShowTheme } from '../../theme/FreeShowTheme'
 import CommandForm from './CommandForm'
@@ -18,6 +19,7 @@ const APICommandModal: React.FC<Props> = ({ visible, onClose, command, onSaved }
   const { send, isSending, lastResponse, connected } = useFreeShowApi()
   const { addFavorite } = useApiFavorites()
   const [values, setValues] = useState<Record<string, any>>({})
+  const [copied, setCopied] = useState(false)
 
   const canRun = useMemo(() => {
     const params = command.params || {}
@@ -43,11 +45,28 @@ const APICommandModal: React.FC<Props> = ({ visible, onClose, command, onSaved }
             />
           )}
           <View style={{ height: 12 }} />
-          <View style={{ borderWidth: 1, borderColor: FreeShowTheme.colors.primaryLighter, borderRadius: FreeShowTheme.borderRadius.md, padding: FreeShowTheme.spacing.md, backgroundColor: FreeShowTheme.colors.primaryDarker }}>
-            <Text style={{ color: FreeShowTheme.colors.textSecondary, marginBottom: 8 }}>Last Response</Text>
-            <Text style={{ color: FreeShowTheme.colors.text, fontFamily: 'monospace', fontSize: FreeShowTheme.fontSize.xs }}>
-              {lastResponse ? (typeof lastResponse === 'string' ? lastResponse : JSON.stringify(lastResponse, null, 2)) : 'No response yet'}
-            </Text>
+          <View style={{ borderWidth: 1, borderColor: FreeShowTheme.colors.primaryLighter, borderRadius: FreeShowTheme.borderRadius.md, backgroundColor: FreeShowTheme.colors.primaryDarker }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: FreeShowTheme.spacing.md, paddingTop: FreeShowTheme.spacing.sm }}>
+              <Text style={{ color: FreeShowTheme.colors.textSecondary }}>Last Response</Text>
+              <TouchableOpacity
+                onPress={async () => {
+                  const text = lastResponse ? (typeof lastResponse === 'string' ? lastResponse : JSON.stringify(lastResponse, null, 2)) : ''
+                  if (!text) return
+                  await Clipboard.setStringAsync(text)
+                  setCopied(true)
+                  setTimeout(() => setCopied(false), 900)
+                }}
+                disabled={!lastResponse}
+                style={{ opacity: lastResponse ? 1 : 0.5, paddingVertical: 6, paddingHorizontal: 8 }}
+              >
+                <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>Copy</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ padding: FreeShowTheme.spacing.md }}>
+              <Text style={{ color: FreeShowTheme.colors.text, fontFamily: 'monospace', fontSize: FreeShowTheme.fontSize.xs }}>
+                {lastResponse ? (typeof lastResponse === 'string' ? lastResponse : JSON.stringify(lastResponse, null, 2)) : 'No response yet'}
+              </Text>
+            </View>
           </View>
         </ScrollView>
 
@@ -89,6 +108,13 @@ const APICommandModal: React.FC<Props> = ({ visible, onClose, command, onSaved }
         </View>
         
       </SafeAreaView>
+      {copied && (
+        <View style={{ position: 'absolute', top: 80, left: 0, right: 0, alignItems: 'center' }}>
+          <View style={{ backgroundColor: FreeShowTheme.colors.primaryDarker, borderWidth: 1, borderColor: FreeShowTheme.colors.primaryLighter, borderRadius: FreeShowTheme.borderRadius.md, paddingVertical: 6, paddingHorizontal: 12 }}>
+            <Text style={{ color: FreeShowTheme.colors.text }}>Copied to clipboard</Text>
+          </View>
+        </View>
+      )}
     </Modal>
   )
 }

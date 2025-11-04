@@ -387,6 +387,10 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -8 }}>
                 {favorites.map((fav, idx) => {
                   const handlePress = () => {
+                    if (fav.type === 'action' && (!fav.data || Object.keys(fav.data).length === 0) && fav.actionId.startsWith('get_')) {
+                      setActiveCommandId(fav.actionId)
+                      return
+                    }
                     const args = buildSendArgsFromFavorite(fav)
                     if (args) sendApiCommand(args.action, args.data || {}, false)
                   }

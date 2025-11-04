@@ -95,7 +95,12 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
                 if (hasParams) {
                   setActiveCommandId(id)
                 } else {
-                  setConfirmCommandId(id)
+                  // For GET commands without params, open modal to show response and allow copy
+                  if (cmd.id.startsWith('get_')) {
+                    setActiveCommandId(id)
+                  } else {
+                    setConfirmCommandId(id)
+                  }
                 }
               }}
             />
