@@ -21,6 +21,13 @@ import { ErrorLogger } from '../services/ErrorLogger'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
 import { ShowOption } from '../types'
 import { getDeviceType } from "../utils/navigationUtils"
+import { useApiFavorites } from '../hooks/useApiFavorites'
+import { apiCategories, findCommandById } from '../services/api/apiSchema'
+import CommandCard from '../components/api/CommandCard'
+import APICommandModal from '../components/api/APICommandModal'
+import CustomCommandModal from '../components/api/CustomCommandModal'
+import { buildSendArgsFromFavorite } from '../services/api/favoriteUtils'
+import ConfirmRunModal from '../components/api/ConfirmRunModal'
 
 interface APIScreenProps {
   route: {
@@ -30,13 +37,16 @@ interface APIScreenProps {
     };
   };
   navigation: any;
+  embedded?: boolean;
 }
 
-const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
+const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = false }) => {
   const { state } = useConnection();
   const { connectionHost, isConnected, currentShowPorts } = state;
   const { title = 'FreeShow Remote' } = route.params || {};
-  const isTV = getDeviceType().isTV;
+  const deviceType = getDeviceType();
+  const isTV = deviceType.isTV;
+  const isTablet = deviceType.isTablet;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   // State management
@@ -49,6 +59,9 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
   const [customCommand, setCustomCommand] = useState('');
   const [apiResponse, setApiResponse] = useState<string>('');
   const [shows, setShows] = useState<any[]>([]);
+  const [showCustom, setShowCustom] = useState(false);
+  const [activeCommandId, setActiveCommandId] = useState<string | null>(null);
+  const [confirmCommandId, setConfirmCommandId] = useState<string | null>(null);
   
   // Fullscreen state
   const [lastTap, setLastTap] = useState<number | null>(null);
@@ -91,7 +104,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
   }, [isFullScreen]);
 
   const handleShowSelect = (show: ShowOption) => {
-    navigation.navigate('WebView', {
+    navigation.replace('WebView', {
       title: show.title,
       url: `http://${connectionHost}:${show.port}`,
       showId: show.id,
@@ -326,6 +339,18 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
     }
   };
 
+  // New UX helpers
+  const { favorites, toggleActionId, removeFavorite } = useApiFavorites();
+  const openCommand = (id: string) => {
+    const found = findCommandById(id)
+    const hasParams = !!found?.command.params && Object.keys(found!.command.params!).length > 0
+    if (hasParams) {
+      setActiveCommandId(id)
+    } else {
+      setConfirmCommandId(id)
+    }
+  };
+
   if (!isConnected) {
     return (
       <SafeAreaWrapper style={styles.container}>
@@ -394,7 +419,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {!isFullScreen && (
+      {!embedded && !isFullScreen && (
         <View style={styles.header}>
           <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
             <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
@@ -412,97 +437,109 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
             <Text style={styles.title}>{title}</Text>
           )}
 
-          <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
-            <Ionicons 
-              name={isFullScreen ? "contract" : "expand"} 
-              size={20} 
-              color={FreeShowTheme.colors.text} 
-            />
-          </TouchableOpacity>
+          {/* Right controls: Fullscreen only (search handled by WebView when embedded) */}
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
+              <Ionicons 
+                name={isFullScreen ? "contract" : "expand"} 
+                size={20} 
+                color={FreeShowTheme.colors.text} 
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
 
       <View style={styles.container}>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Slide Controls */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Slide Control</Text>
-          <View style={styles.controlRow}>
-            <TouchableOpacity 
-              style={[styles.controlButton, styles.previousButton]}
-              onPress={handlePreviousSlide}
-              disabled={isConnecting || !socketConnected}
-            >
-              <Ionicons name="chevron-back" size={32} color="white" />
-              <Text style={styles.controlButtonText}>Previous</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={[styles.controlButton, styles.nextButton]}
-              onPress={handleNextSlide}
-              disabled={isConnecting || !socketConnected}
-            >
-              <Ionicons name="chevron-forward" size={32} color="white" />
-              <Text style={styles.controlButtonText}>Next</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Project Controls */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Project Control</Text>
-          <View style={styles.controlRow}>
-            <TouchableOpacity 
-              style={[styles.controlButton, styles.projectButton]}
-              onPress={handlePreviousProject}
-              disabled={isConnecting || !socketConnected}
-            >
-              <Ionicons name="folder-open" size={24} color="white" />
-              <Text style={styles.controlButtonText}>Previous Project</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              style={[styles.controlButton, styles.projectButton]}
-              onPress={handleNextProject}
-              disabled={isConnecting || !socketConnected}
-            >
-              <Ionicons name="folder" size={24} color="white" />
-              <Text style={styles.controlButtonText}>Next Project</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Advanced Button */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Advanced</Text>
-          <TouchableOpacity
-            style={[styles.advancedButton, !socketConnected && styles.advancedButtonDisabled]}
-            onPress={() => setShowAdvanced(true)}
-            disabled={!socketConnected}
-          >
-            <View style={styles.advancedButtonContent}>
-              <Ionicons name="settings-outline" size={28} color="white" />
-              <View style={styles.advancedButtonTextContainer}>
-                <Text style={styles.advancedButtonTitle}>Advanced Controls</Text>
-                <Text style={styles.advancedButtonSubtitle}>Access advanced API functions</Text>
+          {/* Search moved to header modal */}
+          {/* Favorites */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Favorites</Text>
+            {favorites.length === 0 ? (
+              <Text style={styles.errorSubtext}>No favorites yet. Tap the star on any command to add it.</Text>
+            ) : (
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -8 }}>
+                {favorites.map((fav, idx) => {
+                  const handlePress = () => {
+                    const args = buildSendArgsFromFavorite(fav)
+                    if (args) sendApiCommand(args.action, args.data || {}, false)
+                  }
+                  const isAction = fav.type === 'action'
+                  const label = isAction ? (findCommandById(fav.actionId)?.command.label || fav.actionId) : 'Custom'
+                  return (
+                    <View key={`${fav.id}-${idx}`} style={{ width: '50%', paddingHorizontal: 8, marginBottom: 16 }}>
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: FreeShowTheme.colors.primaryDarker,
+                          borderWidth: 1,
+                          borderColor: FreeShowTheme.colors.primaryLighter,
+                          borderRadius: FreeShowTheme.borderRadius.lg,
+                          paddingVertical: FreeShowTheme.spacing.xl,
+                          alignItems: 'center',
+                          gap: 8,
+                        }}
+                        onPress={handlePress}
+                        onLongPress={() => removeFavorite(fav.id)}
+                        activeOpacity={0.8}
+                      >
+                        <Ionicons name={(isAction ? 'flash-outline' : 'code-slash') as any} size={22} color={FreeShowTheme.colors.text} />
+                        <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>{label}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                })}
               </View>
-              <Ionicons name="chevron-forward" size={24} color="white" />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            )}
+          </View>
 
-      {/* Clear All - Always at bottom */}
-      <View style={styles.bottomSection}>
-        <TouchableOpacity 
-          style={[styles.clearAllButton, !socketConnected && styles.clearAllButtonDisabled]}
-          onPress={handleClearAll}
-          disabled={isConnecting || !socketConnected}
-        >
-          <Ionicons name="close-circle" size={24} color="white" />
-          <Text style={styles.clearAllButtonText}>Clear All</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Categories grid */}
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Categories</Text>
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -8 }}>
+              {apiCategories.map(cat => (
+                <View key={cat.id} style={{ width: '50%', paddingHorizontal: 8, marginBottom: 16 }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: FreeShowTheme.colors.primaryDarker,
+                      borderWidth: 1,
+                      borderColor: FreeShowTheme.colors.primaryLighter,
+                      borderRadius: FreeShowTheme.borderRadius.lg,
+                      paddingVertical: FreeShowTheme.spacing.xl,
+                      alignItems: 'center',
+                      gap: 8,
+                    }}
+                    onPress={() => navigation.navigate('APICategory', { categoryId: cat.id })}
+                    activeOpacity={0.8}
+                  >
+                    <Ionicons name={(cat.icon || 'cube-outline') as any} size={22} color={FreeShowTheme.colors.text} />
+                    <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>{cat.label}</Text>
+                  </TouchableOpacity>
+                </View>
+              ))}
+              {/* Custom Command card as the last category */}
+              <View style={{ width: '50%', paddingHorizontal: 8, marginBottom: 16 }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: FreeShowTheme.colors.primaryDarker,
+                    borderWidth: 1,
+                    borderColor: FreeShowTheme.colors.primaryLighter,
+                    borderRadius: FreeShowTheme.borderRadius.lg,
+                    paddingVertical: FreeShowTheme.spacing.xl,
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                  onPress={() => setShowCustom(true)}
+                  activeOpacity={0.8}
+                  disabled={!socketConnected}
+                >
+                  <Ionicons name={'code-slash'} size={22} color={FreeShowTheme.colors.text} />
+                  <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>Custom Command</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
 
       </View>
 
@@ -631,6 +668,33 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
         </SafeAreaView>
       </Modal>
 
+      {/* New Modals */}
+      {activeCommandId && findCommandById(activeCommandId)?.command && (
+        <APICommandModal
+          visible={!!activeCommandId}
+          onClose={() => setActiveCommandId(null)}
+          command={findCommandById(activeCommandId)!.command}
+          onSaved={() => {
+            setActiveCommandId(null)
+          }}
+        />
+      )}
+      <CustomCommandModal visible={showCustom} onClose={() => setShowCustom(false)} onSaved={() => setShowCustom(false)} />
+
+      {/* Confirmation modal for parameterless commands */}
+      <ConfirmRunModal
+        visible={!!confirmCommandId}
+        title={findCommandById(confirmCommandId || '')?.command.label || 'Run Command'}
+        message={'Are you sure you want to run this command?'}
+        onCancel={() => setConfirmCommandId(null)}
+        onConfirm={async () => {
+          if (confirmCommandId) {
+            await sendApiCommand(confirmCommandId)
+            setConfirmCommandId(null)
+          }
+        }}
+      />
+
       {/* Error Modal */}
       <ErrorModal
         visible={errorModal.visible}
@@ -647,7 +711,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
       />
 
       {/* Fullscreen hint (tap to dismiss) */}
-      {isFullScreen && showFullscreenHint && (
+      {!embedded && isFullScreen && showFullscreenHint && (
         <TouchableOpacity
           style={styles.fullscreenHint}
           activeOpacity={0.85}
@@ -661,7 +725,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation }) => {
       )}
 
       {/* Double-tap corners to exit fullscreen */}
-      {isFullScreen && (
+      {!embedded && isFullScreen && (
         <>
           {/* Top-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>

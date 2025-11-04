@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 import { ConnectionProvider } from './ConnectionStateContext';
 import { DiscoveryProvider } from './DiscoveryContext';
 import { SettingsProvider, useSettings } from './SettingsContext';
+import { ApiFavoritesProvider } from './ApiFavoritesContext';
 
 
 // Inner component that has access to the settings context
@@ -35,9 +36,11 @@ export const AppContextProvider: React.FC<{
 }> = ({ children, navigation, quickActionRef }) => {
   return (
     <SettingsProvider>
-      <ConnectionProviderWithSettings navigation={navigation} quickActionRef={quickActionRef}>
-        {children}
-      </ConnectionProviderWithSettings>
+      <ApiFavoritesProvider>
+        <ConnectionProviderWithSettings navigation={navigation} quickActionRef={quickActionRef}>
+          {children}
+        </ConnectionProviderWithSettings>
+      </ApiFavoritesProvider>
     </SettingsProvider>
   );
 };

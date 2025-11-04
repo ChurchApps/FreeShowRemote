@@ -84,9 +84,10 @@ export const useInterfaceNavigation = (
   const navigateToApi = (show: ShowOption): NavigationResult => {
     try {
       if (validateNavigation()) {
-        navigation.navigate('APIScreen', {
-          title: show.title,
-          showId: show.id,
+        navigation.navigate('WebView', {
+          url: undefined,
+          title: show.title || 'API',
+          showId: 'api',
         });
         return { success: true };
       } else {
