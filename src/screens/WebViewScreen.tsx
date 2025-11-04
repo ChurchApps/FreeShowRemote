@@ -323,8 +323,8 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                   showPorts={currentShowPorts || undefined}
                   onShowSelect={handleShowSelect}
                 />
-                <View style={styles.centerContainer}>
-                  <View style={styles.quickButtonsContainer}>
+              <View style={styles.centerOverlay} pointerEvents="box-none">
+                <View style={styles.quickButtonsContainer}>
                     <TouchableOpacity
                       style={[
                         styles.quickButton,
@@ -406,8 +406,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                     </TouchableOpacity>
                   </View>
                 </View>
-                {/* Right spacer for tablet layout */}
-                <View style={styles.headerSpacer} />
               </>
             ) : (
               /* Mobile: ShowSwitcher modal */
@@ -555,6 +553,7 @@ const styles = StyleSheet.create({
     backgroundColor: FreeShowTheme.colors.primaryDarker,
     borderBottomWidth: 1,
     borderBottomColor: FreeShowTheme.colors.primaryLighter,
+    position: 'relative',
   },
   closeButton: {
     padding: FreeShowTheme.spacing.sm,
@@ -588,6 +587,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   centerContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  centerOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
     alignItems: 'center',
     justifyContent: 'center',
   },
