@@ -21,7 +21,6 @@ import { ShowOption } from '../types'
 import { getDeviceType } from "../utils/navigationUtils"
 import { useApiFavorites } from '../hooks/useApiFavorites'
 import { apiCategories, findCommandById } from '../services/api/apiSchema'
-import CommandCard from '../components/api/CommandCard'
 import APICommandModal from '../components/api/APICommandModal'
 import CustomCommandModal from '../components/api/CustomCommandModal'
 import { buildSendArgsFromFavorite } from '../services/api/favoriteUtils'
@@ -44,10 +43,9 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
   const { title = 'FreeShow Remote' } = route.params || {};
   const deviceType = getDeviceType();
   const isTV = deviceType.isTV;
-  const isTablet = deviceType.isTablet;
+  // const isTablet = deviceType.isTablet;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
-  // State management
   const [socketConnected, setSocketConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -56,7 +54,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
   const [activeCommandId, setActiveCommandId] = useState<string | null>(null);
   const [confirmCommandId, setConfirmCommandId] = useState<string | null>(null);
   
-  // Fullscreen state
   const [lastTap, setLastTap] = useState<number | null>(null);
   const [showCornerFeedback, setShowCornerFeedback] = useState(false);
   const [showFullscreenHint, setShowFullscreenHint] = useState(false);
@@ -84,7 +81,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     };
   }, [isConnected, connectionHost]);
 
-  // Show fullscreen hint when entering fullscreen
   useEffect(() => {
     if (isFullScreen) {
       setShowFullscreenHint(true);
@@ -104,7 +100,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     });
   };
 
-  // Check if API is available
   const isApiAvailable = currentShowPorts?.api && currentShowPorts.api > 0;
 
   const handleToggleFullScreen = () => {
@@ -115,7 +110,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     navigation.goBack();
   };
 
-  // Handle double-tap on corner to exit fullscreen
   const handleCornerDoubleTap = () => {
     if (!isFullScreen) return;
 
@@ -229,8 +223,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     hasShownErrorRef.current = false;
   };
 
-  // No response parsing required in this screen
-
   const sendApiCommand = async (action: string, data: any = {}, showAlert: boolean = true): Promise<void> => {
     if (!connectionHost || !socketRef.current || !socketRef.current.connected) {
       if (showAlert) {
@@ -262,19 +254,10 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     }
   };
 
-  const handleClearAll = () => sendApiCommand('clear_all');
+  // const handleClearAll = () => sendApiCommand('clear_all');
 
   // New UX helpers
-  const { favorites, toggleActionId, removeFavorite } = useApiFavorites();
-  const openCommand = (id: string) => {
-    const found = findCommandById(id)
-    const hasParams = !!found?.command.params && Object.keys(found!.command.params!).length > 0
-    if (hasParams) {
-      setActiveCommandId(id)
-    } else {
-      setConfirmCommandId(id)
-    }
-  };
+  const { favorites, removeFavorite } = useApiFavorites();
 
   if (!isConnected) {
     return (

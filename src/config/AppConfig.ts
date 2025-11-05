@@ -211,7 +211,9 @@ class ConfigService {
    * Create ShowOption array with current port values
    */
   createShowOptions(ports: Record<string, number> = {}): ShowOption[] {
-    return this.config.interfaceConfigs.map(config => ({
+    const isTV = this.config.platform === 'ios' || this.config.platform === 'android' ? (Platform as any).isTV : false;
+    const interfaces = this.config.interfaceConfigs.filter(cfg => !(isTV && cfg.id === 'api'));
+    return interfaces.map(config => ({
       ...config,
       port: ports[config.id] ?? this.config.defaultShowPorts[config.id as keyof ShowPortsConfig] ?? 0,
     }));
