@@ -6,8 +6,11 @@ import {
   ActivityIndicator,
   Dimensions,
   Linking,
+  Modal,
+  ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View
@@ -15,6 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { WebView } from 'react-native-webview'
 import ErrorModal from '../components/ErrorModal'
+import APIScreen from './APIScreen'
 import ShowSwitcher from '../components/ShowSwitcher'
 import TVFocusable from '../components/TVFocusable'
 import { configService } from '../config/AppConfig'
@@ -23,6 +27,7 @@ import { ErrorLogger } from '../services/ErrorLogger'
 import { FreeShowTheme } from '../theme/FreeShowTheme'
 import { ShowOption } from '../types'
 import { getDeviceType } from "../utils/navigationUtils"
+import { apiCategories } from '../services/api/apiSchema'
 
 interface WebViewScreenProps {
   navigation: any;
@@ -39,6 +44,8 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
   const [currentOrientation, setCurrentOrientation] = useState<ScreenOrientation.Orientation>(ScreenOrientation.Orientation.PORTRAIT_UP);
   const isTV = getDeviceType().isTV;
   const webViewRef = useRef<WebView>(null);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [errorModal, setErrorModal] = useState<{ visible: boolean, title: string, message: string }>({
     visible: false,
     title: '',
@@ -198,12 +205,11 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
 
   const handleShowSelect = (show: ShowOption) => {
     if (show.id === 'api') {
-      // Navigate to the native APIScreen
-      navigation.navigate('APIScreen', {
-        title: show.title,
-        showId: show.id,
-        animationEnabled: false,
-      });
+      navigation.setParams({ url: undefined, title: 'API', showId: 'api' });
+      if (webViewRef.current) {
+        setLoading(false);
+        setError(null);
+      }
       return;
     }
 
@@ -241,6 +247,15 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
       'control': currentShowPorts.control,
       'output': currentShowPorts.output,
     };
+
+    if (showId === 'api') {
+      navigation.setParams({ url: undefined, title: 'API', showId: 'api' });
+      if (webViewRef.current) {
+        setLoading(false);
+        setError(null);
+      }
+      return;
+    }
 
     const port = portMap[showId as keyof typeof portMap];
     if (!port) return;
@@ -404,6 +419,22 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                         }
                       />
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                      style={[
+                        styles.quickButton,
+                        showId === 'api' && styles.quickButtonActive,
+                      ]}
+                      onPress={() => handleQuickSwitch('api')}
+                    >
+                      <Ionicons
+                        name="code-slash"
+                        size={20}
+                        color={
+                          showId === 'api' ? 'white' : FreeShowTheme.colors.text
+                        }
+                      />
+                    </TouchableOpacity>
                   </View>
                 </View>
               </>
@@ -423,24 +454,24 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
             </View>
           )}
 
-          <TVFocusable onPress={handleRefresh}>
-            <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
-              <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.text} />
-            </TouchableOpacity>
-          </TVFocusable>
-
-          {
-            !isTV && (
-              <TouchableOpacity
-                style={styles.openBrowserButton}
-                onPress={handleOpenInBrowser}
-                onLongPress={handleCopyUrl}
-                delayLongPress={300}
-              >
-                <Ionicons name="open-outline" size={20} color={FreeShowTheme.colors.text} />
+          {showId !== 'api' && (
+            <TVFocusable onPress={handleRefresh}>
+              <TouchableOpacity style={styles.refreshButton} onPress={handleRefresh}>
+                <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.text} />
               </TouchableOpacity>
-            )
-          }
+            </TVFocusable>
+          )}
+
+          {showId !== 'api' && !isTV && (
+            <TouchableOpacity
+              style={styles.openBrowserButton}
+              onPress={handleOpenInBrowser}
+              onLongPress={handleCopyUrl}
+              delayLongPress={300}
+            >
+              <Ionicons name="open-outline" size={20} color={FreeShowTheme.colors.text} />
+            </TouchableOpacity>
+          )}
 
           {showId === 'output' && (
             <TVFocusable onPress={handleRotateScreen}>
@@ -450,21 +481,29 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
             </TVFocusable>
           )}
 
-          {
-            !isTV && (
-              <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
-                <Ionicons
-                  name={isFullScreen ? "contract" : "expand"}
-                  size={20}
-                  color={FreeShowTheme.colors.text}
-                />
-              </TouchableOpacity>
-            )
-          }
+          {/* API-specific header controls: search + fullscreen */}
+          {showId === 'api' && (
+            <TouchableOpacity style={styles.fullScreenButton} onPress={() => setShowSearch(true)}>
+              <Ionicons name="search" size={20} color={FreeShowTheme.colors.text} />
+            </TouchableOpacity>
+          )}
+          {!isTV && (
+            <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
+              <Ionicons
+                name={isFullScreen ? "contract" : "expand"}
+                size={20}
+                color={FreeShowTheme.colors.text}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       )}
 
       <View style={styles.webViewContainer}>
+        {showId === 'api' ? (
+          <APIScreen navigation={navigation} route={{ params: { title: 'API', showId: 'api' } }} embedded />
+        ) : (
+        <>
         {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={FreeShowTheme.colors.secondary} />
@@ -474,7 +513,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
 
         <WebView
           ref={webViewRef}
-          source={{ uri: url }}
+          source={{ uri: url as string }}
           style={styles.webView}
           onLoad={handleLoad}
           onError={handleError}
@@ -487,7 +526,84 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
           allowsFullscreenVideo={true}
           key={url} // Force re-render when URL changes
         />
+        </>
+        )}
       </View>
+
+      {/* API Search Modal */}
+      {showId === 'api' && (
+        <Modal
+          visible={showSearch}
+          animationType="fade"
+          transparent
+          onRequestClose={() => setShowSearch(false)}
+        >
+          <TouchableOpacity style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' }} activeOpacity={1} onPress={() => setShowSearch(false)}>
+            <View style={{
+              marginTop: 80,
+              marginHorizontal: 16,
+              backgroundColor: FreeShowTheme.colors.primaryDarker,
+              borderRadius: FreeShowTheme.borderRadius.lg,
+              borderWidth: 1,
+              borderColor: FreeShowTheme.colors.primaryLighter,
+              padding: FreeShowTheme.spacing.md,
+            }}>
+              <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '700', marginBottom: 8 }}>Search Commands</Text>
+              <TextInput
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="Search by name or id..."
+                placeholderTextColor={FreeShowTheme.colors.textSecondary}
+                style={{
+                  borderWidth: 1,
+                  borderColor: FreeShowTheme.colors.primaryLighter,
+                  backgroundColor: FreeShowTheme.colors.primary,
+                  borderRadius: FreeShowTheme.borderRadius.md,
+                  padding: FreeShowTheme.spacing.md,
+                  color: FreeShowTheme.colors.text,
+                }}
+                autoFocus
+              />
+              <ScrollView style={{ maxHeight: 320, marginTop: FreeShowTheme.spacing.md }}>
+                {apiCategories.flatMap(cat => (
+                  cat.commands
+                    .filter(cmd =>
+                      searchQuery.trim().length > 0 && (
+                        cmd.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        cmd.id.toLowerCase().includes(searchQuery.toLowerCase())
+                      )
+                    )
+                    .map(cmd => ({ cat, cmd }))
+                )).slice(0, 30).map(({ cat, cmd }) => (
+                  <TouchableOpacity
+                    key={`${cat.id}-${cmd.id}`}
+                    style={{
+                      paddingVertical: FreeShowTheme.spacing.md,
+                      paddingHorizontal: FreeShowTheme.spacing.md,
+                      backgroundColor: FreeShowTheme.colors.primary,
+                      borderRadius: FreeShowTheme.borderRadius.md,
+                      borderWidth: 1,
+                      borderColor: FreeShowTheme.colors.primaryLighter,
+                      marginBottom: FreeShowTheme.spacing.sm,
+                    }}
+                    onPress={() => {
+                      setShowSearch(false)
+                      setSearchQuery('')
+                      navigation.navigate('APICategory', { categoryId: cat.id, highlightCommandId: cmd.id })
+                    }}
+                  >
+                    <Text style={{ color: FreeShowTheme.colors.text, fontWeight: '600' }}>{cmd.label}</Text>
+                    <Text style={{ color: FreeShowTheme.colors.textSecondary, fontSize: FreeShowTheme.fontSize.sm }}>{cat.label} • {cmd.id}</Text>
+                  </TouchableOpacity>
+                ))}
+                {searchQuery.trim().length > 0 && apiCategories.every(cat => cat.commands.every(cmd => !cmd.label.toLowerCase().includes(searchQuery.toLowerCase()) && !cmd.id.toLowerCase().includes(searchQuery.toLowerCase()))) && (
+                  <Text style={{ color: FreeShowTheme.colors.textSecondary, textAlign: 'center', paddingVertical: 12 }}>No results</Text>
+                )}
+              </ScrollView>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      )}
 
       {/* Error Modal */}
       <ErrorModal

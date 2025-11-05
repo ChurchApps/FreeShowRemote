@@ -10,6 +10,7 @@ import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import APIScreen from './src/screens/APIScreen'
+import APICategoryScreen from './src/screens/APICategoryScreen'
 import ConnectScreen from './src/screens/ConnectScreen'
 import InterfaceScreen from './src/screens/InterfaceScreen'
 import WebViewScreen from './src/screens/WebViewScreen'
@@ -641,6 +642,20 @@ export default function App() {
                 {(props) => (
                   <ErrorBoundary onError={(error, errorInfo) => ErrorLogger.error('APIScreen Error', 'App', error, { errorInfo })}>
                     <APIScreen {...props} />
+                  </ErrorBoundary>
+                )}
+              </Stack.Screen>
+
+              <Stack.Screen 
+                name="APICategory"
+                options={{
+                  presentation: 'card',
+                  headerShown: false,
+                }}
+              >
+                {(props) => (
+                  <ErrorBoundary onError={(error, errorInfo) => ErrorLogger.error('APICategoryScreen Error', 'App', error, { errorInfo })}>
+                    <APICategoryScreen {...props} />
                   </ErrorBoundary>
                 )}
               </Stack.Screen>

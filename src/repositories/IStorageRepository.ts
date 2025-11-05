@@ -23,6 +23,9 @@ export const StorageKeys = {
   LAST_CONNECTION: 'last_connection',
   SECURITY_CONFIG: 'security_config',
   
+  // API domain
+  API_FAVORITES: 'api_favorites',
+  
   // Connection domain
   SAVED_CONNECTIONS: 'saved_connections',
   CONNECTION_SESSIONS: 'connection_sessions',

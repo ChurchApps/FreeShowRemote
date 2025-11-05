@@ -394,9 +394,11 @@ export const ConnectionProvider: React.FC<ConnectionProviderProps> = ({
           ErrorLogger.info(`[AutoLaunch] Launching ${appSettings.autoLaunchInterface} interface`, 'ConnectionStateContext');
           
           if (appSettings.autoLaunchInterface === 'api') {
-            navToUse.navigate('APIScreen', {
-              title: 'API Controls',
-              showId: appSettings.autoLaunchInterface,
+            navToUse.navigate('WebView', {
+              url: undefined,
+              title: 'API',
+              showId: 'api',
+              initialFullscreen: appSettings.autoLaunchFullscreen || false,
             });
           } else {
             const url = `http://${connectionHost}:${selectedInterfacePort}`;
