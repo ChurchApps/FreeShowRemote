@@ -32,6 +32,8 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
+        "NSBonjourServices": ["_freeshow._udp"],
+        "NSLocalNetworkUsageDescription": "Allow FreeShow Remote to discover devices on the local network.",
         "CFBundleDisplayName": "FreeShow Remote",
         "CFBundleShortVersionString": "1.0.3",
         "CFBundleVersion": "1",
@@ -50,6 +52,9 @@
           "UIInterfaceOrientationLandscapeRight"
         ],
         "UIApplicationShortcutItems": []
+      },
+      "entitlements": {
+        "com.apple.developer.networking.multicast": true
       },
       "bundleIdentifier": "app.freeshow.remote",
       "config": {
