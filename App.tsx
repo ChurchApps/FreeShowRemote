@@ -31,6 +31,26 @@ import { FreeShowTheme } from './src/theme/FreeShowTheme'
 import { getDeviceType } from "./src/utils/navigationUtils"
 
 const Tab = createBottomTabNavigator();
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://7013ba6a75324fd1201daf8817b11394@o4510432524107776.ingest.us.sentry.io/4510446363607040',
+
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+
+  // Enable Logs
+  enableLogs: true,
+
+  // Configure Session Replay
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1,
+  integrations: [Sentry.mobileReplayIntegration()],
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
 const Stack = createStackNavigator();
 
 // Create navigation ref at module level for use in layout components
@@ -461,7 +481,7 @@ const FreeShowNavigationTheme = {
   },
 };
 
-export default function App() {
+export default Sentry.wrap(function App() {
 
   // Initialize configuration on app startup
   useEffect(() => {
@@ -724,4 +744,4 @@ export default function App() {
       </SafeAreaProvider>
     </ErrorBoundary>
   );
-}
+});

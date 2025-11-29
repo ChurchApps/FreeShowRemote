@@ -52,3 +52,5 @@ QWEN.md
 
 # Build output
 .build/
+
+.env.local

@@ -32,7 +32,9 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
-        "NSBonjourServices": ["_freeshow._udp"],
+        "NSBonjourServices": [
+          "_freeshow._udp"
+        ],
         "NSLocalNetworkUsageDescription": "Allow FreeShow Remote to discover devices on the local network.",
         "CFBundleDisplayName": "FreeShow Remote",
         "CFBundleShortVersionString": "1.0.3",
@@ -178,6 +180,14 @@
               "backgroundColor": "#0a0a0f"
             }
           }
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "freeshow-remote",
+          "organization": "churchapps"
         }
       ]
     ],
