@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Mégse",
+    "confirm": "Megerősítés",
+    "ok": "OK",
+    "save": "Mentés",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "close": "Bezárás",
+    "loading": "Betöltés...",
+    "error": "Hiba",
+    "retry": "Újra",
+    "share": "Megosztás",
+    "disconnect": "Kapcsolat bontása",
+    "connect": "Csatlakozás",
+    "gotIt": "Értem"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Vezérelje prezentációit",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Felület",
+    "connect": "Csatlakozás",
+    "settings": "Beállítások"
+  },
+  "sidebar": {
+    "connected": "Csatlakozva",
+    "connecting": "Csatlakozás...",
+    "disconnected": "Kapcsolat bontva"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Vezérelje prezentációit",
+    "manualConnection": "Kézi csatlakozás",
+    "connectionDetails": "Kapcsolat részletei",
+    "serverAddress": "Szerver címe",
+    "interfacePorts": "Felület portok",
+    "restoreDefaults": "Alapértelmezések visszaállítása",
+    "portHelpText": "Hagyja üresen a portokat a letiltáshoz. Minden port tesztelve lesz csatlakozás előtt.",
+    "connectingToInterface": "Csatlakozás a felülethez",
+    "scanQrCode": "QR kód beolvasása"
+  },
+  "connectStatus": {
+    "connected": "Csatlakozva",
+    "connecting": "Csatlakozás...",
+    "offline": "Offline",
+    "error": "Hiba",
+    "attemptingToConnect": "Csatlakozási kísérlet",
+    "notConnected": "Nincs csatlakozva",
+    "connectedTo": "Csatlakozva: {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Csatlakozási segítség",
+    "sameNetwork": "Mindkét eszköznek ugyanazon a WiFi hálózaton kell lennie",
+    "useLocalIP": "Használja a számítógépe helyi IP címét (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Gyors csatlakozás",
+    "subtitle": "Elérhető kapcsolatok",
+    "networkScan": "Hálózat keresés",
+    "scan": "Keresés",
+    "scanning": "Keresés...",
+    "recentConnections": "Legutóbbi kapcsolatok",
+    "clearAll": "Összes törlése",
+    "noDevicesFound": "Nem található eszköz",
+    "tapToScan": "Érintse meg a keresést az eszközök megtalálásához",
+    "noServices": "Nincs szolgáltatás",
+    "expoGoNotice": "Szimulált eredmények megjelenítése Expo Go-ban. Készítsen dev klienst a valódi felderítéshez.",
+    "networkDiscoveryNotAvailable": "Hálózati felderítés nem elérhető",
+    "networkDiscoveryMessage": "A hálózati keresés (Bonjour/Zeroconf) nem működik Expo Go-ban."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Elérhető felületek",
+    "notConnectedTitle": "Nincs csatlakozva",
+    "notConnectedSubtitle": "Csatlakozzon a FreeShow-hoz a felületek eléréséhez",
+    "connectToFreeShow": "Csatlakozás a FreeShow-hoz",
+    "connectingTitle": "Csatlakozás",
+    "establishingConnection": "Kapcsolat létrehozása a FreeShow-hoz",
+    "retryingConnection": "Újracsatlakozás a FreeShow-hoz",
+    "attemptingReconnect": "Újracsatlakozási kísérlet a FreeShow-hoz"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Diák és prezentációk vezérlése"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Megjelenítés a színpadon lévő személyek számára"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Vezérlő felület az operátorok számára"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Kimeneti megjelenítés a képernyőkhöz"
+    },
+    "api": {
+      "title": "API vezérlők",
+      "description": "Natív API vezérlők"
+    }
+  },
+  "settingsScreen": {
+    "title": "Beállítások",
+    "subtitle": "Személyre szabás",
+    "keepAwake": "Éber maradás",
+    "keepAwakeDescription": "Megakadályozza az eszköz képernyőjének alvó módba lépését, amíg az alkalmazás nyitva van",
+    "autoConnection": "AUTOMATIKUS CSATLAKOZÁS",
+    "autoReconnect": "Automatikus újracsatlakozás",
+    "autoReconnectDescription": "Automatikus újracsatlakozás a FreeShow-hoz, amikor a kapcsolat megszakad",
+    "autoLaunchInterface": "Felület automatikus indítása",
+    "autoLaunchInterfaceDescription": "Automatikusan megnyit egy adott felületet csatlakozáskor",
+    "autoLaunchFullscreen": "Teljes képernyő automatikus indítása",
+    "autoLaunchFullscreenDescription": "Automatikusan teljes képernyős módban nyitja meg a felületet",
+    "history": "ELŐZMÉNYEK",
+    "connectionHistory": "Kapcsolat előzmények",
+    "connectionHistoryDescription": "Megtekintheti és kezelheti az összes korábbi kapcsolatot ({{count}} összesen)",
+    "none": "Nincs",
+    "noneDescription": "Maradjon a Csatlakozás képernyőn"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Nincs csatlakozva a FreeShow-hoz",
+    "goToConnect": "Ugrás a csatlakozáshoz",
+    "apiNotAvailable": "API felület nem elérhető",
+    "apiNotAvailableDescription": "Az API felület le van tiltva a jelenlegi kapcsolatban. Az API funkciók használatához engedélyezze az API portot a FreeShow-ban és csatlakozzon újra.",
+    "reconnectWithApi": "Újracsatlakozás API-val",
+    "favorites": "Kedvencek",
+    "noFavorites": "Még nincsenek kedvencek. Érintse meg a csillagot bármely parancsnál a hozzáadásához.",
+    "categories": "Kategóriák",
+    "customCommand": "Egyéni parancs",
+    "connectionFailed": "Sikertelen kapcsolat",
+    "setupFailed": "Sikertelen beállítás",
+    "commandFailed": "Sikertelen parancs",
+    "fullscreenHint": "Érintse meg kétszer bármelyik sarkot a teljes képernyős módból való kilépéshez"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Kapcsolat bontása",
+      "message": "Biztosan megszakítja a kapcsolatot a FreeShow-val?"
+    },
+    "enableInterface": {
+      "title": "Felület engedélyezése",
+      "invalidPort": "Érvénytelen port",
+      "invalidPortMessage": "Kérjük, adjon meg egy érvényes portszámot 1 és 65535 között"
+    },
+    "disableInterface": {
+      "cannotDisable": "A felület nem tiltható le",
+      "cannotDisableMessage": "Legalább egy felületnek engedélyezve kell maradnia. Kérjük, engedélyezzen egy másik felületet, mielőtt letiltja ezt."
+    },
+    "runCommand": {
+      "title": "Parancs futtatása",
+      "message": "Biztosan futtatni szeretné ezt a parancsot?"
+    },
+    "clearHistory": {
+      "title": "Előzmények törlése",
+      "message": "Biztosan törli az összes kapcsolat előzményt?"
+    },
+    "removeConnection": {
+      "title": "Kapcsolat eltávolítása",
+      "message": "Biztosan eltávolítja ezt a kapcsolatot az előzményekből?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nincs elérhető kapcsolati gazdagép",
+    "failedToCopyUrl": "Nem sikerült az URL vágólapra másolása",
+    "cannotOpenUrl": "Nem lehet megnyitni az URL-t böngészőben",
+    "failedToOpenUrl": "Nem sikerült megnyitni az URL-t böngészőben",
+    "failedToEnableInterface": "Nem sikerült engedélyezni a felületet. Kérjük, próbálja újra.",
+    "failedToDisableInterface": "Nem sikerült letiltani a felületet. Kérjük, próbálja újra.",
+    "notConnectedToFreeShow": "Nincs csatlakozva a FreeShow-hoz",
+    "connectionFailed": "Sikertelen kapcsolat",
+    "invalidConfiguration": "Érvénytelen konfiguráció"
+  },
+  "validation": {
+    "invalidHost": "Kérjük, adjon meg egy érvényes gazdagép címet",
+    "invalidPortConfig": "Érvénytelen port konfiguráció"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Stage",
+    "control": "Control",
+    "output": "Output",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Kapcsolat előzmények",
+    "subtitle": "Megtekintheti és kezelheti korábbi kapcsolatait",
+    "noHistory": "Még nincs kapcsolat előzmény",
+    "noHistoryDescription": "A korábbi kapcsolatok itt jelennek meg",
+    "lastUsed": "Utoljára használva",
+    "remove": "Eltávolítás",
+    "clear": "Törlés",
+    "clearAll": "Összes törlése"
+  },
+  "compactPopup": {
+    "copyUrl": "URL másolása",
+    "openInBrowser": "Megnyitás böngészőben",
+    "openInterface": "Felület megnyitása",
+    "enableInterface": "Felület engedélyezése",
+    "disableInterface": "Felület letiltása",
+    "interfaceDisabled": "Felület letiltva",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Kapcsolat nevének szerkesztése",
+    "label": "Kapcsolat neve",
+    "placeholder": "Adjon nevet ennek a kapcsolatnak"
+  }
+}

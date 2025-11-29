@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "ok": "OK",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Fechar",
+    "loading": "A carregar...",
+    "error": "Erro",
+    "retry": "Tentar novamente",
+    "share": "Partilhar",
+    "disconnect": "Desligar",
+    "connect": "Ligar",
+    "gotIt": "Percebi"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Controle as suas apresentações",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interface",
+    "connect": "Ligar",
+    "settings": "Definições"
+  },
+  "sidebar": {
+    "connected": "Ligado",
+    "connecting": "A ligar...",
+    "disconnected": "Desligado"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Controle as suas apresentações",
+    "manualConnection": "Ligação Manual",
+    "connectionDetails": "Detalhes da Ligação",
+    "serverAddress": "Endereço do Servidor",
+    "interfacePorts": "Portas da Interface",
+    "restoreDefaults": "Restaurar Predefinições",
+    "portHelpText": "Deixe as portas vazias para desativar. Cada porta será testada antes de ligar.",
+    "connectingToInterface": "A ligar à interface",
+    "scanQrCode": "Digitalizar código QR"
+  },
+  "connectStatus": {
+    "connected": "Ligado",
+    "connecting": "A ligar...",
+    "offline": "Offline",
+    "error": "Erro",
+    "attemptingToConnect": "A tentar ligar",
+    "notConnected": "Não ligado",
+    "connectedTo": "Ligado a {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Ajuda de Ligação",
+    "sameNetwork": "Ambos os dispositivos devem estar na mesma rede WiFi",
+    "useLocalIP": "Use o endereço IP local do seu computador (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Ligação Rápida",
+    "subtitle": "Ligações disponíveis",
+    "networkScan": "Análise de Rede",
+    "scan": "Analisar",
+    "scanning": "A analisar...",
+    "recentConnections": "Ligações Recentes",
+    "clearAll": "Limpar Tudo",
+    "noDevicesFound": "Nenhum dispositivo encontrado",
+    "tapToScan": "Toque em analisar para encontrar dispositivos",
+    "noServices": "Sem Serviços",
+    "expoGoNotice": "A mostrar resultados simulados no Expo Go. Crie um cliente de desenvolvimento para descoberta real.",
+    "networkDiscoveryNotAvailable": "Descoberta de Rede Não Disponível",
+    "networkDiscoveryMessage": "A análise de rede (Bonjour/Zeroconf) não funciona no Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Interfaces Disponíveis",
+    "notConnectedTitle": "Não Ligado",
+    "notConnectedSubtitle": "Ligue-se ao FreeShow para aceder às interfaces",
+    "connectToFreeShow": "Ligar ao FreeShow",
+    "connectingTitle": "A Ligar",
+    "establishingConnection": "A estabelecer ligação ao FreeShow",
+    "retryingConnection": "A tentar ligação novamente ao FreeShow",
+    "attemptingReconnect": "A tentar religar ao FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Controle slides e apresentações"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Visualização para pessoas no palco"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Interface de controlo para operadores"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Visualização de saída para ecrãs"
+    },
+    "api": {
+      "title": "Controlos de API",
+      "description": "Controlos nativos de API"
+    }
+  },
+  "settingsScreen": {
+    "title": "Definições",
+    "subtitle": "Personalize a sua experiência",
+    "keepAwake": "Manter Ativo",
+    "keepAwakeDescription": "Impedir que o ecrã do dispositivo adormeça enquanto a aplicação estiver aberta",
+    "autoConnection": "LIGAÇÃO AUTOMÁTICA",
+    "autoReconnect": "Religação Automática",
+    "autoReconnectDescription": "Religar automaticamente ao FreeShow quando a ligação for perdida",
+    "autoLaunchInterface": "Iniciar Interface Automaticamente",
+    "autoLaunchInterfaceDescription": "Abrir automaticamente uma interface específica ao ligar",
+    "autoLaunchFullscreen": "Iniciar em Ecrã Completo Automaticamente",
+    "autoLaunchFullscreenDescription": "Abrir automaticamente a interface no modo ecrã completo",
+    "history": "HISTÓRICO",
+    "connectionHistory": "Histórico de Ligações",
+    "connectionHistoryDescription": "Ver e gerir todas as ligações anteriores ({{count}} no total)",
+    "none": "Nenhum",
+    "noneDescription": "Permanecer no ecrã de Ligação"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Não ligado ao FreeShow",
+    "goToConnect": "Ir para Ligar",
+    "apiNotAvailable": "Interface de API Não Disponível",
+    "apiNotAvailableDescription": "A interface de API está desativada na sua ligação atual. Para usar os recursos de API, ative a porta de API no FreeShow e volte a ligar.",
+    "reconnectWithApi": "Religar com API",
+    "favorites": "Favoritos",
+    "noFavorites": "Nenhum favorito ainda. Toque na estrela em qualquer comando para o adicionar.",
+    "categories": "Categorias",
+    "customCommand": "Comando Personalizado",
+    "connectionFailed": "Falha na Ligação",
+    "setupFailed": "Falha na Configuração",
+    "commandFailed": "Falha no Comando",
+    "fullscreenHint": "Toque duas vezes em qualquer canto para sair do ecrã completo"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Desligar",
+      "message": "Tem a certeza de que deseja desligar do FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Ativar Interface",
+      "invalidPort": "Porta Inválida",
+      "invalidPortMessage": "Por favor, insira um número de porta válido entre 1 e 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Não é Possível Desativar a Interface",
+      "cannotDisableMessage": "Pelo menos uma interface deve permanecer ativada. Por favor, ative outra interface antes de desativar esta."
+    },
+    "runCommand": {
+      "title": "Executar Comando",
+      "message": "Tem a certeza de que deseja executar este comando?"
+    },
+    "clearHistory": {
+      "title": "Limpar Histórico",
+      "message": "Tem a certeza de que deseja limpar todo o histórico de ligações?"
+    },
+    "removeConnection": {
+      "title": "Remover Ligação",
+      "message": "Tem a certeza de que deseja remover esta ligação do histórico?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nenhum host de ligação disponível",
+    "failedToCopyUrl": "Falha ao copiar URL para a área de transferência",
+    "cannotOpenUrl": "Não é possível abrir URL no navegador",
+    "failedToOpenUrl": "Falha ao abrir URL no navegador",
+    "failedToEnableInterface": "Falha ao ativar interface. Por favor, tente novamente.",
+    "failedToDisableInterface": "Falha ao desativar interface. Por favor, tente novamente.",
+    "notConnectedToFreeShow": "Não ligado ao FreeShow",
+    "connectionFailed": "Falha na ligação",
+    "invalidConfiguration": "Configuração inválida"
+  },
+  "validation": {
+    "invalidHost": "Por favor, insira um endereço de host válido",
+    "invalidPortConfig": "Configuração de porta inválida"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Stage",
+    "control": "Control",
+    "output": "Output",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Histórico de Ligações",
+    "subtitle": "Veja e gira as suas ligações anteriores",
+    "noHistory": "Nenhum histórico de ligações ainda",
+    "noHistoryDescription": "As suas ligações anteriores aparecerão aqui",
+    "lastUsed": "Usado pela última vez",
+    "remove": "Remover",
+    "clear": "Limpar",
+    "clearAll": "Limpar Tudo"
+  },
+  "compactPopup": {
+    "copyUrl": "Copiar URL",
+    "openInBrowser": "Abrir no Navegador",
+    "openInterface": "Abrir Interface",
+    "enableInterface": "Ativar Interface",
+    "disableInterface": "Desativar Interface",
+    "interfaceDisabled": "Interface Desativada",
+    "port": "Porta"
+  },
+  "editNickname": {
+    "title": "Editar Nome da Ligação",
+    "label": "Nome da Ligação",
+    "placeholder": "Digite um nome para esta ligação"
+  }
+}

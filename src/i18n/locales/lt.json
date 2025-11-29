@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Atšaukti",
+    "confirm": "Patvirtinti",
+    "ok": "Gerai",
+    "save": "Išsaugoti",
+    "delete": "Ištrinti",
+    "edit": "Redaguoti",
+    "close": "Uždaryti",
+    "loading": "Kraunama...",
+    "error": "Klaida",
+    "retry": "Bandyti dar kartą",
+    "share": "Dalintis",
+    "disconnect": "Atsijungti",
+    "connect": "Prisijungti",
+    "gotIt": "Supratau"
+  },
+  "app": {
+    "name": "FreeShow nuotolinis valdymas",
+    "subtitle": "Valdykite savo pristatymus",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Nuotolinis valdymas"
+  },
+  "navigation": {
+    "interface": "Sąsaja",
+    "connect": "Prisijungti",
+    "settings": "Nustatymai"
+  },
+  "sidebar": {
+    "connected": "Prisijungta",
+    "connecting": "Jungiamasi...",
+    "disconnected": "Atsijungta"
+  },
+  "connectScreen": {
+    "title": "FreeShow nuotolinis valdymas",
+    "subtitle": "Valdykite savo pristatymus",
+    "manualConnection": "Rankinis prisijungimas",
+    "connectionDetails": "Prisijungimo informacija",
+    "serverAddress": "Serverio adresas",
+    "interfacePorts": "Sąsajos prievadai",
+    "restoreDefaults": "Atkurti numatytuosius",
+    "portHelpText": "Palikite prievadus tuščius, jei norite išjungti. Kiekvienas prievadas bus patikrintas prieš prisijungiant.",
+    "connectingToInterface": "Jungiamasi prie sąsajos",
+    "scanQrCode": "Skenuoti QR kodą"
+  },
+  "connectStatus": {
+    "connected": "Prisijungta",
+    "connecting": "Jungiamasi...",
+    "offline": "Neprisijungta",
+    "error": "Klaida",
+    "attemptingToConnect": "Bandoma prisijungti",
+    "notConnected": "Neprisijungta",
+    "connectedTo": "Prisijungta prie {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Prisijungimo pagalba",
+    "sameNetwork": "Abu įrenginiai turėtų būti prijungti prie to paties WiFi tinklo",
+    "useLocalIP": "Naudokite kompiuterio vietinį IP adresą (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Greitas prisijungimas",
+    "subtitle": "Prieinami prisijungimai",
+    "networkScan": "Tinklo nuskaitymas",
+    "scan": "Skenuoti",
+    "scanning": "Skenuojama...",
+    "recentConnections": "Naujausi prisijungimai",
+    "clearAll": "Išvalyti viską",
+    "noDevicesFound": "Įrenginių nerasta",
+    "tapToScan": "Bakstelėkite skenuoti, kad rastumėte įrenginius",
+    "noServices": "Paslaugų nėra",
+    "expoGoNotice": "Rodomi simuliuoti rezultatai Expo Go programėlėje. Sukurkite kūrėjo klientą tikram aptikimui.",
+    "networkDiscoveryNotAvailable": "Tinklo aptikimas neprieinamas",
+    "networkDiscoveryMessage": "Tinklo skenavimas (Bonjour/Zeroconf) neveikia Expo Go programėlėje."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Prieinamos sąsajos",
+    "notConnectedTitle": "Neprisijungta",
+    "notConnectedSubtitle": "Prisijunkite prie FreeShow, kad pasiektumėte sąsajas",
+    "connectToFreeShow": "Prisijungti prie FreeShow",
+    "connectingTitle": "Jungiamasi",
+    "establishingConnection": "Užmezgamas ryšys su FreeShow",
+    "retryingConnection": "Kartojamas prisijungimas prie FreeShow",
+    "attemptingReconnect": "Bandoma iš naujo prisijungti prie FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Valdyti skaidres ir pristatymus"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Rodymas žmonėms scenoje"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Valdymo sąsaja operatoriams"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Išvesties rodymas ekranams"
+    },
+    "api": {
+      "title": "API valdikliai",
+      "description": "Natūralūs API valdikliai"
+    }
+  },
+  "settingsScreen": {
+    "title": "Nustatymai",
+    "subtitle": "Pritaikykite savo patirtį",
+    "keepAwake": "Išlaikyti budrumo režimą",
+    "keepAwakeDescription": "Neleisti įrenginio ekranui užmigti, kol programa atidaryta",
+    "autoConnection": "AUTOMATINIS PRISIJUNGIMAS",
+    "autoReconnect": "Automatinis prisijungimas iš naujo",
+    "autoReconnectDescription": "Automatiškai prisijungti prie FreeShow iš naujo, kai ryšys nutrūksta",
+    "autoLaunchInterface": "Automatinis sąsajos paleidimas",
+    "autoLaunchInterfaceDescription": "Automatiškai atidaryti konkrečią sąsają prisijungus",
+    "autoLaunchFullscreen": "Automatinis viso ekrano paleidimas",
+    "autoLaunchFullscreenDescription": "Automatiškai atidaryti sąsają viso ekrano režimu",
+    "history": "ISTORIJA",
+    "connectionHistory": "Prisijungimų istorija",
+    "connectionHistoryDescription": "Peržiūrėti ir valdyti visus ankstesnius prisijungimus (iš viso {{count}})",
+    "none": "Nėra",
+    "noneDescription": "Likti prisijungimo ekrane"
+  },
+  "apiScreen": {
+    "title": "FreeShow nuotolinis valdymas",
+    "notConnected": "Neprisijungta prie FreeShow",
+    "goToConnect": "Eiti į prisijungimą",
+    "apiNotAvailable": "API sąsaja neprieinama",
+    "apiNotAvailableDescription": "API sąsaja išjungta jūsų dabartiniame prisijungime. Norėdami naudoti API funkcijas, įjunkite API prievadą FreeShow ir prisijunkite iš naujo.",
+    "reconnectWithApi": "Prisijungti iš naujo su API",
+    "favorites": "Mėgstamiausi",
+    "noFavorites": "Kol kas mėgstamiausių nėra. Bakstelėkite žvaigždutę ant bet kurios komandos, kad ją pridėtumėte.",
+    "categories": "Kategorijos",
+    "customCommand": "Pasirinktinė komanda",
+    "connectionFailed": "Prisijungimas nepavyko",
+    "setupFailed": "Nustatymas nepavyko",
+    "commandFailed": "Komanda nepavyko",
+    "fullscreenHint": "Dukart bakstelėkite bet kurį kampą, kad išeitumėte iš viso ekrano režimo"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Atsijungti",
+      "message": "Ar tikrai norite atsijungti nuo FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Įjungti sąsają",
+      "invalidPort": "Netinkamas prievadas",
+      "invalidPortMessage": "Įveskite tinkamą prievado numerį nuo 1 iki 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Negalima išjungti sąsajos",
+      "cannotDisableMessage": "Bent viena sąsaja turi likti įjungta. Prieš išjungdami šią sąsają, įjunkite kitą."
+    },
+    "runCommand": {
+      "title": "Vykdyti komandą",
+      "message": "Ar tikrai norite vykdyti šią komandą?"
+    },
+    "clearHistory": {
+      "title": "Išvalyti istoriją",
+      "message": "Ar tikrai norite išvalyti visą prisijungimų istoriją?"
+    },
+    "removeConnection": {
+      "title": "Pašalinti prisijungimą",
+      "message": "Ar tikrai norite pašalinti šį prisijungimą iš istorijos?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nėra prisijungimo serverio",
+    "failedToCopyUrl": "Nepavyko nukopijuoti URL į iškarpinę",
+    "cannotOpenUrl": "Negalima atidaryti URL naršyklėje",
+    "failedToOpenUrl": "Nepavyko atidaryti URL naršyklėje",
+    "failedToEnableInterface": "Nepavyko įjungti sąsajos. Bandykite dar kartą.",
+    "failedToDisableInterface": "Nepavyko išjungti sąsajos. Bandykite dar kartą.",
+    "notConnectedToFreeShow": "Neprisijungta prie FreeShow",
+    "connectionFailed": "Prisijungimas nepavyko",
+    "invalidConfiguration": "Netinkama konfigūracija"
+  },
+  "validation": {
+    "invalidHost": "Įveskite tinkamą serverio adresą",
+    "invalidPortConfig": "Netinkama prievado konfigūracija"
+  },
+  "ports": {
+    "remote": "Nuotolinis",
+    "stage": "Scena",
+    "control": "Valdymas",
+    "output": "Išvestis",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Prisijungimų istorija",
+    "subtitle": "Peržiūrėkite ir valdykite savo ankstesnius prisijungimus",
+    "noHistory": "Prisijungimų istorijos dar nėra",
+    "noHistoryDescription": "Jūsų ankstesni prisijungimai bus rodomi čia",
+    "lastUsed": "Paskutinį kartą naudota",
+    "remove": "Pašalinti",
+    "clear": "Išvalyti",
+    "clearAll": "Išvalyti viską"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopijuoti URL",
+    "openInBrowser": "Atidaryti naršyklėje",
+    "openInterface": "Atidaryti sąsają",
+    "enableInterface": "Įjungti sąsają",
+    "disableInterface": "Išjungti sąsają",
+    "interfaceDisabled": "Sąsaja išjungta",
+    "port": "Prievadas"
+  },
+  "editNickname": {
+    "title": "Redaguoti prisijungimo pavadinimą",
+    "label": "Prisijungimo pavadinimas",
+    "placeholder": "Įveskite šio prisijungimo pavadinimą"
+  }
+}

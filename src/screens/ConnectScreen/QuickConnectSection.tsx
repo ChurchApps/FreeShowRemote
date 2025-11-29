@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -38,6 +39,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
   onEditNickname,
   onClearAllHistory,
 }) => {
+  const { t } = useTranslation();
   const _discoveryTimeout = configService.getNetworkConfig().discoveryTimeout;
   const isIpAddress = useCallback((str: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(str), []);
 
@@ -137,8 +139,8 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
   return (
     <View style={styles.quickConnectCard}>
       <View style={styles.quickConnectHeader}>
-        <Text style={styles.quickConnectTitle}>Quick Connect</Text>
-        <Text style={styles.quickConnectSubtitle}>Available connections</Text>
+        <Text style={styles.quickConnectTitle}>{t('quickConnect.title')}</Text>
+        <Text style={styles.quickConnectSubtitle}>{t('quickConnect.subtitle')}</Text>
       </View>
       
       <View style={styles.quickConnectContent}>
@@ -146,7 +148,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
         {isDiscoveryAvailable && (
           <View style={styles.discoverySection}>
             <View style={styles.discoverySectionHeader}>
-              <Text style={styles.discoveryTitle}>Network Scan</Text>
+              <Text style={styles.discoveryTitle}>{t('quickConnect.networkScan')}</Text>
               <TVFocusable onPress={handleScanPress}>
                 <TouchableOpacity
                 onPress={handleScanPress}
@@ -185,7 +187,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
                     color="white"
                   />
                   <Text style={styles.discoveryToggleText}>
-                    {effectiveScanActive ? 'Scanning…' : 'Scan'}
+                    {effectiveScanActive ? t('quickConnect.scanning') : t('quickConnect.scan')}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -194,7 +196,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
             {isExpoGo && showExpoMockNotice && (
               <View style={styles.mockNotice}>
                 <Ionicons name="alert-circle" size={14} color={FreeShowTheme.colors.textSecondary} />
-                <Text style={styles.mockNoticeText}>Showing simulated results in Expo Go. Build a dev client for real discovery.</Text>
+                <Text style={styles.mockNoticeText}>{t('quickConnect.expoGoNotice')}</Text>
               </View>
             )}
             {hasDiscoveredServices ? (
@@ -241,7 +243,7 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
                         <View style={styles.capabilitiesContainer}>
                           {(!service.capabilities || service.capabilities.length === 0) ? (
                             <View style={styles.capabilityBadgeDisabled}>
-                              <Text style={styles.capabilityBadgeText}>No Services</Text>
+                              <Text style={styles.capabilityBadgeText}>{t('quickConnect.noServices')}</Text>
                             </View>
                           ) : (
                             <View style={styles.capabilityBadgesRow}>
@@ -285,12 +287,12 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
                 {scanComplete && !isScanActive ? (
                   <>
                     <Ionicons name="alert-circle-outline" size={24} color={FreeShowTheme.colors.textSecondary} />
-                    <Text style={styles.emptyDiscoveryText}>No devices found</Text>
+                    <Text style={styles.emptyDiscoveryText}>{t('quickConnect.noDevicesFound')}</Text>
                   </>
                 ) : (
                   <>
                     <Ionicons name="search-outline" size={24} color={FreeShowTheme.colors.textSecondary} />
-                    <Text style={styles.emptyDiscoveryText}>Tap scan to find devices</Text>
+                    <Text style={styles.emptyDiscoveryText}>{t('quickConnect.tapToScan')}</Text>
                   </>
                 )}
               </View>
@@ -302,14 +304,14 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
         {hasHistory && (
           <View style={styles.recentSection}>
             <View style={styles.recentSectionHeader}>
-              <Text style={styles.recentTitle}>Recent Connections</Text>
+              <Text style={styles.recentTitle}>{t('quickConnect.recentConnections')}</Text>
               <TVFocusable onPress={onClearAllHistory}>
-                <TouchableOpacity 
+                <TouchableOpacity
                 onPress={onClearAllHistory}
                 style={styles.clearAllButton}
               >
                 <Ionicons name="trash-outline" size={16} color={FreeShowTheme.colors.textSecondary} />
-                <Text style={styles.clearAllText}>Clear All</Text>
+                <Text style={styles.clearAllText}>{t('quickConnect.clearAll')}</Text>
               </TouchableOpacity>
               </TVFocusable>
             </View>
@@ -360,9 +362,9 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
       {/* Expo Go Warning Modal */}
       <ErrorModal
         visible={showExpoGoWarning}
-        title="Network Discovery Not Available"
-        message="Network scanning (Bonjour/Zeroconf) doesn't work in Expo Go."
-        buttonText="Got it"
+        title={t('quickConnect.networkDiscoveryNotAvailable')}
+        message={t('quickConnect.networkDiscoveryMessage')}
+        buttonText={t('common.gotIt')}
         onClose={() => setShowExpoGoWarning(false)}
         icon="information-circle"
       />

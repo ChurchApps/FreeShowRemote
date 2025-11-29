@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "ok": "موافق",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "close": "إغلاق",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "retry": "إعادة المحاولة",
+    "share": "مشاركة",
+    "disconnect": "قطع الاتصال",
+    "connect": "اتصال",
+    "gotIt": "فهمت"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "تحكم في عروضك التقديمية",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "الواجهة",
+    "connect": "اتصال",
+    "settings": "الإعدادات"
+  },
+  "sidebar": {
+    "connected": "متصل",
+    "connecting": "جاري الاتصال...",
+    "disconnected": "غير متصل"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "تحكم في عروضك التقديمية",
+    "manualConnection": "اتصال يدوي",
+    "connectionDetails": "تفاصيل الاتصال",
+    "serverAddress": "عنوان الخادم",
+    "interfacePorts": "منافذ الواجهة",
+    "restoreDefaults": "استعادة الإعدادات الافتراضية",
+    "portHelpText": "اترك المنافذ فارغة للتعطيل. سيتم اختبار كل منفذ قبل الاتصال.",
+    "connectingToInterface": "جاري الاتصال بالواجهة",
+    "scanQrCode": "مسح رمز الاستجابة السريعة"
+  },
+  "connectStatus": {
+    "connected": "متصل",
+    "connecting": "جاري الاتصال...",
+    "offline": "غير متصل",
+    "error": "خطأ",
+    "attemptingToConnect": "محاولة الاتصال",
+    "notConnected": "غير متصل",
+    "connectedTo": "متصل بـ {{name}}"
+  },
+  "connectionHelp": {
+    "title": "مساعدة الاتصال",
+    "sameNetwork": "يجب أن يكون كلا الجهازين على نفس شبكة الواي فاي",
+    "useLocalIP": "استخدم عنوان IP المحلي للكمبيوتر (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "اتصال سريع",
+    "subtitle": "الاتصالات المتاحة",
+    "networkScan": "فحص الشبكة",
+    "scan": "فحص",
+    "scanning": "جاري الفحص...",
+    "recentConnections": "الاتصالات الأخيرة",
+    "clearAll": "مسح الكل",
+    "noDevicesFound": "لم يتم العثور على أجهزة",
+    "tapToScan": "اضغط على فحص للعثور على الأجهزة",
+    "noServices": "لا توجد خدمات",
+    "expoGoNotice": "عرض نتائج محاكاة في Expo Go. قم ببناء عميل تطوير للاكتشاف الحقيقي.",
+    "networkDiscoveryNotAvailable": "اكتشاف الشبكة غير متاح",
+    "networkDiscoveryMessage": "فحص الشبكة (Bonjour/Zeroconf) لا يعمل في Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "الواجهات المتاحة",
+    "notConnectedTitle": "غير متصل",
+    "notConnectedSubtitle": "اتصل بـ FreeShow للوصول إلى الواجهات",
+    "connectToFreeShow": "الاتصال بـ FreeShow",
+    "connectingTitle": "جاري الاتصال",
+    "establishingConnection": "جاري إنشاء اتصال بـ FreeShow",
+    "retryingConnection": "إعادة محاولة الاتصال بـ FreeShow",
+    "attemptingReconnect": "محاولة إعادة الاتصال بـ FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "التحكم في الشرائح والعروض التقديمية"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "شاشة عرض للأشخاص على المسرح"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "واجهة التحكم للمشغلين"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "شاشة الإخراج للشاشات"
+    },
+    "api": {
+      "title": "عناصر التحكم API",
+      "description": "عناصر تحكم API الأصلية"
+    }
+  },
+  "settingsScreen": {
+    "title": "الإعدادات",
+    "subtitle": "تخصيص تجربتك",
+    "keepAwake": "إبقاء الشاشة مضاءة",
+    "keepAwakeDescription": "منع شاشة جهازك من السكون أثناء فتح التطبيق",
+    "autoConnection": "الاتصال التلقائي",
+    "autoReconnect": "إعادة الاتصال التلقائي",
+    "autoReconnectDescription": "إعادة الاتصال تلقائياً بـ FreeShow عند فقدان الاتصال",
+    "autoLaunchInterface": "فتح الواجهة تلقائياً",
+    "autoLaunchInterfaceDescription": "فتح واجهة معينة تلقائياً عند الاتصال",
+    "autoLaunchFullscreen": "فتح ملء الشاشة تلقائياً",
+    "autoLaunchFullscreenDescription": "فتح الواجهة في وضع ملء الشاشة تلقائياً",
+    "history": "السجل",
+    "connectionHistory": "سجل الاتصالات",
+    "connectionHistoryDescription": "عرض وإدارة جميع الاتصالات السابقة ({{count}} إجمالي)",
+    "none": "لا شيء",
+    "noneDescription": "البقاء على شاشة الاتصال"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "غير متصل بـ FreeShow",
+    "goToConnect": "الانتقال إلى الاتصال",
+    "apiNotAvailable": "واجهة API غير متاحة",
+    "apiNotAvailableDescription": "واجهة API معطلة في اتصالك الحالي. لاستخدام ميزات API، قم بتمكين منفذ API في FreeShow وأعد الاتصال.",
+    "reconnectWithApi": "إعادة الاتصال مع API",
+    "favorites": "المفضلة",
+    "noFavorites": "لا توجد مفضلات بعد. اضغط على النجمة على أي أمر لإضافته.",
+    "categories": "الفئات",
+    "customCommand": "أمر مخصص",
+    "connectionFailed": "فشل الاتصال",
+    "setupFailed": "فشل الإعداد",
+    "commandFailed": "فشل الأمر",
+    "fullscreenHint": "انقر نقراً مزدوجاً على أي زاوية للخروج من وضع ملء الشاشة"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "قطع الاتصال",
+      "message": "هل أنت متأكد أنك تريد قطع الاتصال عن FreeShow؟"
+    },
+    "enableInterface": {
+      "title": "تمكين الواجهة",
+      "invalidPort": "منفذ غير صالح",
+      "invalidPortMessage": "يرجى إدخال رقم منفذ صالح بين 1 و 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "لا يمكن تعطيل الواجهة",
+      "cannotDisableMessage": "يجب أن تبقى واجهة واحدة على الأقل مفعلة. يرجى تمكين واجهة أخرى قبل تعطيل هذه."
+    },
+    "runCommand": {
+      "title": "تشغيل الأمر",
+      "message": "هل أنت متأكد أنك تريد تشغيل هذا الأمر؟"
+    },
+    "clearHistory": {
+      "title": "مسح السجل",
+      "message": "هل أنت متأكد أنك تريد مسح جميع سجلات الاتصال؟"
+    },
+    "removeConnection": {
+      "title": "إزالة الاتصال",
+      "message": "هل أنت متأكد أنك تريد إزالة هذا الاتصال من السجل؟"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "لا يوجد مضيف اتصال متاح",
+    "failedToCopyUrl": "فشل نسخ الرابط إلى الحافظة",
+    "cannotOpenUrl": "لا يمكن فتح الرابط في المتصفح",
+    "failedToOpenUrl": "فشل فتح الرابط في المتصفح",
+    "failedToEnableInterface": "فشل تمكين الواجهة. يرجى المحاولة مرة أخرى.",
+    "failedToDisableInterface": "فشل تعطيل الواجهة. يرجى المحاولة مرة أخرى.",
+    "notConnectedToFreeShow": "غير متصل بـ FreeShow",
+    "connectionFailed": "فشل الاتصال",
+    "invalidConfiguration": "تكوين غير صالح"
+  },
+  "validation": {
+    "invalidHost": "يرجى إدخال عنوان مضيف صالح",
+    "invalidPortConfig": "تكوين منفذ غير صالح"
+  },
+  "ports": {
+    "remote": "عن بُعد",
+    "stage": "المسرح",
+    "control": "التحكم",
+    "output": "الإخراج",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "سجل الاتصالات",
+    "subtitle": "عرض وإدارة اتصالاتك السابقة",
+    "noHistory": "لا يوجد سجل اتصالات بعد",
+    "noHistoryDescription": "ستظهر اتصالاتك السابقة هنا",
+    "lastUsed": "آخر استخدام",
+    "remove": "إزالة",
+    "clear": "مسح",
+    "clearAll": "مسح الكل"
+  },
+  "compactPopup": {
+    "copyUrl": "نسخ الرابط",
+    "openInBrowser": "فتح في المتصفح",
+    "openInterface": "فتح الواجهة",
+    "enableInterface": "تمكين الواجهة",
+    "disableInterface": "تعطيل الواجهة",
+    "interfaceDisabled": "الواجهة معطلة",
+    "port": "المنفذ"
+  },
+  "editNickname": {
+    "title": "تعديل اسم الاتصال",
+    "label": "اسم الاتصال",
+    "placeholder": "أدخل اسماً لهذا الاتصال"
+  }
+}

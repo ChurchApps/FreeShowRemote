@@ -1,6 +1,7 @@
 import * as Clipboard from 'expo-clipboard';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Animated, Linking, StatusBar, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -35,6 +36,7 @@ interface InterfaceScreenProps {
  * Displays available interfaces and handles navigation between them
  */
 const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { state, actions } = useConnection();
   const { isTablet, isTV } = getDeviceType();
@@ -137,7 +139,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   // Helper function to get interface URL
   const getInterfaceUrl = (show: ShowOption): string | null => {
     if (!connectionHost) {
-      modalState.showErrorModal('Error', 'No connection host available');
+      modalState.showErrorModal(t('common.error'), t('errors.noConnectionHost'));
       return null;
     }
     return `http://${connectionHost}:${show.port}`;
@@ -156,7 +158,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
       await Clipboard.setStringAsync(url);
       modalState.hideCompactPopup();
     } catch {
-      modalState.showErrorModal('Error', 'Failed to copy URL to clipboard');
+      modalState.showErrorModal(t('common.error'), t('errors.failedToCopyUrl'));
     }
   };
 
@@ -170,10 +172,10 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         await Linking.openURL(url);
         modalState.hideCompactPopup();
       } else {
-        modalState.showErrorModal('Error', 'Cannot open URL in browser');
+        modalState.showErrorModal(t('common.error'), t('errors.cannotOpenUrl'));
       }
     } catch {
-      modalState.showErrorModal('Error', 'Failed to open URL in browser');
+      modalState.showErrorModal(t('common.error'), t('errors.failedToOpenUrl'));
     }
   };
 
@@ -221,8 +223,8 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   }, [settingsActions, actions]);
 
   const handleEditError = useCallback((error: string) => {
-    modalState.showErrorModal('Error', error);
-  }, [modalState]);
+    modalState.showErrorModal(t('common.error'), error);
+  }, [modalState, t]);
 
   const handleCloseEditModal = useCallback(() => {
     setShowEditNickname(false);
@@ -249,8 +251,8 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     const portNumber = parseInt(port, 10);
     if (isNaN(portNumber) || portNumber < 1 || portNumber > 65535) {
       modalState.showErrorModal(
-        'Invalid Port',
-        'Please enter a valid port number between 1 and 65535'
+        t('modals.enableInterface.invalidPort'),
+        t('modals.enableInterface.invalidPortMessage')
       );
       return;
     }
@@ -266,7 +268,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         'InterfaceScreen',
         error instanceof Error ? error : new Error(String(error))
       );
-      modalState.showErrorModal('Error', 'Failed to enable interface. Please try again.');
+      modalState.showErrorModal(t('common.error'), t('errors.failedToEnableInterface'));
     }
   };
 
@@ -281,8 +283,8 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     const enabledInterfaces = Object.values(updatedPorts).filter(port => port > 0);
     if (enabledInterfaces.length === 0) {
       modalState.showErrorModal(
-        'Cannot Disable Interface',
-        'At least one interface must remain enabled. Please enable another interface before disabling this one.'
+        t('modals.disableInterface.cannotDisable'),
+        t('modals.disableInterface.cannotDisableMessage')
       );
       return;
     }
@@ -296,7 +298,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         'InterfaceScreen',
         error instanceof Error ? error : new Error(String(error))
       );
-      modalState.showErrorModal('Error', 'Failed to disable interface. Please try again.');
+      modalState.showErrorModal(t('common.error'), t('errors.failedToDisableInterface'));
     }
   };
 
@@ -346,7 +348,7 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
             style={[styles.sectionTitleLarge, isTablet && styles.sectionTitleLargeTablet]}
             accessibilityRole="header"
           >
-            Available Interfaces
+            {t('interfaceScreen.availableInterfaces')}
           </Text>
 
           <Animated.View

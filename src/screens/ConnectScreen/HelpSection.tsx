@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { FreeShowTheme } from '../../theme/FreeShowTheme';
@@ -8,6 +9,8 @@ interface HelpSectionProps {
 }
 
 const HelpSection: React.FC<HelpSectionProps> = ({ isConnected }) => {
+  const { t } = useTranslation();
+
   if (isConnected) {
     return null;
   }
@@ -16,11 +19,11 @@ const HelpSection: React.FC<HelpSectionProps> = ({ isConnected }) => {
     <View style={styles.helpCard}>
       <View style={styles.helpHeader}>
         <Ionicons name="help-circle-outline" size={20} color={FreeShowTheme.colors.secondary} />
-        <Text style={styles.helpTitle}>Connection Help</Text>
+        <Text style={styles.helpTitle}>{t('connectionHelp.title')}</Text>
       </View>
       <Text style={styles.helpText}>
-        {'\u2022 Both devices should be on the same WiFi network\n'}
-        {'\u2022 Use your computer\'s local IP address (192.168.x.x)'}
+        {'\u2022 ' + t('connectionHelp.sameNetwork') + '\n'}
+        {'\u2022 ' + t('connectionHelp.useLocalIP')}
       </Text>
     </View>
   );

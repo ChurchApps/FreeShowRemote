@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Dimensions,
   Image,
@@ -28,6 +29,7 @@ interface SettingsScreenProps {
 
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
+  const { t } = useTranslation();
   const { settings, history, actions } = useSettings();
   const [autoReconnect, setAutoReconnect] = useState(settings?.autoReconnect || false);
   const [autoLaunchInterface, setAutoLaunchInterface] = useState(settings?.autoLaunchInterface || 'none');
@@ -38,16 +40,16 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const showOptions: ShowOption[] = [
     {
       id: 'none',
-      title: 'None',
-      description: 'Stay on Connect screen',
+      title: t('settingsScreen.none'),
+      description: t('settingsScreen.noneDescription'),
       icon: 'close-circle',
       color: FreeShowTheme.colors.textSecondary,
       port: 0,
     },
     ...configService.getInterfaceConfigs().map(config => ({
       id: config.id,
-      title: config.title,
-      description: config.description,
+      title: t(`interfaces.${config.id}.title` as any),
+      description: t(`interfaces.${config.id}.description` as any),
       icon: config.icon,
       color: config.color,
       port: 0, // Port not relevant for this usage
@@ -155,9 +157,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                   >
                     {/* Title Section - Left */}
                     <View style={styles.titleSection}>
-                      <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>Settings</Text>
+                      <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>{t('settingsScreen.title')}</Text>
                       <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>
-                        Customize your experience
+                        {t('settingsScreen.subtitle')}
                       </Text>
                     </View>
 
@@ -187,10 +189,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                           <View style={styles.iconContainer}>
                             <Ionicons name="moon" size={20} color={FreeShowTheme.colors.secondary} />
                           </View>
-                          <Text style={styles.settingTitle}>Keep Awake</Text>
+                          <Text style={styles.settingTitle}>{t('settingsScreen.keepAwake')}</Text>
                         </View>
                         <Text style={styles.settingDescription}>
-                          Prevent your device screen from sleeping while the app is open
+                          {t('settingsScreen.keepAwakeDescription')}
                         </Text>
                       </View>
                       <Switch
@@ -213,7 +215,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
               {/* Auto Connection Section */}
               <View style={styles.sectionSeparator}>
                 <View style={styles.separatorLine} />
-                <Text style={styles.separatorText}>AUTO CONNECTION</Text>
+                <Text style={styles.separatorText}>{t('settingsScreen.autoConnection')}</Text>
                 <View style={styles.separatorLine} />
               </View>
 
@@ -229,10 +231,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         <View style={styles.iconContainer}>
                           <Ionicons name="refresh" size={20} color={FreeShowTheme.colors.secondary} />
                         </View>
-                        <Text style={styles.settingTitle}>Auto-Reconnect</Text>
+                        <Text style={styles.settingTitle}>{t('settingsScreen.autoReconnect')}</Text>
                       </View>
                       <Text style={styles.settingDescription}>
-                        Automatically reconnect to FreeShow when the connection is lost
+                        {t('settingsScreen.autoReconnectDescription')}
                       </Text>
                     </View>
                     <Switch
@@ -264,10 +266,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                             <View style={styles.iconContainer}>
                               <Ionicons name="play-circle" size={20} color={FreeShowTheme.colors.secondary} />
                             </View>
-                            <Text style={styles.settingTitle}>Auto-Launch Interface</Text>
+                            <Text style={styles.settingTitle}>{t('settingsScreen.autoLaunchInterface')}</Text>
                           </View>
                           <Text style={styles.settingDescription}>
-                            Automatically open a specific interface when connected
+                            {t('settingsScreen.autoLaunchInterfaceDescription')}
                           </Text>
                         </View>
                         <TouchableOpacity
@@ -306,10 +308,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                           <View style={styles.iconContainer}>
                             <Ionicons name="expand" size={20} color={FreeShowTheme.colors.secondary} />
                           </View>
-                          <Text style={styles.settingTitle}>Auto-Launch Fullscreen</Text>
+                          <Text style={styles.settingTitle}>{t('settingsScreen.autoLaunchFullscreen')}</Text>
                         </View>
                         <Text style={styles.settingDescription}>
-                          Automatically open the interface in fullscreen mode
+                          {t('settingsScreen.autoLaunchFullscreenDescription')}
                         </Text>
                       </View>
                       <Switch
@@ -331,7 +333,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
               {/* Section Separator */}
               <View style={styles.sectionSeparator}>
                 <View style={styles.separatorLine} />
-                <Text style={styles.separatorText}>HISTORY</Text>
+                <Text style={styles.separatorText}>{t('settingsScreen.history')}</Text>
                 <View style={styles.separatorLine} />
               </View>
 
@@ -348,10 +350,10 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         <View style={styles.iconContainer}>
                           <Ionicons name="time" size={20} color={FreeShowTheme.colors.secondary} />
                         </View>
-                        <Text style={styles.settingTitle}>Connection History</Text>
+                        <Text style={styles.settingTitle}>{t('settingsScreen.connectionHistory')}</Text>
                       </View>
                       <Text style={styles.settingDescription}>
-                        View and manage all past connections ({history.length} total)
+                        {t('settingsScreen.connectionHistoryDescription', { count: history.length })}
                       </Text>
                     </View>
                     <View style={styles.actionIcon}>
@@ -376,7 +378,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Auto-Launch Interface</Text>
+              <Text style={styles.modalTitle}>{t('settingsScreen.autoLaunchInterface')}</Text>
 
               <TVFocusable onPress={() => setShowLaunchPicker(false)}>
                 <TouchableOpacity

@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "ok": "OK",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "close": "閉じる",
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "retry": "再試行",
+    "share": "共有",
+    "disconnect": "切断",
+    "connect": "接続",
+    "gotIt": "了解"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "プレゼンテーションを制御",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "インターフェース",
+    "connect": "接続",
+    "settings": "設定"
+  },
+  "sidebar": {
+    "connected": "接続済み",
+    "connecting": "接続中...",
+    "disconnected": "切断済み"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "プレゼンテーションを制御",
+    "manualConnection": "手動接続",
+    "connectionDetails": "接続詳細",
+    "serverAddress": "サーバーアドレス",
+    "interfacePorts": "インターフェースポート",
+    "restoreDefaults": "デフォルトに戻す",
+    "portHelpText": "無効にするにはポートを空のままにしてください。各ポートは接続前にテストされます。",
+    "connectingToInterface": "インターフェースに接続中",
+    "scanQrCode": "QRコードをスキャン"
+  },
+  "connectStatus": {
+    "connected": "接続済み",
+    "connecting": "接続中...",
+    "offline": "オフライン",
+    "error": "エラー",
+    "attemptingToConnect": "接続を試みています",
+    "notConnected": "未接続",
+    "connectedTo": "{{name}}に接続済み"
+  },
+  "connectionHelp": {
+    "title": "接続ヘルプ",
+    "sameNetwork": "両方のデバイスが同じWiFiネットワークに接続されている必要があります",
+    "useLocalIP": "コンピューターのローカルIPアドレス（192.168.x.x）を使用してください"
+  },
+  "quickConnect": {
+    "title": "クイック接続",
+    "subtitle": "利用可能な接続",
+    "networkScan": "ネットワークスキャン",
+    "scan": "スキャン",
+    "scanning": "スキャン中...",
+    "recentConnections": "最近の接続",
+    "clearAll": "すべてクリア",
+    "noDevicesFound": "デバイスが見つかりません",
+    "tapToScan": "デバイスを検索するにはスキャンをタップしてください",
+    "noServices": "サービスなし",
+    "expoGoNotice": "Expo Goでシミュレート結果を表示しています。実際の検出には開発クライアントをビルドしてください。",
+    "networkDiscoveryNotAvailable": "ネットワーク検出が利用できません",
+    "networkDiscoveryMessage": "ネットワークスキャン（Bonjour/Zeroconf）はExpo Goでは動作しません。"
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "利用可能なインターフェース",
+    "notConnectedTitle": "未接続",
+    "notConnectedSubtitle": "インターフェースにアクセスするにはFreeShowに接続してください",
+    "connectToFreeShow": "FreeShowに接続",
+    "connectingTitle": "接続中",
+    "establishingConnection": "FreeShowへの接続を確立中",
+    "retryingConnection": "FreeShowへの接続を再試行中",
+    "attemptingReconnect": "FreeShowへの再接続を試みています"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "スライドとプレゼンテーションを制御"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "ステージ上の人のためのディスプレイ"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "オペレーター用の制御インターフェース"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "スクリーン用の出力ディスプレイ"
+    },
+    "api": {
+      "title": "APIコントロール",
+      "description": "ネイティブAPIコントロール"
+    }
+  },
+  "settingsScreen": {
+    "title": "設定",
+    "subtitle": "エクスペリエンスをカスタマイズ",
+    "keepAwake": "スリープ防止",
+    "keepAwakeDescription": "アプリを開いている間、デバイスの画面がスリープしないようにします",
+    "autoConnection": "自動接続",
+    "autoReconnect": "自動再接続",
+    "autoReconnectDescription": "接続が切れた時、FreeShowに自動的に再接続します",
+    "autoLaunchInterface": "インターフェースの自動起動",
+    "autoLaunchInterfaceDescription": "接続時に特定のインターフェースを自動的に開きます",
+    "autoLaunchFullscreen": "フルスクリーンの自動起動",
+    "autoLaunchFullscreenDescription": "インターフェースをフルスクリーンモードで自動的に開きます",
+    "history": "履歴",
+    "connectionHistory": "接続履歴",
+    "connectionHistoryDescription": "すべての過去の接続を表示および管理（合計{{count}}件）",
+    "none": "なし",
+    "noneDescription": "接続画面に留まる"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "FreeShowに接続されていません",
+    "goToConnect": "接続画面へ",
+    "apiNotAvailable": "APIインターフェースが利用できません",
+    "apiNotAvailableDescription": "現在の接続ではAPIインターフェースが無効になっています。API機能を使用するには、FreeShowでAPIポートを有効にして再接続してください。",
+    "reconnectWithApi": "APIで再接続",
+    "favorites": "お気に入り",
+    "noFavorites": "お気に入りはまだありません。任意のコマンドのスターをタップして追加してください。",
+    "categories": "カテゴリー",
+    "customCommand": "カスタムコマンド",
+    "connectionFailed": "接続に失敗しました",
+    "setupFailed": "セットアップに失敗しました",
+    "commandFailed": "コマンドに失敗しました",
+    "fullscreenHint": "フルスクリーンを終了するには、任意の隅をダブルタップしてください"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "切断",
+      "message": "FreeShowから切断してもよろしいですか？"
+    },
+    "enableInterface": {
+      "title": "インターフェースを有効化",
+      "invalidPort": "無効なポート",
+      "invalidPortMessage": "1から65535の間の有効なポート番号を入力してください"
+    },
+    "disableInterface": {
+      "cannotDisable": "インターフェースを無効化できません",
+      "cannotDisableMessage": "少なくとも1つのインターフェースを有効にしておく必要があります。このインターフェースを無効にする前に、別のインターフェースを有効にしてください。"
+    },
+    "runCommand": {
+      "title": "コマンドを実行",
+      "message": "このコマンドを実行してもよろしいですか？"
+    },
+    "clearHistory": {
+      "title": "履歴をクリア",
+      "message": "すべての接続履歴をクリアしてもよろしいですか？"
+    },
+    "removeConnection": {
+      "title": "接続を削除",
+      "message": "この接続を履歴から削除してもよろしいですか？"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "利用可能な接続ホストがありません",
+    "failedToCopyUrl": "URLのクリップボードへのコピーに失敗しました",
+    "cannotOpenUrl": "ブラウザでURLを開けません",
+    "failedToOpenUrl": "ブラウザでURLを開けませんでした",
+    "failedToEnableInterface": "インターフェースの有効化に失敗しました。もう一度お試しください。",
+    "failedToDisableInterface": "インターフェースの無効化に失敗しました。もう一度お試しください。",
+    "notConnectedToFreeShow": "FreeShowに接続されていません",
+    "connectionFailed": "接続に失敗しました",
+    "invalidConfiguration": "無効な構成"
+  },
+  "validation": {
+    "invalidHost": "有効なホストアドレスを入力してください",
+    "invalidPortConfig": "無効なポート構成"
+  },
+  "ports": {
+    "remote": "リモート",
+    "stage": "ステージ",
+    "control": "コントロール",
+    "output": "出力",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "接続履歴",
+    "subtitle": "過去の接続を表示および管理",
+    "noHistory": "接続履歴はまだありません",
+    "noHistoryDescription": "過去の接続がここに表示されます",
+    "lastUsed": "最後に使用",
+    "remove": "削除",
+    "clear": "クリア",
+    "clearAll": "すべてクリア"
+  },
+  "compactPopup": {
+    "copyUrl": "URLをコピー",
+    "openInBrowser": "ブラウザで開く",
+    "openInterface": "インターフェースを開く",
+    "enableInterface": "インターフェースを有効化",
+    "disableInterface": "インターフェースを無効化",
+    "interfaceDisabled": "インターフェース無効",
+    "port": "ポート"
+  },
+  "editNickname": {
+    "title": "接続名を編集",
+    "label": "接続名",
+    "placeholder": "この接続の名前を入力してください"
+  }
+}

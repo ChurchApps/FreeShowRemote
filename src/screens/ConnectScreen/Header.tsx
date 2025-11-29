@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, StyleSheet, Animated, Pressable, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   onDisconnect,
   onEditConnectionName,
 }) => {
+  const { t } = useTranslation();
   const status = React.useMemo((): {
     color: string;
     label: string;
@@ -45,42 +47,42 @@ const Header: React.FC<HeaderProps> = ({
     if (connectionStatus === 'connected' || isConnected) {
       return {
         color: '#4CAF50',
-        label: 'Connected',
+        label: t('connectStatus.connected'),
         icon: 'checkmark-circle',
         bgColor: 'rgba(76,175,80,0.12)',
         border: 'rgba(76,175,80,0.25)',
-        subtitle: `Connected to ${connectionName || connectionHost || 'Unknown'}`,
+        subtitle: t('connectStatus.connectedTo', { name: connectionName || connectionHost || 'Unknown' }),
       };
     }
     if (connectionStatus === 'connecting') {
       return {
         color: '#FF9800',
-        label: 'Connecting…',
+        label: t('connectStatus.connecting'),
         icon: 'time',
         bgColor: 'rgba(255,152,0,0.12)',
         border: 'rgba(255,152,0,0.25)',
-        subtitle: 'Attempting to connect',
+        subtitle: t('connectStatus.attemptingToConnect'),
       };
     }
     if (connectionStatus === 'error') {
       return {
         color: '#EF5350',
-        label: 'Error',
+        label: t('connectStatus.error'),
         icon: 'warning',
         bgColor: 'rgba(239,83,80,0.12)',
         border: 'rgba(239,83,80,0.25)',
-        subtitle: 'Not connected',
+        subtitle: t('connectStatus.notConnected'),
       };
     }
     return {
       color: FreeShowTheme.colors.textSecondary,
-      label: 'Offline',
+      label: t('connectStatus.offline'),
       icon: 'radio-button-off',
       bgColor: 'rgba(102,102,102,0.1)',
       border: 'rgba(255,255,255,0.12)',
-      subtitle: 'Not connected',
+      subtitle: t('connectStatus.notConnected'),
     };
-  }, [connectionStatus, isConnected, connectionName, connectionHost]);
+  }, [connectionStatus, isConnected, connectionName, connectionHost, t]);
 
   const screenWidth = Dimensions.get('window').width;
   const isTablet = screenWidth >= 768;
@@ -97,9 +99,9 @@ const Header: React.FC<HeaderProps> = ({
         >
           {/* Title Section - Left */}
           <View style={styles.titleSection}>
-            <Text style={[styles.title, isTablet && styles.titleTablet]}>FreeShow Remote</Text>
+            <Text style={[styles.title, isTablet && styles.titleTablet]}>{t('app.name')}</Text>
             <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>
-              Control your presentations
+              {t('app.subtitle')}
             </Text>
           </View>
 

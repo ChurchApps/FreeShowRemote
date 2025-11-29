@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "ok": "OK",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "share": "Partager",
+    "disconnect": "Déconnecter",
+    "connect": "Connecter",
+    "gotIt": "Compris"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Contrôlez vos présentations",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interface",
+    "connect": "Connexion",
+    "settings": "Paramètres"
+  },
+  "sidebar": {
+    "connected": "Connecté",
+    "connecting": "Connexion en cours...",
+    "disconnected": "Déconnecté"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Contrôlez vos présentations",
+    "manualConnection": "Connexion manuelle",
+    "connectionDetails": "Détails de connexion",
+    "serverAddress": "Adresse du serveur",
+    "interfacePorts": "Ports d'interface",
+    "restoreDefaults": "Restaurer les paramètres par défaut",
+    "portHelpText": "Laissez les ports vides pour les désactiver. Chaque port sera testé avant la connexion.",
+    "connectingToInterface": "Connexion à l'interface",
+    "scanQrCode": "Scanner le code QR"
+  },
+  "connectStatus": {
+    "connected": "Connecté",
+    "connecting": "Connexion en cours...",
+    "offline": "Hors ligne",
+    "error": "Erreur",
+    "attemptingToConnect": "Tentative de connexion",
+    "notConnected": "Non connecté",
+    "connectedTo": "Connecté à {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Aide à la connexion",
+    "sameNetwork": "Les deux appareils doivent être sur le même réseau WiFi",
+    "useLocalIP": "Utilisez l'adresse IP locale de votre ordinateur (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Connexion rapide",
+    "subtitle": "Connexions disponibles",
+    "networkScan": "Analyse du réseau",
+    "scan": "Analyser",
+    "scanning": "Analyse en cours...",
+    "recentConnections": "Connexions récentes",
+    "clearAll": "Tout effacer",
+    "noDevicesFound": "Aucun appareil trouvé",
+    "tapToScan": "Appuyez sur analyser pour trouver des appareils",
+    "noServices": "Aucun service",
+    "expoGoNotice": "Affichage de résultats simulés dans Expo Go. Créez un client de développement pour une découverte réelle.",
+    "networkDiscoveryNotAvailable": "Découverte réseau non disponible",
+    "networkDiscoveryMessage": "L'analyse réseau (Bonjour/Zeroconf) ne fonctionne pas dans Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Interfaces disponibles",
+    "notConnectedTitle": "Non connecté",
+    "notConnectedSubtitle": "Connectez-vous à FreeShow pour accéder aux interfaces",
+    "connectToFreeShow": "Se connecter à FreeShow",
+    "connectingTitle": "Connexion en cours",
+    "establishingConnection": "Établissement de la connexion à FreeShow",
+    "retryingConnection": "Nouvelle tentative de connexion à FreeShow",
+    "attemptingReconnect": "Tentative de reconnexion à FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Contrôler les diapositives et présentations"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Affichage pour les personnes sur scène"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Interface de contrôle pour les opérateurs"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Affichage de sortie pour les écrans"
+    },
+    "api": {
+      "title": "Contrôles API",
+      "description": "Contrôles API natifs"
+    }
+  },
+  "settingsScreen": {
+    "title": "Paramètres",
+    "subtitle": "Personnalisez votre expérience",
+    "keepAwake": "Maintenir éveillé",
+    "keepAwakeDescription": "Empêcher l'écran de votre appareil de se mettre en veille lorsque l'application est ouverte",
+    "autoConnection": "CONNEXION AUTOMATIQUE",
+    "autoReconnect": "Reconnexion automatique",
+    "autoReconnectDescription": "Se reconnecter automatiquement à FreeShow lorsque la connexion est perdue",
+    "autoLaunchInterface": "Lancement automatique de l'interface",
+    "autoLaunchInterfaceDescription": "Ouvrir automatiquement une interface spécifique lors de la connexion",
+    "autoLaunchFullscreen": "Lancement automatique en plein écran",
+    "autoLaunchFullscreenDescription": "Ouvrir automatiquement l'interface en mode plein écran",
+    "history": "HISTORIQUE",
+    "connectionHistory": "Historique des connexions",
+    "connectionHistoryDescription": "Afficher et gérer toutes les connexions passées ({{count}} au total)",
+    "none": "Aucun",
+    "noneDescription": "Rester sur l'écran de connexion"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Non connecté à FreeShow",
+    "goToConnect": "Aller à la connexion",
+    "apiNotAvailable": "Interface API non disponible",
+    "apiNotAvailableDescription": "L'interface API est désactivée dans votre connexion actuelle. Pour utiliser les fonctionnalités API, activez le port API dans FreeShow et reconnectez-vous.",
+    "reconnectWithApi": "Reconnecter avec l'API",
+    "favorites": "Favoris",
+    "noFavorites": "Aucun favori pour le moment. Appuyez sur l'étoile de n'importe quelle commande pour l'ajouter.",
+    "categories": "Catégories",
+    "customCommand": "Commande personnalisée",
+    "connectionFailed": "Échec de la connexion",
+    "setupFailed": "Échec de la configuration",
+    "commandFailed": "Échec de la commande",
+    "fullscreenHint": "Appuyez deux fois sur n'importe quel coin pour quitter le plein écran"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Déconnecter",
+      "message": "Êtes-vous sûr de vouloir vous déconnecter de FreeShow ?"
+    },
+    "enableInterface": {
+      "title": "Activer l'interface",
+      "invalidPort": "Port invalide",
+      "invalidPortMessage": "Veuillez entrer un numéro de port valide entre 1 et 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Impossible de désactiver l'interface",
+      "cannotDisableMessage": "Au moins une interface doit rester activée. Veuillez activer une autre interface avant de désactiver celle-ci."
+    },
+    "runCommand": {
+      "title": "Exécuter la commande",
+      "message": "Êtes-vous sûr de vouloir exécuter cette commande ?"
+    },
+    "clearHistory": {
+      "title": "Effacer l'historique",
+      "message": "Êtes-vous sûr de vouloir effacer tout l'historique des connexions ?"
+    },
+    "removeConnection": {
+      "title": "Supprimer la connexion",
+      "message": "Êtes-vous sûr de vouloir supprimer cette connexion de l'historique ?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Aucun hôte de connexion disponible",
+    "failedToCopyUrl": "Échec de la copie de l'URL dans le presse-papiers",
+    "cannotOpenUrl": "Impossible d'ouvrir l'URL dans le navigateur",
+    "failedToOpenUrl": "Échec de l'ouverture de l'URL dans le navigateur",
+    "failedToEnableInterface": "Échec de l'activation de l'interface. Veuillez réessayer.",
+    "failedToDisableInterface": "Échec de la désactivation de l'interface. Veuillez réessayer.",
+    "notConnectedToFreeShow": "Non connecté à FreeShow",
+    "connectionFailed": "Échec de la connexion",
+    "invalidConfiguration": "Configuration invalide"
+  },
+  "validation": {
+    "invalidHost": "Veuillez entrer une adresse d'hôte valide",
+    "invalidPortConfig": "Configuration de port invalide"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Stage",
+    "control": "Control",
+    "output": "Output",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Historique des connexions",
+    "subtitle": "Afficher et gérer vos connexions passées",
+    "noHistory": "Aucun historique de connexion pour le moment",
+    "noHistoryDescription": "Vos connexions passées apparaîtront ici",
+    "lastUsed": "Dernière utilisation",
+    "remove": "Supprimer",
+    "clear": "Effacer",
+    "clearAll": "Tout effacer"
+  },
+  "compactPopup": {
+    "copyUrl": "Copier l'URL",
+    "openInBrowser": "Ouvrir dans le navigateur",
+    "openInterface": "Ouvrir l'interface",
+    "enableInterface": "Activer l'interface",
+    "disableInterface": "Désactiver l'interface",
+    "interfaceDisabled": "Interface désactivée",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Modifier le nom de la connexion",
+    "label": "Nom de la connexion",
+    "placeholder": "Entrez un nom pour cette connexion"
+  }
+}

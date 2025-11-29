@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "ok": "OK",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "close": "Zamknij",
+    "loading": "Ładowanie...",
+    "error": "Błąd",
+    "retry": "Spróbuj ponownie",
+    "share": "Udostępnij",
+    "disconnect": "Rozłącz",
+    "connect": "Połącz",
+    "gotIt": "Rozumiem"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Steruj swoimi prezentacjami",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interfejs",
+    "connect": "Połącz",
+    "settings": "Ustawienia"
+  },
+  "sidebar": {
+    "connected": "Połączono",
+    "connecting": "Łączenie...",
+    "disconnected": "Rozłączono"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Steruj swoimi prezentacjami",
+    "manualConnection": "Połączenie ręczne",
+    "connectionDetails": "Szczegóły połączenia",
+    "serverAddress": "Adres serwera",
+    "interfacePorts": "Porty interfejsu",
+    "restoreDefaults": "Przywróć domyślne",
+    "portHelpText": "Pozostaw puste porty, aby wyłączyć. Każdy port zostanie przetestowany przed połączeniem.",
+    "connectingToInterface": "Łączenie z interfejsem",
+    "scanQrCode": "Skanuj kod QR"
+  },
+  "connectStatus": {
+    "connected": "Połączono",
+    "connecting": "Łączenie...",
+    "offline": "Offline",
+    "error": "Błąd",
+    "attemptingToConnect": "Próba połączenia",
+    "notConnected": "Nie połączono",
+    "connectedTo": "Połączono z {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Pomoc połączenia",
+    "sameNetwork": "Oba urządzenia powinny być w tej samej sieci WiFi",
+    "useLocalIP": "Użyj lokalnego adresu IP komputera (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Szybkie połączenie",
+    "subtitle": "Dostępne połączenia",
+    "networkScan": "Skanowanie sieci",
+    "scan": "Skanuj",
+    "scanning": "Skanowanie...",
+    "recentConnections": "Ostatnie połączenia",
+    "clearAll": "Wyczyść wszystko",
+    "noDevicesFound": "Nie znaleziono urządzeń",
+    "tapToScan": "Dotknij skanuj, aby znaleźć urządzenia",
+    "noServices": "Brak usług",
+    "expoGoNotice": "Wyświetlanie symulowanych wyników w Expo Go. Zbuduj klienta deweloperskiego dla prawdziwego wykrywania.",
+    "networkDiscoveryNotAvailable": "Wykrywanie sieci niedostępne",
+    "networkDiscoveryMessage": "Skanowanie sieci (Bonjour/Zeroconf) nie działa w Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Dostępne interfejsy",
+    "notConnectedTitle": "Nie połączono",
+    "notConnectedSubtitle": "Połącz się z FreeShow, aby uzyskać dostęp do interfejsów",
+    "connectToFreeShow": "Połącz z FreeShow",
+    "connectingTitle": "Łączenie",
+    "establishingConnection": "Nawiązywanie połączenia z FreeShow",
+    "retryingConnection": "Ponowna próba połączenia z FreeShow",
+    "attemptingReconnect": "Próba ponownego połączenia z FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Steruj slajdami i prezentacjami"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Wyświetlacz dla osób na scenie"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Interfejs sterowania dla operatorów"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Wyświetlacz wyjściowy dla ekranów"
+    },
+    "api": {
+      "title": "Sterowanie API",
+      "description": "Natywne sterowanie API"
+    }
+  },
+  "settingsScreen": {
+    "title": "Ustawienia",
+    "subtitle": "Dostosuj swoje doświadczenie",
+    "keepAwake": "Nie usypiaj",
+    "keepAwakeDescription": "Zapobiegaj uśpieniu ekranu urządzenia, gdy aplikacja jest otwarta",
+    "autoConnection": "AUTOMATYCZNE POŁĄCZENIE",
+    "autoReconnect": "Automatyczne ponowne połączenie",
+    "autoReconnectDescription": "Automatycznie łącz ponownie z FreeShow po utracie połączenia",
+    "autoLaunchInterface": "Automatyczne uruchamianie interfejsu",
+    "autoLaunchInterfaceDescription": "Automatycznie otwieraj określony interfejs po połączeniu",
+    "autoLaunchFullscreen": "Automatyczny pełny ekran",
+    "autoLaunchFullscreenDescription": "Automatycznie otwieraj interfejs w trybie pełnoekranowym",
+    "history": "HISTORIA",
+    "connectionHistory": "Historia połączeń",
+    "connectionHistoryDescription": "Zobacz i zarządzaj wszystkimi wcześniejszymi połączeniami (łącznie {{count}})",
+    "none": "Brak",
+    "noneDescription": "Pozostań na ekranie połączenia"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Nie połączono z FreeShow",
+    "goToConnect": "Przejdź do połączenia",
+    "apiNotAvailable": "Interfejs API niedostępny",
+    "apiNotAvailableDescription": "Interfejs API jest wyłączony w bieżącym połączeniu. Aby korzystać z funkcji API, włącz port API w FreeShow i połącz się ponownie.",
+    "reconnectWithApi": "Połącz ponownie z API",
+    "favorites": "Ulubione",
+    "noFavorites": "Brak ulubionych. Dotknij gwiazdkę przy dowolnym poleceniu, aby je dodać.",
+    "categories": "Kategorie",
+    "customCommand": "Polecenie niestandardowe",
+    "connectionFailed": "Połączenie nie powiodło się",
+    "setupFailed": "Konfiguracja nie powiodła się",
+    "commandFailed": "Polecenie nie powiodło się",
+    "fullscreenHint": "Dotknij dwukrotnie dowolny róg, aby wyjść z pełnego ekranu"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Rozłącz",
+      "message": "Czy na pewno chcesz rozłączyć się z FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Włącz interfejs",
+      "invalidPort": "Nieprawidłowy port",
+      "invalidPortMessage": "Wprowadź prawidłowy numer portu między 1 a 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Nie można wyłączyć interfejsu",
+      "cannotDisableMessage": "Co najmniej jeden interfejs musi pozostać włączony. Włącz inny interfejs przed wyłączeniem tego."
+    },
+    "runCommand": {
+      "title": "Uruchom polecenie",
+      "message": "Czy na pewno chcesz uruchomić to polecenie?"
+    },
+    "clearHistory": {
+      "title": "Wyczyść historię",
+      "message": "Czy na pewno chcesz wyczyścić całą historię połączeń?"
+    },
+    "removeConnection": {
+      "title": "Usuń połączenie",
+      "message": "Czy na pewno chcesz usunąć to połączenie z historii?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Brak dostępnego hosta połączenia",
+    "failedToCopyUrl": "Nie udało się skopiować adresu URL do schowka",
+    "cannotOpenUrl": "Nie można otworzyć adresu URL w przeglądarce",
+    "failedToOpenUrl": "Nie udało się otworzyć adresu URL w przeglądarce",
+    "failedToEnableInterface": "Nie udało się włączyć interfejsu. Spróbuj ponownie.",
+    "failedToDisableInterface": "Nie udało się wyłączyć interfejsu. Spróbuj ponownie.",
+    "notConnectedToFreeShow": "Nie połączono z FreeShow",
+    "connectionFailed": "Połączenie nie powiodło się",
+    "invalidConfiguration": "Nieprawidłowa konfiguracja"
+  },
+  "validation": {
+    "invalidHost": "Wprowadź prawidłowy adres hosta",
+    "invalidPortConfig": "Nieprawidłowa konfiguracja portu"
+  },
+  "ports": {
+    "remote": "Zdalny",
+    "stage": "Scena",
+    "control": "Sterowanie",
+    "output": "Wyjście",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Historia połączeń",
+    "subtitle": "Zobacz i zarządzaj wcześniejszymi połączeniami",
+    "noHistory": "Brak historii połączeń",
+    "noHistoryDescription": "Twoje wcześniejsze połączenia pojawią się tutaj",
+    "lastUsed": "Ostatnio użyto",
+    "remove": "Usuń",
+    "clear": "Wyczyść",
+    "clearAll": "Wyczyść wszystko"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopiuj URL",
+    "openInBrowser": "Otwórz w przeglądarce",
+    "openInterface": "Otwórz interfejs",
+    "enableInterface": "Włącz interfejs",
+    "disableInterface": "Wyłącz interfejs",
+    "interfaceDisabled": "Interfejs wyłączony",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Edytuj nazwę połączenia",
+    "label": "Nazwa połączenia",
+    "placeholder": "Wprowadź nazwę dla tego połączenia"
+  }
+}

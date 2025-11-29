@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Peruuta",
+    "confirm": "Vahvista",
+    "ok": "OK",
+    "save": "Tallenna",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "close": "Sulje",
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "retry": "Yritä uudelleen",
+    "share": "Jaa",
+    "disconnect": "Katkaise yhteys",
+    "connect": "Yhdistä",
+    "gotIt": "Selvä"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Hallitse esityksiäsi",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Käyttöliittymä",
+    "connect": "Yhdistä",
+    "settings": "Asetukset"
+  },
+  "sidebar": {
+    "connected": "Yhdistetty",
+    "connecting": "Yhdistetään...",
+    "disconnected": "Yhteys katkaistu"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Hallitse esityksiäsi",
+    "manualConnection": "Manuaalinen yhteys",
+    "connectionDetails": "Yhteyden tiedot",
+    "serverAddress": "Palvelimen osoite",
+    "interfacePorts": "Käyttöliittymän portit",
+    "restoreDefaults": "Palauta oletukset",
+    "portHelpText": "Jätä portit tyhjiksi poistaaksesi ne käytöstä. Jokainen portti testataan ennen yhdistämistä.",
+    "connectingToInterface": "Yhdistetään käyttöliittymään",
+    "scanQrCode": "Skannaa QR-koodi"
+  },
+  "connectStatus": {
+    "connected": "Yhdistetty",
+    "connecting": "Yhdistetään...",
+    "offline": "Ei yhteyttä",
+    "error": "Virhe",
+    "attemptingToConnect": "Yritetään yhdistää",
+    "notConnected": "Ei yhdistetty",
+    "connectedTo": "Yhdistetty kohteeseen {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Yhteyden ohje",
+    "sameNetwork": "Molempien laitteiden tulisi olla samassa WiFi-verkossa",
+    "useLocalIP": "Käytä tietokoneesi paikallista IP-osoitetta (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Pikayhteys",
+    "subtitle": "Saatavilla olevat yhteydet",
+    "networkScan": "Verkon skannaus",
+    "scan": "Skannaa",
+    "scanning": "Skannataan...",
+    "recentConnections": "Viimeaikaiset yhteydet",
+    "clearAll": "Tyhjennä kaikki",
+    "noDevicesFound": "Laitteita ei löytynyt",
+    "tapToScan": "Napauta skannaa löytääksesi laitteita",
+    "noServices": "Ei palveluita",
+    "expoGoNotice": "Näytetään simuloituja tuloksia Expo Go:ssa. Rakenna dev-asiakas todellista etsintää varten.",
+    "networkDiscoveryNotAvailable": "Verkkoetsintä ei saatavilla",
+    "networkDiscoveryMessage": "Verkon skannaus (Bonjour/Zeroconf) ei toimi Expo Go:ssa."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Saatavilla olevat käyttöliittymät",
+    "notConnectedTitle": "Ei yhdistetty",
+    "notConnectedSubtitle": "Yhdistä FreeShow:hun käyttääksesi käyttöliittymiä",
+    "connectToFreeShow": "Yhdistä FreeShow:hun",
+    "connectingTitle": "Yhdistetään",
+    "establishingConnection": "Muodostetaan yhteyttä FreeShow:hun",
+    "retryingConnection": "Yritetään yhteyttä FreeShow:hun uudelleen",
+    "attemptingReconnect": "Yritetään yhdistää FreeShow:hun uudelleen"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Hallitse dioja ja esityksiä"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Näyttö lavalla oleville"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Hallintakäyttöliittymä operaattoreille"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Ulostulon näyttö ruuduille"
+    },
+    "api": {
+      "title": "API-ohjaimet",
+      "description": "Alkuperäiset API-ohjaimet"
+    }
+  },
+  "settingsScreen": {
+    "title": "Asetukset",
+    "subtitle": "Mukauta kokemustasi",
+    "keepAwake": "Pidä hereillä",
+    "keepAwakeDescription": "Estä laitteesi näyttöä sammumasta kun sovellus on auki",
+    "autoConnection": "AUTOMAATTINEN YHTEYS",
+    "autoReconnect": "Automaattinen uudelleenyhdistäminen",
+    "autoReconnectDescription": "Yhdistä automaattisesti FreeShow:hun uudelleen kun yhteys katkeaa",
+    "autoLaunchInterface": "Käynnistä käyttöliittymä automaattisesti",
+    "autoLaunchInterfaceDescription": "Avaa tietty käyttöliittymä automaattisesti yhdistettäessä",
+    "autoLaunchFullscreen": "Käynnistä koko näyttö automaattisesti",
+    "autoLaunchFullscreenDescription": "Avaa käyttöliittymä automaattisesti koko näytön tilassa",
+    "history": "HISTORIA",
+    "connectionHistory": "Yhteyshistoria",
+    "connectionHistoryDescription": "Näytä ja hallitse kaikkia aiempia yhteyksiä ({{count}} yhteensä)",
+    "none": "Ei mitään",
+    "noneDescription": "Pysy yhdistä-näytöllä"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Ei yhdistetty FreeShow:hun",
+    "goToConnect": "Siirry yhdistämään",
+    "apiNotAvailable": "API-käyttöliittymä ei saatavilla",
+    "apiNotAvailableDescription": "API-käyttöliittymä on poistettu käytöstä nykyisessä yhteydessäsi. Käyttääksesi API-ominaisuuksia, ota API-portti käyttöön FreeShow:ssa ja yhdistä uudelleen.",
+    "reconnectWithApi": "Yhdistä uudelleen API:lla",
+    "favorites": "Suosikit",
+    "noFavorites": "Ei vielä suosikkeja. Napauta tähteä missä tahansa komennossa lisätäksesi sen.",
+    "categories": "Kategoriat",
+    "customCommand": "Mukautettu komento",
+    "connectionFailed": "Yhdistäminen epäonnistui",
+    "setupFailed": "Asennus epäonnistui",
+    "commandFailed": "Komento epäonnistui",
+    "fullscreenHint": "Kaksoisnapauta mitä tahansa kulmaa poistuaksesi koko näytön tilasta"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Katkaise yhteys",
+      "message": "Haluatko varmasti katkaista yhteyden FreeShow:hun?"
+    },
+    "enableInterface": {
+      "title": "Ota käyttöliittymä käyttöön",
+      "invalidPort": "Virheellinen portti",
+      "invalidPortMessage": "Anna kelvollinen porttinumero väliltä 1-65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Käyttöliittymää ei voi poistaa käytöstä",
+      "cannotDisableMessage": "Vähintään yhden käyttöliittymän on pysyttävä käytössä. Ota toinen käyttöliittymä käyttöön ennen tämän poistamista käytöstä."
+    },
+    "runCommand": {
+      "title": "Suorita komento",
+      "message": "Haluatko varmasti suorittaa tämän komennon?"
+    },
+    "clearHistory": {
+      "title": "Tyhjennä historia",
+      "message": "Haluatko varmasti tyhjentää koko yhteyshistorian?"
+    },
+    "removeConnection": {
+      "title": "Poista yhteys",
+      "message": "Haluatko varmasti poistaa tämän yhteyden historiasta?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Yhteyden isäntää ei ole saatavilla",
+    "failedToCopyUrl": "URL:n kopiointi leikepöydälle epäonnistui",
+    "cannotOpenUrl": "URL:ää ei voi avata selaimessa",
+    "failedToOpenUrl": "URL:n avaaminen selaimessa epäonnistui",
+    "failedToEnableInterface": "Käyttöliittymän käyttöönotto epäonnistui. Yritä uudelleen.",
+    "failedToDisableInterface": "Käyttöliittymän poistaminen käytöstä epäonnistui. Yritä uudelleen.",
+    "notConnectedToFreeShow": "Ei yhdistetty FreeShow:hun",
+    "connectionFailed": "Yhdistäminen epäonnistui",
+    "invalidConfiguration": "Virheellinen kokoonpano"
+  },
+  "validation": {
+    "invalidHost": "Anna kelvollinen isäntäosoite",
+    "invalidPortConfig": "Virheellinen porttikokoonpano"
+  },
+  "ports": {
+    "remote": "Etä",
+    "stage": "Lava",
+    "control": "Hallinta",
+    "output": "Ulostulo",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Yhteyshistoria",
+    "subtitle": "Näytä ja hallitse aiempia yhteyksiäsi",
+    "noHistory": "Ei vielä yhteyshistoriaa",
+    "noHistoryDescription": "Aiemmat yhteytesi näkyvät täällä",
+    "lastUsed": "Viimeksi käytetty",
+    "remove": "Poista",
+    "clear": "Tyhjennä",
+    "clearAll": "Tyhjennä kaikki"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopioi URL",
+    "openInBrowser": "Avaa selaimessa",
+    "openInterface": "Avaa käyttöliittymä",
+    "enableInterface": "Ota käyttöliittymä käyttöön",
+    "disableInterface": "Poista käyttöliittymä käytöstä",
+    "interfaceDisabled": "Käyttöliittymä poistettu käytöstä",
+    "port": "Portti"
+  },
+  "editNickname": {
+    "title": "Muokkaa yhteyden nimeä",
+    "label": "Yhteyden nimi",
+    "placeholder": "Anna nimi tälle yhteydelle"
+  }
+}

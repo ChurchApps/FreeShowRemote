@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Animated,
   Pressable,
@@ -25,6 +26,7 @@ interface NotConnectedScreenProps {
 const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
   onNavigateToConnect
 }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
   return (
@@ -51,9 +53,9 @@ const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
           <Ionicons name="wifi-outline" size={56} color={FreeShowTheme.colors.textSecondary} />
         </View>
 
-        <Text style={styles.notConnectedTitle}>Not Connected</Text>
+        <Text style={styles.notConnectedTitle}>{t('interfaceScreen.notConnectedTitle')}</Text>
         <Text style={styles.notConnectedSubtitle}>
-          Connect to FreeShow to access interfaces
+          {t('interfaceScreen.notConnectedSubtitle')}
         </Text>
 
         <TVFocusable onPress={onNavigateToConnect}>
@@ -67,7 +69,7 @@ const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
             accessibilityLabel="Connect to FreeShow server"
             accessibilityHint="Navigate to connection screen to set up a new connection"
           >
-            <Text style={styles.connectButtonText}>Connect to FreeShow</Text>
+            <Text style={styles.connectButtonText}>{t('interfaceScreen.connectToFreeShow')}</Text>
             <Ionicons name="arrow-forward" size={18} color="white" style={styles.connectButtonIcon} />
           </Pressable>
         </TVFocusable>

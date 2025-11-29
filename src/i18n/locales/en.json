@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "ok": "OK",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "share": "Share",
+    "disconnect": "Disconnect",
+    "connect": "Connect",
+    "gotIt": "Got it"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Control your presentations",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interface",
+    "connect": "Connect",
+    "settings": "Settings"
+  },
+  "sidebar": {
+    "connected": "Connected",
+    "connecting": "Connecting...",
+    "disconnected": "Disconnected"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Control your presentations",
+    "manualConnection": "Manual Connection",
+    "connectionDetails": "Connection Details",
+    "serverAddress": "Server Address",
+    "interfacePorts": "Interface Ports",
+    "restoreDefaults": "Restore Defaults",
+    "portHelpText": "Leave ports empty to disable. Each port will be tested before connecting.",
+    "connectingToInterface": "Connecting to interface",
+    "scanQrCode": "Scan QR code"
+  },
+  "connectStatus": {
+    "connected": "Connected",
+    "connecting": "Connecting...",
+    "offline": "Offline",
+    "error": "Error",
+    "attemptingToConnect": "Attempting to connect",
+    "notConnected": "Not connected",
+    "connectedTo": "Connected to {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Connection Help",
+    "sameNetwork": "Both devices should be on the same WiFi network",
+    "useLocalIP": "Use your computer's local IP address (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Quick Connect",
+    "subtitle": "Available connections",
+    "networkScan": "Network Scan",
+    "scan": "Scan",
+    "scanning": "Scanning...",
+    "recentConnections": "Recent Connections",
+    "clearAll": "Clear All",
+    "noDevicesFound": "No devices found",
+    "tapToScan": "Tap scan to find devices",
+    "noServices": "No Services",
+    "expoGoNotice": "Showing simulated results in Expo Go. Build a dev client for real discovery.",
+    "networkDiscoveryNotAvailable": "Network Discovery Not Available",
+    "networkDiscoveryMessage": "Network scanning (Bonjour/Zeroconf) doesn't work in Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Available Interfaces",
+    "notConnectedTitle": "Not Connected",
+    "notConnectedSubtitle": "Connect to FreeShow to access interfaces",
+    "connectToFreeShow": "Connect to FreeShow",
+    "connectingTitle": "Connecting",
+    "establishingConnection": "Establishing connection to FreeShow",
+    "retryingConnection": "Retrying connection to FreeShow",
+    "attemptingReconnect": "Attempting to reconnect to FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Control slides and presentations"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Display for people on stage"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Control interface for operators"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Output display for screens"
+    },
+    "api": {
+      "title": "API Controls",
+      "description": "Native API controls"
+    }
+  },
+  "settingsScreen": {
+    "title": "Settings",
+    "subtitle": "Customize your experience",
+    "keepAwake": "Keep Awake",
+    "keepAwakeDescription": "Prevent your device screen from sleeping while the app is open",
+    "autoConnection": "AUTO CONNECTION",
+    "autoReconnect": "Auto-Reconnect",
+    "autoReconnectDescription": "Automatically reconnect to FreeShow when the connection is lost",
+    "autoLaunchInterface": "Auto-Launch Interface",
+    "autoLaunchInterfaceDescription": "Automatically open a specific interface when connected",
+    "autoLaunchFullscreen": "Auto-Launch Fullscreen",
+    "autoLaunchFullscreenDescription": "Automatically open the interface in fullscreen mode",
+    "history": "HISTORY",
+    "connectionHistory": "Connection History",
+    "connectionHistoryDescription": "View and manage all past connections ({{count}} total)",
+    "none": "None",
+    "noneDescription": "Stay on Connect screen"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Not connected to FreeShow",
+    "goToConnect": "Go to Connect",
+    "apiNotAvailable": "API Interface Not Available",
+    "apiNotAvailableDescription": "The API interface is disabled in your current connection. To use API features, enable the API port in FreeShow and reconnect.",
+    "reconnectWithApi": "Reconnect with API",
+    "favorites": "Favorites",
+    "noFavorites": "No favorites yet. Tap the star on any command to add it.",
+    "categories": "Categories",
+    "customCommand": "Custom Command",
+    "connectionFailed": "Connection Failed",
+    "setupFailed": "Setup Failed",
+    "commandFailed": "Command Failed",
+    "fullscreenHint": "Double-tap any corner to exit fullscreen"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Disconnect",
+      "message": "Are you sure you want to disconnect from FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Enable Interface",
+      "invalidPort": "Invalid Port",
+      "invalidPortMessage": "Please enter a valid port number between 1 and 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Cannot Disable Interface",
+      "cannotDisableMessage": "At least one interface must remain enabled. Please enable another interface before disabling this one."
+    },
+    "runCommand": {
+      "title": "Run Command",
+      "message": "Are you sure you want to run this command?"
+    },
+    "clearHistory": {
+      "title": "Clear History",
+      "message": "Are you sure you want to clear all connection history?"
+    },
+    "removeConnection": {
+      "title": "Remove Connection",
+      "message": "Are you sure you want to remove this connection from history?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "No connection host available",
+    "failedToCopyUrl": "Failed to copy URL to clipboard",
+    "cannotOpenUrl": "Cannot open URL in browser",
+    "failedToOpenUrl": "Failed to open URL in browser",
+    "failedToEnableInterface": "Failed to enable interface. Please try again.",
+    "failedToDisableInterface": "Failed to disable interface. Please try again.",
+    "notConnectedToFreeShow": "Not connected to FreeShow",
+    "connectionFailed": "Connection failed",
+    "invalidConfiguration": "Invalid configuration"
+  },
+  "validation": {
+    "invalidHost": "Please enter a valid host address",
+    "invalidPortConfig": "Invalid port configuration"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Stage",
+    "control": "Control",
+    "output": "Output",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Connection History",
+    "subtitle": "View and manage your past connections",
+    "noHistory": "No connection history yet",
+    "noHistoryDescription": "Your past connections will appear here",
+    "lastUsed": "Last used",
+    "remove": "Remove",
+    "clear": "Clear",
+    "clearAll": "Clear All"
+  },
+  "compactPopup": {
+    "copyUrl": "Copy URL",
+    "openInBrowser": "Open in Browser",
+    "openInterface": "Open Interface",
+    "enableInterface": "Enable Interface",
+    "disableInterface": "Disable Interface",
+    "interfaceDisabled": "Interface Disabled",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Edit Connection Name",
+    "label": "Connection Name",
+    "placeholder": "Enter a name for this connection"
+  }
+}

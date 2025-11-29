@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Animated, PanResponder } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -30,6 +31,7 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
   onEnableInterface,
   onDisableInterface,
 }) => {
+  const { t } = useTranslation();
   // Get safe area insets
   const insets = useSafeAreaInsets();
   
@@ -192,7 +194,7 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                       <View style={styles.compactTitleContainer}>
                         <Text style={styles.compactTitle}>{show?.title || 'Interface'}</Text>
                         <Text style={styles.compactSubtitle}>{show?.description || 'No description'}</Text>
-                        <Text style={styles.disabledText}>Interface disabled</Text>
+                        <Text style={styles.disabledText}>{t('compactPopup.interfaceDisabled')}</Text>
                       </View>
                     ) : (
                       <TouchableOpacity
@@ -269,8 +271,8 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                           <Ionicons name="add-circle-outline" size={24} color="rgba(255,255,255,0.8)" />
                         </View>
                         <View style={styles.compactButtonTextContainer}>
-                          <Text style={styles.compactSecondaryButtonText}>Enable Interface</Text>
-                          <Text style={styles.compactSecondaryButtonSubtext}>Start this interface</Text>
+                          <Text style={styles.compactSecondaryButtonText}>{t('compactPopup.enableInterface')}</Text>
+                          <Text style={styles.compactSecondaryButtonSubtext}>{t('compactPopup.port')}</Text>
                         </View>
                       </View>
                     </View>
@@ -294,8 +296,8 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                             <Ionicons name="close-circle-outline" size={24} color="rgba(255,255,255,0.8)" />
                           </View>
                           <View style={styles.compactButtonTextContainer}>
-                            <Text style={styles.compactSecondaryButtonText}>Disable Interface</Text>
-                            <Text style={styles.compactSecondaryButtonSubtext}>Stop this interface</Text>
+                            <Text style={styles.compactSecondaryButtonText}>{t('compactPopup.disableInterface')}</Text>
+                            <Text style={styles.compactSecondaryButtonSubtext}>{t('compactPopup.port')}</Text>
                           </View>
                         </View>
                       </View>

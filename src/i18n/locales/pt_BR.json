@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "ok": "OK",
+    "save": "Salvar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "close": "Fechar",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "retry": "Tentar novamente",
+    "share": "Compartilhar",
+    "disconnect": "Desconectar",
+    "connect": "Conectar",
+    "gotIt": "Entendi"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Controle suas apresentações",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interface",
+    "connect": "Conectar",
+    "settings": "Configurações"
+  },
+  "sidebar": {
+    "connected": "Conectado",
+    "connecting": "Conectando...",
+    "disconnected": "Desconectado"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Controle suas apresentações",
+    "manualConnection": "Conexão Manual",
+    "connectionDetails": "Detalhes da Conexão",
+    "serverAddress": "Endereço do Servidor",
+    "interfacePorts": "Portas da Interface",
+    "restoreDefaults": "Restaurar Padrões",
+    "portHelpText": "Deixe as portas vazias para desabilitar. Cada porta será testada antes de conectar.",
+    "connectingToInterface": "Conectando à interface",
+    "scanQrCode": "Escanear código QR"
+  },
+  "connectStatus": {
+    "connected": "Conectado",
+    "connecting": "Conectando...",
+    "offline": "Offline",
+    "error": "Erro",
+    "attemptingToConnect": "Tentando conectar",
+    "notConnected": "Não conectado",
+    "connectedTo": "Conectado a {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Ajuda de Conexão",
+    "sameNetwork": "Ambos os dispositivos devem estar na mesma rede WiFi",
+    "useLocalIP": "Use o endereço IP local do seu computador (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Conexão Rápida",
+    "subtitle": "Conexões disponíveis",
+    "networkScan": "Escaneamento de Rede",
+    "scan": "Escanear",
+    "scanning": "Escaneando...",
+    "recentConnections": "Conexões Recentes",
+    "clearAll": "Limpar Tudo",
+    "noDevicesFound": "Nenhum dispositivo encontrado",
+    "tapToScan": "Toque em escanear para encontrar dispositivos",
+    "noServices": "Sem Serviços",
+    "expoGoNotice": "Mostrando resultados simulados no Expo Go. Crie um cliente de desenvolvimento para descoberta real.",
+    "networkDiscoveryNotAvailable": "Descoberta de Rede Não Disponível",
+    "networkDiscoveryMessage": "O escaneamento de rede (Bonjour/Zeroconf) não funciona no Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Interfaces Disponíveis",
+    "notConnectedTitle": "Não Conectado",
+    "notConnectedSubtitle": "Conecte-se ao FreeShow para acessar as interfaces",
+    "connectToFreeShow": "Conectar ao FreeShow",
+    "connectingTitle": "Conectando",
+    "establishingConnection": "Estabelecendo conexão com o FreeShow",
+    "retryingConnection": "Tentando conexão novamente com o FreeShow",
+    "attemptingReconnect": "Tentando reconectar ao FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Controle slides e apresentações"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Exibição para pessoas no palco"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Interface de controle para operadores"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Exibição de saída para telas"
+    },
+    "api": {
+      "title": "Controles de API",
+      "description": "Controles nativos de API"
+    }
+  },
+  "settingsScreen": {
+    "title": "Configurações",
+    "subtitle": "Personalize sua experiência",
+    "keepAwake": "Manter Ativo",
+    "keepAwakeDescription": "Impedir que a tela do dispositivo durma enquanto o aplicativo estiver aberto",
+    "autoConnection": "CONEXÃO AUTOMÁTICA",
+    "autoReconnect": "Reconexão Automática",
+    "autoReconnectDescription": "Reconectar automaticamente ao FreeShow quando a conexão for perdida",
+    "autoLaunchInterface": "Iniciar Interface Automaticamente",
+    "autoLaunchInterfaceDescription": "Abrir automaticamente uma interface específica ao conectar",
+    "autoLaunchFullscreen": "Iniciar em Tela Cheia Automaticamente",
+    "autoLaunchFullscreenDescription": "Abrir automaticamente a interface no modo tela cheia",
+    "history": "HISTÓRICO",
+    "connectionHistory": "Histórico de Conexões",
+    "connectionHistoryDescription": "Ver e gerenciar todas as conexões anteriores ({{count}} no total)",
+    "none": "Nenhum",
+    "noneDescription": "Permanecer na tela de Conexão"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Não conectado ao FreeShow",
+    "goToConnect": "Ir para Conectar",
+    "apiNotAvailable": "Interface de API Não Disponível",
+    "apiNotAvailableDescription": "A interface de API está desabilitada na sua conexão atual. Para usar os recursos de API, habilite a porta de API no FreeShow e reconecte.",
+    "reconnectWithApi": "Reconectar com API",
+    "favorites": "Favoritos",
+    "noFavorites": "Nenhum favorito ainda. Toque na estrela em qualquer comando para adicioná-lo.",
+    "categories": "Categorias",
+    "customCommand": "Comando Personalizado",
+    "connectionFailed": "Falha na Conexão",
+    "setupFailed": "Falha na Configuração",
+    "commandFailed": "Falha no Comando",
+    "fullscreenHint": "Toque duas vezes em qualquer canto para sair da tela cheia"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Desconectar",
+      "message": "Tem certeza de que deseja desconectar do FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Habilitar Interface",
+      "invalidPort": "Porta Inválida",
+      "invalidPortMessage": "Por favor, insira um número de porta válido entre 1 e 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Não é Possível Desabilitar a Interface",
+      "cannotDisableMessage": "Pelo menos uma interface deve permanecer habilitada. Por favor, habilite outra interface antes de desabilitar esta."
+    },
+    "runCommand": {
+      "title": "Executar Comando",
+      "message": "Tem certeza de que deseja executar este comando?"
+    },
+    "clearHistory": {
+      "title": "Limpar Histórico",
+      "message": "Tem certeza de que deseja limpar todo o histórico de conexões?"
+    },
+    "removeConnection": {
+      "title": "Remover Conexão",
+      "message": "Tem certeza de que deseja remover esta conexão do histórico?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nenhum host de conexão disponível",
+    "failedToCopyUrl": "Falha ao copiar URL para a área de transferência",
+    "cannotOpenUrl": "Não é possível abrir URL no navegador",
+    "failedToOpenUrl": "Falha ao abrir URL no navegador",
+    "failedToEnableInterface": "Falha ao habilitar interface. Por favor, tente novamente.",
+    "failedToDisableInterface": "Falha ao desabilitar interface. Por favor, tente novamente.",
+    "notConnectedToFreeShow": "Não conectado ao FreeShow",
+    "connectionFailed": "Falha na conexão",
+    "invalidConfiguration": "Configuração inválida"
+  },
+  "validation": {
+    "invalidHost": "Por favor, insira um endereço de host válido",
+    "invalidPortConfig": "Configuração de porta inválida"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Stage",
+    "control": "Control",
+    "output": "Output",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Histórico de Conexões",
+    "subtitle": "Veja e gerencie suas conexões anteriores",
+    "noHistory": "Nenhum histórico de conexões ainda",
+    "noHistoryDescription": "Suas conexões anteriores aparecerão aqui",
+    "lastUsed": "Usado pela última vez",
+    "remove": "Remover",
+    "clear": "Limpar",
+    "clearAll": "Limpar Tudo"
+  },
+  "compactPopup": {
+    "copyUrl": "Copiar URL",
+    "openInBrowser": "Abrir no Navegador",
+    "openInterface": "Abrir Interface",
+    "enableInterface": "Habilitar Interface",
+    "disableInterface": "Desabilitar Interface",
+    "interfaceDisabled": "Interface Desabilitada",
+    "port": "Porta"
+  },
+  "editNickname": {
+    "title": "Editar Nome da Conexão",
+    "label": "Nome da Conexão",
+    "placeholder": "Digite um nome para esta conexão"
+  }
+}

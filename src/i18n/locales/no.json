@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Avbryt",
+    "confirm": "Bekreft",
+    "ok": "OK",
+    "save": "Lagre",
+    "delete": "Slett",
+    "edit": "Rediger",
+    "close": "Lukk",
+    "loading": "Laster...",
+    "error": "Feil",
+    "retry": "Prøv igjen",
+    "share": "Del",
+    "disconnect": "Koble fra",
+    "connect": "Koble til",
+    "gotIt": "Skjønner"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Kontroller presentasjonene dine",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Grensesnitt",
+    "connect": "Koble til",
+    "settings": "Innstillinger"
+  },
+  "sidebar": {
+    "connected": "Tilkoblet",
+    "connecting": "Kobler til...",
+    "disconnected": "Frakoblet"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Kontroller presentasjonene dine",
+    "manualConnection": "Manuell tilkobling",
+    "connectionDetails": "Tilkoblingsdetaljer",
+    "serverAddress": "Serveradresse",
+    "interfacePorts": "Grensesnittporter",
+    "restoreDefaults": "Gjenopprett standarder",
+    "portHelpText": "La porter stå tomme for å deaktivere. Hver port vil bli testet før tilkobling.",
+    "connectingToInterface": "Kobler til grensesnitt",
+    "scanQrCode": "Skann QR-kode"
+  },
+  "connectStatus": {
+    "connected": "Tilkoblet",
+    "connecting": "Kobler til...",
+    "offline": "Frakoblet",
+    "error": "Feil",
+    "attemptingToConnect": "Forsøker å koble til",
+    "notConnected": "Ikke tilkoblet",
+    "connectedTo": "Tilkoblet til {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Tilkoblingshjelp",
+    "sameNetwork": "Begge enhetene bør være på samme WiFi-nettverk",
+    "useLocalIP": "Bruk datamaskinens lokale IP-adresse (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Hurtigtilkobling",
+    "subtitle": "Tilgjengelige tilkoblinger",
+    "networkScan": "Nettverksskanning",
+    "scan": "Skann",
+    "scanning": "Skanner...",
+    "recentConnections": "Nylige tilkoblinger",
+    "clearAll": "Tøm alle",
+    "noDevicesFound": "Ingen enheter funnet",
+    "tapToScan": "Trykk skann for å finne enheter",
+    "noServices": "Ingen tjenester",
+    "expoGoNotice": "Viser simulerte resultater i Expo Go. Bygg en dev-klient for ekte oppdagelse.",
+    "networkDiscoveryNotAvailable": "Nettverksoppdagelse ikke tilgjengelig",
+    "networkDiscoveryMessage": "Nettverksskanning (Bonjour/Zeroconf) fungerer ikke i Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Tilgjengelige grensesnitt",
+    "notConnectedTitle": "Ikke tilkoblet",
+    "notConnectedSubtitle": "Koble til FreeShow for å få tilgang til grensesnitt",
+    "connectToFreeShow": "Koble til FreeShow",
+    "connectingTitle": "Kobler til",
+    "establishingConnection": "Oppretter tilkobling til FreeShow",
+    "retryingConnection": "Prøver tilkobling til FreeShow på nytt",
+    "attemptingReconnect": "Forsøker å koble til FreeShow på nytt"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Kontroller lysbilder og presentasjoner"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Skjerm for personer på scenen"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Kontrollgrensesnitt for operatører"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Utdataskjerm for skjermer"
+    },
+    "api": {
+      "title": "API-kontroller",
+      "description": "Native API-kontroller"
+    }
+  },
+  "settingsScreen": {
+    "title": "Innstillinger",
+    "subtitle": "Tilpass opplevelsen din",
+    "keepAwake": "Hold våken",
+    "keepAwakeDescription": "Forhindre at enhetsskjermen slår seg av mens appen er åpen",
+    "autoConnection": "AUTOMATISK TILKOBLING",
+    "autoReconnect": "Automatisk gjenkobling",
+    "autoReconnectDescription": "Koble automatisk til FreeShow på nytt når tilkoblingen mistes",
+    "autoLaunchInterface": "Autostart grensesnitt",
+    "autoLaunchInterfaceDescription": "Åpne automatisk et spesifikt grensesnitt når tilkoblet",
+    "autoLaunchFullscreen": "Autostart fullskjerm",
+    "autoLaunchFullscreenDescription": "Åpne automatisk grensesnittet i fullskjermmodus",
+    "history": "HISTORIKK",
+    "connectionHistory": "Tilkoblingshistorikk",
+    "connectionHistoryDescription": "Vis og administrer alle tidligere tilkoblinger ({{count}} totalt)",
+    "none": "Ingen",
+    "noneDescription": "Bli på tilkoblingsskjermen"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Ikke tilkoblet FreeShow",
+    "goToConnect": "Gå til Koble til",
+    "apiNotAvailable": "API-grensesnitt ikke tilgjengelig",
+    "apiNotAvailableDescription": "API-grensesnittet er deaktivert i din nåværende tilkobling. For å bruke API-funksjoner, aktiver API-porten i FreeShow og koble til på nytt.",
+    "reconnectWithApi": "Koble til på nytt med API",
+    "favorites": "Favoritter",
+    "noFavorites": "Ingen favoritter ennå. Trykk på stjernen på en hvilken som helst kommando for å legge den til.",
+    "categories": "Kategorier",
+    "customCommand": "Tilpasset kommando",
+    "connectionFailed": "Tilkobling mislyktes",
+    "setupFailed": "Oppsett mislyktes",
+    "commandFailed": "Kommando mislyktes",
+    "fullscreenHint": "Dobbelttrykk et hvilket som helst hjørne for å avslutte fullskjerm"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Koble fra",
+      "message": "Er du sikker på at du vil koble fra FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Aktiver grensesnitt",
+      "invalidPort": "Ugyldig port",
+      "invalidPortMessage": "Vennligst angi et gyldig portnummer mellom 1 og 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Kan ikke deaktivere grensesnitt",
+      "cannotDisableMessage": "Minst ett grensesnitt må forbli aktivert. Vennligst aktiver et annet grensesnitt før du deaktiverer dette."
+    },
+    "runCommand": {
+      "title": "Kjør kommando",
+      "message": "Er du sikker på at du vil kjøre denne kommandoen?"
+    },
+    "clearHistory": {
+      "title": "Tøm historikk",
+      "message": "Er du sikker på at du vil tømme all tilkoblingshistorikk?"
+    },
+    "removeConnection": {
+      "title": "Fjern tilkobling",
+      "message": "Er du sikker på at du vil fjerne denne tilkoblingen fra historikken?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Ingen tilkoblingsvert tilgjengelig",
+    "failedToCopyUrl": "Kunne ikke kopiere URL til utklippstavlen",
+    "cannotOpenUrl": "Kan ikke åpne URL i nettleser",
+    "failedToOpenUrl": "Kunne ikke åpne URL i nettleser",
+    "failedToEnableInterface": "Kunne ikke aktivere grensesnitt. Vennligst prøv igjen.",
+    "failedToDisableInterface": "Kunne ikke deaktivere grensesnitt. Vennligst prøv igjen.",
+    "notConnectedToFreeShow": "Ikke tilkoblet FreeShow",
+    "connectionFailed": "Tilkobling mislyktes",
+    "invalidConfiguration": "Ugyldig konfigurasjon"
+  },
+  "validation": {
+    "invalidHost": "Vennligst angi en gyldig vertadresse",
+    "invalidPortConfig": "Ugyldig portkonfigurasjon"
+  },
+  "ports": {
+    "remote": "Fjern",
+    "stage": "Scene",
+    "control": "Kontroll",
+    "output": "Utdata",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Tilkoblingshistorikk",
+    "subtitle": "Vis og administrer tidligere tilkoblinger",
+    "noHistory": "Ingen tilkoblingshistorikk ennå",
+    "noHistoryDescription": "Tidligere tilkoblinger vil vises her",
+    "lastUsed": "Sist brukt",
+    "remove": "Fjern",
+    "clear": "Tøm",
+    "clearAll": "Tøm alle"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopier URL",
+    "openInBrowser": "Åpne i nettleser",
+    "openInterface": "Åpne grensesnitt",
+    "enableInterface": "Aktiver grensesnitt",
+    "disableInterface": "Deaktiver grensesnitt",
+    "interfaceDisabled": "Grensesnitt deaktivert",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Rediger tilkoblingsnavn",
+    "label": "Tilkoblingsnavn",
+    "placeholder": "Angi et navn for denne tilkoblingen"
+  }
+}

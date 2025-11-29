@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Prekliči",
+    "confirm": "Potrdi",
+    "ok": "V redu",
+    "save": "Shrani",
+    "delete": "Izbriši",
+    "edit": "Uredi",
+    "close": "Zapri",
+    "loading": "Nalaganje...",
+    "error": "Napaka",
+    "retry": "Poskusi znova",
+    "share": "Deli",
+    "disconnect": "Prekini povezavo",
+    "connect": "Poveži",
+    "gotIt": "Razumem"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Upravljajte svoje predstavitve",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Vmesnik",
+    "connect": "Poveži",
+    "settings": "Nastavitve"
+  },
+  "sidebar": {
+    "connected": "Povezano",
+    "connecting": "Povezovanje...",
+    "disconnected": "Nepovezano"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Upravljajte svoje predstavitve",
+    "manualConnection": "Ročna povezava",
+    "connectionDetails": "Podrobnosti povezave",
+    "serverAddress": "Naslov strežnika",
+    "interfacePorts": "Vrata vmesnika",
+    "restoreDefaults": "Obnovi privzeto",
+    "portHelpText": "Pustite vrata prazna za onemogočenje. Vsa vrata bodo preizkušena pred povezavo.",
+    "connectingToInterface": "Povezovanje z vmesnikom",
+    "scanQrCode": "Skeniraj QR kodo"
+  },
+  "connectStatus": {
+    "connected": "Povezano",
+    "connecting": "Povezovanje...",
+    "offline": "Brez povezave",
+    "error": "Napaka",
+    "attemptingToConnect": "Poskus povezovanja",
+    "notConnected": "Ni povezano",
+    "connectedTo": "Povezano z {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Pomoč pri povezavi",
+    "sameNetwork": "Obe napravi morata biti na istem WiFi omrežju",
+    "useLocalIP": "Uporabite lokalni IP naslov vašega računalnika (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Hitra povezava",
+    "subtitle": "Razpoložljive povezave",
+    "networkScan": "Skeniranje omrežja",
+    "scan": "Skeniraj",
+    "scanning": "Skeniranje...",
+    "recentConnections": "Nedavne povezave",
+    "clearAll": "Izbriši vse",
+    "noDevicesFound": "Naprave niso bile najdene",
+    "tapToScan": "Tapnite skeniraj za iskanje naprav",
+    "noServices": "Ni storitev",
+    "expoGoNotice": "Prikazani so simulirani rezultati v Expo Go. Zgradite razvojnega odjemalca za pravo odkrivanje.",
+    "networkDiscoveryNotAvailable": "Odkrivanje omrežja ni na voljo",
+    "networkDiscoveryMessage": "Skeniranje omrežja (Bonjour/Zeroconf) ne deluje v Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Razpoložljivi vmesniki",
+    "notConnectedTitle": "Ni povezano",
+    "notConnectedSubtitle": "Povežite se s FreeShow za dostop do vmesnikov",
+    "connectToFreeShow": "Poveži s FreeShow",
+    "connectingTitle": "Povezovanje",
+    "establishingConnection": "Vzpostavljanje povezave s FreeShow",
+    "retryingConnection": "Ponovni poskus povezave s FreeShow",
+    "attemptingReconnect": "Poskus ponovne povezave s FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Upravljanje diapozitivov in predstavitev"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Zaslon za ljudi na odru"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Nadzorni vmesnik za operaterje"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Izhodni zaslon za zaslone"
+    },
+    "api": {
+      "title": "API kontrole",
+      "description": "Izvorne API kontrole"
+    }
+  },
+  "settingsScreen": {
+    "title": "Nastavitve",
+    "subtitle": "Prilagodite svojo izkušnjo",
+    "keepAwake": "Ohrani budno",
+    "keepAwakeDescription": "Prepreči, da bi se zaslon naprave uspeval, medtem ko je aplikacija odprta",
+    "autoConnection": "SAMODEJNA POVEZAVA",
+    "autoReconnect": "Samodejna ponovna povezava",
+    "autoReconnectDescription": "Samodejno se ponovno poveži s FreeShow, ko je povezava izgubljena",
+    "autoLaunchInterface": "Samodejni zagon vmesnika",
+    "autoLaunchInterfaceDescription": "Samodejno odpri določen vmesnik, ko je povezano",
+    "autoLaunchFullscreen": "Samodejni celozaslonski način",
+    "autoLaunchFullscreenDescription": "Samodejno odpri vmesnik v celozaslonskem načinu",
+    "history": "ZGODOVINA",
+    "connectionHistory": "Zgodovina povezav",
+    "connectionHistoryDescription": "Ogled in upravljanje vseh preteklih povezav ({{count}} skupaj)",
+    "none": "Brez",
+    "noneDescription": "Ostani na zaslonu Poveži"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Ni povezano s FreeShow",
+    "goToConnect": "Pojdi na Poveži",
+    "apiNotAvailable": "API vmesnik ni na voljo",
+    "apiNotAvailableDescription": "API vmesnik je onemogočen v vaši trenutni povezavi. Za uporabo API funkcij omogočite API vrata v FreeShow in se ponovno povežite.",
+    "reconnectWithApi": "Ponovno poveži z API",
+    "favorites": "Priljubljeni",
+    "noFavorites": "Še ni priljubljenih. Tapnite zvezdico pri kateremkoli ukazu za dodajanje.",
+    "categories": "Kategorije",
+    "customCommand": "Ukaz po meri",
+    "connectionFailed": "Povezava neuspešna",
+    "setupFailed": "Nastavitev neuspešna",
+    "commandFailed": "Ukaz neuspešen",
+    "fullscreenHint": "Dvakrat tapnite katerikoli kot za izhod iz celozaslonskega načina"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Prekini povezavo",
+      "message": "Ali ste prepričani, da želite prekiniti povezavo s FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Omogoči vmesnik",
+      "invalidPort": "Neveljavna vrata",
+      "invalidPortMessage": "Prosimo vnesite veljavno številko vrat med 1 in 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Vmesnika ni mogoče onemogočiti",
+      "cannotDisableMessage": "Vsaj en vmesnik mora ostati omogočen. Prosimo omogočite drug vmesnik pred onemogočenjem tega."
+    },
+    "runCommand": {
+      "title": "Zaženi ukaz",
+      "message": "Ali ste prepričani, da želite zagnati ta ukaz?"
+    },
+    "clearHistory": {
+      "title": "Izbriši zgodovino",
+      "message": "Ali ste prepričani, da želite izbrisati celotno zgodovino povezav?"
+    },
+    "removeConnection": {
+      "title": "Odstrani povezavo",
+      "message": "Ali ste prepričani, da želite odstraniti to povezavo iz zgodovine?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Gostitelj povezave ni na voljo",
+    "failedToCopyUrl": "Kopiranje URL-ja v odložišče ni uspelo",
+    "cannotOpenUrl": "URL-ja ni mogoče odpreti v brskalniku",
+    "failedToOpenUrl": "Odpiranje URL-ja v brskalniku ni uspelo",
+    "failedToEnableInterface": "Omogočanje vmesnika ni uspelo. Prosimo poskusite znova.",
+    "failedToDisableInterface": "Onemogočanje vmesnika ni uspelo. Prosimo poskusite znova.",
+    "notConnectedToFreeShow": "Ni povezano s FreeShow",
+    "connectionFailed": "Povezava neuspešna",
+    "invalidConfiguration": "Neveljavna konfiguracija"
+  },
+  "validation": {
+    "invalidHost": "Prosimo vnesite veljaven naslov gostitelja",
+    "invalidPortConfig": "Neveljavna konfiguracija vrat"
+  },
+  "ports": {
+    "remote": "Oddaljeni",
+    "stage": "Oder",
+    "control": "Nadzor",
+    "output": "Izhod",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Zgodovina povezav",
+    "subtitle": "Ogled in upravljanje vaših preteklih povezav",
+    "noHistory": "Še ni zgodovine povezav",
+    "noHistoryDescription": "Vaše pretekle povezave se bodo prikazale tukaj",
+    "lastUsed": "Zadnjič uporabljeno",
+    "remove": "Odstrani",
+    "clear": "Izbriši",
+    "clearAll": "Izbriši vse"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopiraj URL",
+    "openInBrowser": "Odpri v brskalniku",
+    "openInterface": "Odpri vmesnik",
+    "enableInterface": "Omogoči vmesnik",
+    "disableInterface": "Onemogoči vmesnik",
+    "interfaceDisabled": "Vmesnik onemogočen",
+    "port": "Vrata"
+  },
+  "editNickname": {
+    "title": "Uredi ime povezave",
+    "label": "Ime povezave",
+    "placeholder": "Vnesite ime za to povezavo"
+  }
+}

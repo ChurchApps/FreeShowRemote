@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Zrušit",
+    "confirm": "Potvrdit",
+    "ok": "OK",
+    "save": "Uložit",
+    "delete": "Smazat",
+    "edit": "Upravit",
+    "close": "Zavřít",
+    "loading": "Načítání...",
+    "error": "Chyba",
+    "retry": "Zkusit znovu",
+    "share": "Sdílet",
+    "disconnect": "Odpojit",
+    "connect": "Připojit",
+    "gotIt": "Rozumím"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Ovládejte své prezentace",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Rozhraní",
+    "connect": "Připojit",
+    "settings": "Nastavení"
+  },
+  "sidebar": {
+    "connected": "Připojeno",
+    "connecting": "Připojování...",
+    "disconnected": "Odpojeno"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Ovládejte své prezentace",
+    "manualConnection": "Ruční připojení",
+    "connectionDetails": "Detaily připojení",
+    "serverAddress": "Adresa serveru",
+    "interfacePorts": "Porty rozhraní",
+    "restoreDefaults": "Obnovit výchozí",
+    "portHelpText": "Nechte porty prázdné pro zakázání. Každý port bude před připojením otestován.",
+    "connectingToInterface": "Připojování k rozhraní",
+    "scanQrCode": "Naskenovat QR kód"
+  },
+  "connectStatus": {
+    "connected": "Připojeno",
+    "connecting": "Připojování...",
+    "offline": "Offline",
+    "error": "Chyba",
+    "attemptingToConnect": "Pokus o připojení",
+    "notConnected": "Nepřipojeno",
+    "connectedTo": "Připojeno k {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Nápověda k připojení",
+    "sameNetwork": "Obě zařízení by měla být na stejné WiFi síti",
+    "useLocalIP": "Použijte místní IP adresu vašeho počítače (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Rychlé připojení",
+    "subtitle": "Dostupná připojení",
+    "networkScan": "Síťové skenování",
+    "scan": "Skenovat",
+    "scanning": "Skenování...",
+    "recentConnections": "Nedávná připojení",
+    "clearAll": "Vymazat vše",
+    "noDevicesFound": "Nebyla nalezena žádná zařízení",
+    "tapToScan": "Klepněte na skenovat pro vyhledání zařízení",
+    "noServices": "Žádné služby",
+    "expoGoNotice": "Zobrazení simulovaných výsledků v Expo Go. Vytvořte dev klienta pro skutečné vyhledávání.",
+    "networkDiscoveryNotAvailable": "Síťové vyhledávání není k dispozici",
+    "networkDiscoveryMessage": "Síťové skenování (Bonjour/Zeroconf) nefunguje v Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Dostupná rozhraní",
+    "notConnectedTitle": "Nepřipojeno",
+    "notConnectedSubtitle": "Připojte se k FreeShow pro přístup k rozhraním",
+    "connectToFreeShow": "Připojit k FreeShow",
+    "connectingTitle": "Připojování",
+    "establishingConnection": "Navazování spojení s FreeShow",
+    "retryingConnection": "Opakování připojení k FreeShow",
+    "attemptingReconnect": "Pokus o opětovné připojení k FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Ovládání snímků a prezentací"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Zobrazení pro lidi na pódiu"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Ovládací rozhraní pro operátory"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Výstupní zobrazení pro obrazovky"
+    },
+    "api": {
+      "title": "API ovládání",
+      "description": "Nativní API ovládání"
+    }
+  },
+  "settingsScreen": {
+    "title": "Nastavení",
+    "subtitle": "Přizpůsobte si své prostředí",
+    "keepAwake": "Udržovat aktivní",
+    "keepAwakeDescription": "Zabránit uspání obrazovky zařízení, když je aplikace otevřená",
+    "autoConnection": "AUTOMATICKÉ PŘIPOJENÍ",
+    "autoReconnect": "Automatické opětovné připojení",
+    "autoReconnectDescription": "Automaticky se znovu připojit k FreeShow při ztrátě spojení",
+    "autoLaunchInterface": "Automatické spuštění rozhraní",
+    "autoLaunchInterfaceDescription": "Automaticky otevřít konkrétní rozhraní při připojení",
+    "autoLaunchFullscreen": "Automatické spuštění celé obrazovky",
+    "autoLaunchFullscreenDescription": "Automaticky otevřít rozhraní v režimu celé obrazovky",
+    "history": "HISTORIE",
+    "connectionHistory": "Historie připojení",
+    "connectionHistoryDescription": "Zobrazit a spravovat všechna minulá připojení (celkem {{count}})",
+    "none": "Žádné",
+    "noneDescription": "Zůstat na obrazovce Připojit"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Nepřipojeno k FreeShow",
+    "goToConnect": "Přejít na Připojit",
+    "apiNotAvailable": "API rozhraní není k dispozici",
+    "apiNotAvailableDescription": "API rozhraní je zakázáno ve vašem aktuálním připojení. Pro použití funkcí API povolte API port ve FreeShow a znovu se připojte.",
+    "reconnectWithApi": "Znovu připojit s API",
+    "favorites": "Oblíbené",
+    "noFavorites": "Zatím žádné oblíbené. Klepněte na hvězdičku u libovolného příkazu pro přidání.",
+    "categories": "Kategorie",
+    "customCommand": "Vlastní příkaz",
+    "connectionFailed": "Připojení selhalo",
+    "setupFailed": "Nastavení selhalo",
+    "commandFailed": "Příkaz selhal",
+    "fullscreenHint": "Dvojitým klepnutím na libovolný roh ukončíte celou obrazovku"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Odpojit",
+      "message": "Opravdu se chcete odpojit od FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Povolit rozhraní",
+      "invalidPort": "Neplatný port",
+      "invalidPortMessage": "Zadejte prosím platné číslo portu mezi 1 a 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Nelze zakázat rozhraní",
+      "cannotDisableMessage": "Alespoň jedno rozhraní musí zůstat povoleno. Před zakázáním tohoto rozhraní povolte jiné."
+    },
+    "runCommand": {
+      "title": "Spustit příkaz",
+      "message": "Opravdu chcete spustit tento příkaz?"
+    },
+    "clearHistory": {
+      "title": "Vymazat historii",
+      "message": "Opravdu chcete vymazat celou historii připojení?"
+    },
+    "removeConnection": {
+      "title": "Odebrat připojení",
+      "message": "Opravdu chcete odebrat toto připojení z historie?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Není k dispozici žádný hostitel připojení",
+    "failedToCopyUrl": "Nepodařilo se zkopírovat URL do schránky",
+    "cannotOpenUrl": "Nelze otevřít URL v prohlížeči",
+    "failedToOpenUrl": "Nepodařilo se otevřít URL v prohlížeči",
+    "failedToEnableInterface": "Nepodařilo se povolit rozhraní. Zkuste to prosím znovu.",
+    "failedToDisableInterface": "Nepodařilo se zakázat rozhraní. Zkuste to prosím znovu.",
+    "notConnectedToFreeShow": "Nepřipojeno k FreeShow",
+    "connectionFailed": "Připojení selhalo",
+    "invalidConfiguration": "Neplatná konfigurace"
+  },
+  "validation": {
+    "invalidHost": "Zadejte prosím platnou adresu hostitele",
+    "invalidPortConfig": "Neplatná konfigurace portu"
+  },
+  "ports": {
+    "remote": "Dálkové ovládání",
+    "stage": "Pódium",
+    "control": "Ovládání",
+    "output": "Výstup",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Historie připojení",
+    "subtitle": "Zobrazit a spravovat vaše minulá připojení",
+    "noHistory": "Zatím žádná historie připojení",
+    "noHistoryDescription": "Vaše minulá připojení se zde zobrazí",
+    "lastUsed": "Naposledy použito",
+    "remove": "Odebrat",
+    "clear": "Vymazat",
+    "clearAll": "Vymazat vše"
+  },
+  "compactPopup": {
+    "copyUrl": "Zkopírovat URL",
+    "openInBrowser": "Otevřít v prohlížeči",
+    "openInterface": "Otevřít rozhraní",
+    "enableInterface": "Povolit rozhraní",
+    "disableInterface": "Zakázat rozhraní",
+    "interfaceDisabled": "Rozhraní zakázáno",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Upravit název připojení",
+    "label": "Název připojení",
+    "placeholder": "Zadejte název pro toto připojení"
+  }
+}

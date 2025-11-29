@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Отмена",
+    "confirm": "Подтвердить",
+    "ok": "ОК",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "close": "Закрыть",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "retry": "Повторить",
+    "share": "Поделиться",
+    "disconnect": "Отключиться",
+    "connect": "Подключиться",
+    "gotIt": "Понятно"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Управляйте своими презентациями",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Интерфейс",
+    "connect": "Подключение",
+    "settings": "Настройки"
+  },
+  "sidebar": {
+    "connected": "Подключено",
+    "connecting": "Подключение...",
+    "disconnected": "Отключено"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Управляйте своими презентациями",
+    "manualConnection": "Ручное подключение",
+    "connectionDetails": "Детали подключения",
+    "serverAddress": "Адрес сервера",
+    "interfacePorts": "Порты интерфейса",
+    "restoreDefaults": "Восстановить настройки по умолчанию",
+    "portHelpText": "Оставьте порты пустыми для отключения. Каждый порт будет протестирован перед подключением.",
+    "connectingToInterface": "Подключение к интерфейсу",
+    "scanQrCode": "Сканировать QR-код"
+  },
+  "connectStatus": {
+    "connected": "Подключено",
+    "connecting": "Подключение...",
+    "offline": "Не в сети",
+    "error": "Ошибка",
+    "attemptingToConnect": "Попытка подключения",
+    "notConnected": "Не подключено",
+    "connectedTo": "Подключено к {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Справка по подключению",
+    "sameNetwork": "Оба устройства должны быть в одной сети Wi-Fi",
+    "useLocalIP": "Используйте локальный IP-адрес вашего компьютера (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Быстрое подключение",
+    "subtitle": "Доступные подключения",
+    "networkScan": "Сканирование сети",
+    "scan": "Сканировать",
+    "scanning": "Сканирование...",
+    "recentConnections": "Недавние подключения",
+    "clearAll": "Очистить все",
+    "noDevicesFound": "Устройства не найдены",
+    "tapToScan": "Нажмите сканировать для поиска устройств",
+    "noServices": "Нет сервисов",
+    "expoGoNotice": "Отображаются симулированные результаты в Expo Go. Соберите dev-клиент для реального обнаружения.",
+    "networkDiscoveryNotAvailable": "Обнаружение сети недоступно",
+    "networkDiscoveryMessage": "Сканирование сети (Bonjour/Zeroconf) не работает в Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Доступные интерфейсы",
+    "notConnectedTitle": "Не подключено",
+    "notConnectedSubtitle": "Подключитесь к FreeShow для доступа к интерфейсам",
+    "connectToFreeShow": "Подключиться к FreeShow",
+    "connectingTitle": "Подключение",
+    "establishingConnection": "Установка соединения с FreeShow",
+    "retryingConnection": "Повторная попытка подключения к FreeShow",
+    "attemptingReconnect": "Попытка переподключения к FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Управление слайдами и презентациями"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Дисплей для людей на сцене"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Интерфейс управления для операторов"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Выходной дисплей для экранов"
+    },
+    "api": {
+      "title": "Управление API",
+      "description": "Нативные элементы управления API"
+    }
+  },
+  "settingsScreen": {
+    "title": "Настройки",
+    "subtitle": "Настройте свой опыт",
+    "keepAwake": "Не отключать экран",
+    "keepAwakeDescription": "Предотвращать переход экрана устройства в спящий режим во время работы приложения",
+    "autoConnection": "АВТОМАТИЧЕСКОЕ ПОДКЛЮЧЕНИЕ",
+    "autoReconnect": "Автоматическое переподключение",
+    "autoReconnectDescription": "Автоматически переподключаться к FreeShow при потере соединения",
+    "autoLaunchInterface": "Автозапуск интерфейса",
+    "autoLaunchInterfaceDescription": "Автоматически открывать определённый интерфейс при подключении",
+    "autoLaunchFullscreen": "Автозапуск в полноэкранном режиме",
+    "autoLaunchFullscreenDescription": "Автоматически открывать интерфейс в полноэкранном режиме",
+    "history": "ИСТОРИЯ",
+    "connectionHistory": "История подключений",
+    "connectionHistoryDescription": "Просмотр и управление всеми прошлыми подключениями (всего {{count}})",
+    "none": "Нет",
+    "noneDescription": "Оставаться на экране подключения"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Не подключено к FreeShow",
+    "goToConnect": "Перейти к подключению",
+    "apiNotAvailable": "Интерфейс API недоступен",
+    "apiNotAvailableDescription": "Интерфейс API отключён в вашем текущем подключении. Чтобы использовать функции API, включите порт API в FreeShow и переподключитесь.",
+    "reconnectWithApi": "Переподключиться с API",
+    "favorites": "Избранное",
+    "noFavorites": "Пока нет избранного. Нажмите на звёздочку у любой команды, чтобы добавить её.",
+    "categories": "Категории",
+    "customCommand": "Пользовательская команда",
+    "connectionFailed": "Ошибка подключения",
+    "setupFailed": "Ошибка настройки",
+    "commandFailed": "Ошибка выполнения команды",
+    "fullscreenHint": "Дважды коснитесь любого угла для выхода из полноэкранного режима"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Отключиться",
+      "message": "Вы уверены, что хотите отключиться от FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Включить интерфейс",
+      "invalidPort": "Недопустимый порт",
+      "invalidPortMessage": "Пожалуйста, введите допустимый номер порта от 1 до 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Невозможно отключить интерфейс",
+      "cannotDisableMessage": "Хотя бы один интерфейс должен оставаться включённым. Пожалуйста, включите другой интерфейс перед отключением этого."
+    },
+    "runCommand": {
+      "title": "Выполнить команду",
+      "message": "Вы уверены, что хотите выполнить эту команду?"
+    },
+    "clearHistory": {
+      "title": "Очистить историю",
+      "message": "Вы уверены, что хотите очистить всю историю подключений?"
+    },
+    "removeConnection": {
+      "title": "Удалить подключение",
+      "message": "Вы уверены, что хотите удалить это подключение из истории?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Нет доступного хоста подключения",
+    "failedToCopyUrl": "Не удалось скопировать URL в буфер обмена",
+    "cannotOpenUrl": "Невозможно открыть URL в браузере",
+    "failedToOpenUrl": "Не удалось открыть URL в браузере",
+    "failedToEnableInterface": "Не удалось включить интерфейс. Пожалуйста, попробуйте снова.",
+    "failedToDisableInterface": "Не удалось отключить интерфейс. Пожалуйста, попробуйте снова.",
+    "notConnectedToFreeShow": "Не подключено к FreeShow",
+    "connectionFailed": "Ошибка подключения",
+    "invalidConfiguration": "Недопустимая конфигурация"
+  },
+  "validation": {
+    "invalidHost": "Пожалуйста, введите допустимый адрес хоста",
+    "invalidPortConfig": "Недопустимая конфигурация порта"
+  },
+  "ports": {
+    "remote": "Удалённый",
+    "stage": "Сцена",
+    "control": "Управление",
+    "output": "Вывод",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "История подключений",
+    "subtitle": "Просмотр и управление прошлыми подключениями",
+    "noHistory": "История подключений пока пуста",
+    "noHistoryDescription": "Ваши прошлые подключения появятся здесь",
+    "lastUsed": "Последнее использование",
+    "remove": "Удалить",
+    "clear": "Очистить",
+    "clearAll": "Очистить все"
+  },
+  "compactPopup": {
+    "copyUrl": "Скопировать URL",
+    "openInBrowser": "Открыть в браузере",
+    "openInterface": "Открыть интерфейс",
+    "enableInterface": "Включить интерфейс",
+    "disableInterface": "Отключить интерфейс",
+    "interfaceDisabled": "Интерфейс отключён",
+    "port": "Порт"
+  },
+  "editNickname": {
+    "title": "Изменить название подключения",
+    "label": "Название подключения",
+    "placeholder": "Введите название для этого подключения"
+  }
+}

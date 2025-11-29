@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "ok": "Tamam",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "retry": "Tekrar Dene",
+    "share": "Paylaş",
+    "disconnect": "Bağlantıyı Kes",
+    "connect": "Bağlan",
+    "gotIt": "Anladım"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Sunumlarınızı kontrol edin",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Arayüz",
+    "connect": "Bağlan",
+    "settings": "Ayarlar"
+  },
+  "sidebar": {
+    "connected": "Bağlandı",
+    "connecting": "Bağlanıyor...",
+    "disconnected": "Bağlantı Kesildi"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Sunumlarınızı kontrol edin",
+    "manualConnection": "Manuel Bağlantı",
+    "connectionDetails": "Bağlantı Detayları",
+    "serverAddress": "Sunucu Adresi",
+    "interfacePorts": "Arayüz Portları",
+    "restoreDefaults": "Varsayılanlara Dön",
+    "portHelpText": "Devre dışı bırakmak için portları boş bırakın. Her port bağlanmadan önce test edilecektir.",
+    "connectingToInterface": "Arayüze bağlanıyor",
+    "scanQrCode": "QR kodu tara"
+  },
+  "connectStatus": {
+    "connected": "Bağlandı",
+    "connecting": "Bağlanıyor...",
+    "offline": "Çevrimdışı",
+    "error": "Hata",
+    "attemptingToConnect": "Bağlanmaya çalışılıyor",
+    "notConnected": "Bağlı değil",
+    "connectedTo": "{{name}} ile bağlantı kuruldu"
+  },
+  "connectionHelp": {
+    "title": "Bağlantı Yardımı",
+    "sameNetwork": "Her iki cihaz da aynı WiFi ağında olmalıdır",
+    "useLocalIP": "Bilgisayarınızın yerel IP adresini kullanın (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Hızlı Bağlan",
+    "subtitle": "Mevcut bağlantılar",
+    "networkScan": "Ağ Taraması",
+    "scan": "Tara",
+    "scanning": "Taranıyor...",
+    "recentConnections": "Son Bağlantılar",
+    "clearAll": "Tümünü Temizle",
+    "noDevicesFound": "Cihaz bulunamadı",
+    "tapToScan": "Cihaz bulmak için tara'ya dokunun",
+    "noServices": "Servis Yok",
+    "expoGoNotice": "Expo Go'da simüle edilmiş sonuçlar gösteriliyor. Gerçek keşif için bir geliştirme istemcisi oluşturun.",
+    "networkDiscoveryNotAvailable": "Ağ Keşfi Kullanılamıyor",
+    "networkDiscoveryMessage": "Ağ taraması (Bonjour/Zeroconf) Expo Go'da çalışmaz."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Mevcut Arayüzler",
+    "notConnectedTitle": "Bağlı Değil",
+    "notConnectedSubtitle": "Arayüzlere erişmek için FreeShow'a bağlanın",
+    "connectToFreeShow": "FreeShow'a Bağlan",
+    "connectingTitle": "Bağlanıyor",
+    "establishingConnection": "FreeShow ile bağlantı kuruluyor",
+    "retryingConnection": "FreeShow bağlantısı yeniden deneniyor",
+    "attemptingReconnect": "FreeShow'a yeniden bağlanmaya çalışılıyor"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Slaytları ve sunumları kontrol edin"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Sahnedeki kişiler için görüntüleme"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Operatörler için kontrol arayüzü"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Ekranlar için çıkış görüntüsü"
+    },
+    "api": {
+      "title": "API Kontrolleri",
+      "description": "Yerel API kontrolleri"
+    }
+  },
+  "settingsScreen": {
+    "title": "Ayarlar",
+    "subtitle": "Deneyiminizi özelleştirin",
+    "keepAwake": "Uyanık Tut",
+    "keepAwakeDescription": "Uygulama açıkken cihaz ekranının uyku moduna geçmesini engelleyin",
+    "autoConnection": "OTOMATİK BAĞLANTI",
+    "autoReconnect": "Otomatik Yeniden Bağlan",
+    "autoReconnectDescription": "Bağlantı kesildiğinde FreeShow'a otomatik olarak yeniden bağlanın",
+    "autoLaunchInterface": "Otomatik Arayüz Başlat",
+    "autoLaunchInterfaceDescription": "Bağlandığında belirli bir arayüzü otomatik olarak açın",
+    "autoLaunchFullscreen": "Otomatik Tam Ekran Başlat",
+    "autoLaunchFullscreenDescription": "Arayüzü otomatik olarak tam ekran modunda açın",
+    "history": "GEÇMİŞ",
+    "connectionHistory": "Bağlantı Geçmişi",
+    "connectionHistoryDescription": "Tüm geçmiş bağlantıları görüntüleyin ve yönetin (toplam {{count}})",
+    "none": "Hiçbiri",
+    "noneDescription": "Bağlan ekranında kal"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "FreeShow'a bağlı değil",
+    "goToConnect": "Bağlan'a Git",
+    "apiNotAvailable": "API Arayüzü Kullanılamıyor",
+    "apiNotAvailableDescription": "Mevcut bağlantınızda API arayüzü devre dışı. API özelliklerini kullanmak için FreeShow'da API portunu etkinleştirin ve yeniden bağlanın.",
+    "reconnectWithApi": "API ile Yeniden Bağlan",
+    "favorites": "Favoriler",
+    "noFavorites": "Henüz favori yok. Eklemek için herhangi bir komutun yıldızına dokunun.",
+    "categories": "Kategoriler",
+    "customCommand": "Özel Komut",
+    "connectionFailed": "Bağlantı Başarısız",
+    "setupFailed": "Kurulum Başarısız",
+    "commandFailed": "Komut Başarısız",
+    "fullscreenHint": "Tam ekrandan çıkmak için herhangi bir köşeye çift dokunun"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Bağlantıyı Kes",
+      "message": "FreeShow bağlantısını kesmek istediğinizden emin misiniz?"
+    },
+    "enableInterface": {
+      "title": "Arayüzü Etkinleştir",
+      "invalidPort": "Geçersiz Port",
+      "invalidPortMessage": "Lütfen 1 ile 65535 arasında geçerli bir port numarası girin"
+    },
+    "disableInterface": {
+      "cannotDisable": "Arayüz Devre Dışı Bırakılamıyor",
+      "cannotDisableMessage": "En az bir arayüz etkin kalmalıdır. Lütfen bunu devre dışı bırakmadan önce başka bir arayüzü etkinleştirin."
+    },
+    "runCommand": {
+      "title": "Komutu Çalıştır",
+      "message": "Bu komutu çalıştırmak istediğinizden emin misiniz?"
+    },
+    "clearHistory": {
+      "title": "Geçmişi Temizle",
+      "message": "Tüm bağlantı geçmişini temizlemek istediğinizden emin misiniz?"
+    },
+    "removeConnection": {
+      "title": "Bağlantıyı Kaldır",
+      "message": "Bu bağlantıyı geçmişten kaldırmak istediğinizden emin misiniz?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Bağlantı ana bilgisayarı mevcut değil",
+    "failedToCopyUrl": "URL panoya kopyalanamadı",
+    "cannotOpenUrl": "URL tarayıcıda açılamıyor",
+    "failedToOpenUrl": "URL tarayıcıda açılamadı",
+    "failedToEnableInterface": "Arayüz etkinleştirilemedi. Lütfen tekrar deneyin.",
+    "failedToDisableInterface": "Arayüz devre dışı bırakılamadı. Lütfen tekrar deneyin.",
+    "notConnectedToFreeShow": "FreeShow'a bağlı değil",
+    "connectionFailed": "Bağlantı başarısız",
+    "invalidConfiguration": "Geçersiz yapılandırma"
+  },
+  "validation": {
+    "invalidHost": "Lütfen geçerli bir ana bilgisayar adresi girin",
+    "invalidPortConfig": "Geçersiz port yapılandırması"
+  },
+  "ports": {
+    "remote": "Uzaktan",
+    "stage": "Sahne",
+    "control": "Kontrol",
+    "output": "Çıkış",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Bağlantı Geçmişi",
+    "subtitle": "Geçmiş bağlantılarınızı görüntüleyin ve yönetin",
+    "noHistory": "Henüz bağlantı geçmişi yok",
+    "noHistoryDescription": "Geçmiş bağlantılarınız burada görünecek",
+    "lastUsed": "Son kullanım",
+    "remove": "Kaldır",
+    "clear": "Temizle",
+    "clearAll": "Tümünü Temizle"
+  },
+  "compactPopup": {
+    "copyUrl": "URL'yi Kopyala",
+    "openInBrowser": "Tarayıcıda Aç",
+    "openInterface": "Arayüzü Aç",
+    "enableInterface": "Arayüzü Etkinleştir",
+    "disableInterface": "Arayüzü Devre Dışı Bırak",
+    "interfaceDisabled": "Arayüz Devre Dışı",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Bağlantı Adını Düzenle",
+    "label": "Bağlantı Adı",
+    "placeholder": "Bu bağlantı için bir ad girin"
+  }
+}

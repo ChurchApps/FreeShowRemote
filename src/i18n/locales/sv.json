@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Avbryt",
+    "confirm": "Bekräfta",
+    "ok": "OK",
+    "save": "Spara",
+    "delete": "Ta bort",
+    "edit": "Redigera",
+    "close": "Stäng",
+    "loading": "Laddar...",
+    "error": "Fel",
+    "retry": "Försök igen",
+    "share": "Dela",
+    "disconnect": "Koppla från",
+    "connect": "Anslut",
+    "gotIt": "Förstått"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Styr dina presentationer",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Gränssnitt",
+    "connect": "Anslut",
+    "settings": "Inställningar"
+  },
+  "sidebar": {
+    "connected": "Ansluten",
+    "connecting": "Ansluter...",
+    "disconnected": "Frånkopplad"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Styr dina presentationer",
+    "manualConnection": "Manuell anslutning",
+    "connectionDetails": "Anslutningsdetaljer",
+    "serverAddress": "Serveradress",
+    "interfacePorts": "Gränssnittsportar",
+    "restoreDefaults": "Återställ standardvärden",
+    "portHelpText": "Lämna portar tomma för att inaktivera. Varje port kommer att testas innan anslutning.",
+    "connectingToInterface": "Ansluter till gränssnitt",
+    "scanQrCode": "Skanna QR-kod"
+  },
+  "connectStatus": {
+    "connected": "Ansluten",
+    "connecting": "Ansluter...",
+    "offline": "Offline",
+    "error": "Fel",
+    "attemptingToConnect": "Försöker ansluta",
+    "notConnected": "Inte ansluten",
+    "connectedTo": "Ansluten till {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Anslutningshjälp",
+    "sameNetwork": "Båda enheterna bör vara på samma WiFi-nätverk",
+    "useLocalIP": "Använd din dators lokala IP-adress (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Snabbanslutning",
+    "subtitle": "Tillgängliga anslutningar",
+    "networkScan": "Nätverksskanning",
+    "scan": "Skanna",
+    "scanning": "Skannar...",
+    "recentConnections": "Senaste anslutningar",
+    "clearAll": "Rensa alla",
+    "noDevicesFound": "Inga enheter hittades",
+    "tapToScan": "Tryck skanna för att hitta enheter",
+    "noServices": "Inga tjänster",
+    "expoGoNotice": "Visar simulerade resultat i Expo Go. Bygg en dev-klient för verklig upptäckt.",
+    "networkDiscoveryNotAvailable": "Nätverksupptäckt inte tillgänglig",
+    "networkDiscoveryMessage": "Nätverksskanning (Bonjour/Zeroconf) fungerar inte i Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Tillgängliga gränssnitt",
+    "notConnectedTitle": "Inte ansluten",
+    "notConnectedSubtitle": "Anslut till FreeShow för att komma åt gränssnitt",
+    "connectToFreeShow": "Anslut till FreeShow",
+    "connectingTitle": "Ansluter",
+    "establishingConnection": "Upprättar anslutning till FreeShow",
+    "retryingConnection": "Försöker ansluta till FreeShow igen",
+    "attemptingReconnect": "Försöker återansluta till FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Styr bilder och presentationer"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Skärm för personer på scenen"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Kontrollgränssnitt för operatörer"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Utgångsskärm för skärmar"
+    },
+    "api": {
+      "title": "API-kontroller",
+      "description": "Inbyggda API-kontroller"
+    }
+  },
+  "settingsScreen": {
+    "title": "Inställningar",
+    "subtitle": "Anpassa din upplevelse",
+    "keepAwake": "Håll vaken",
+    "keepAwakeDescription": "Förhindra att enhetsskärmen slocknar medan appen är öppen",
+    "autoConnection": "AUTOMATISK ANSLUTNING",
+    "autoReconnect": "Automatisk återanslutning",
+    "autoReconnectDescription": "Återanslut automatiskt till FreeShow när anslutningen förloras",
+    "autoLaunchInterface": "Autostart gränssnitt",
+    "autoLaunchInterfaceDescription": "Öppna automatiskt ett specifikt gränssnitt vid anslutning",
+    "autoLaunchFullscreen": "Autostart helskärm",
+    "autoLaunchFullscreenDescription": "Öppna automatiskt gränssnittet i helskärmsläge",
+    "history": "HISTORIK",
+    "connectionHistory": "Anslutningshistorik",
+    "connectionHistoryDescription": "Visa och hantera alla tidigare anslutningar ({{count}} totalt)",
+    "none": "Ingen",
+    "noneDescription": "Stanna på anslutningsskärmen"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Inte ansluten till FreeShow",
+    "goToConnect": "Gå till Anslut",
+    "apiNotAvailable": "API-gränssnitt inte tillgängligt",
+    "apiNotAvailableDescription": "API-gränssnittet är inaktiverat i din nuvarande anslutning. För att använda API-funktioner, aktivera API-porten i FreeShow och återanslut.",
+    "reconnectWithApi": "Återanslut med API",
+    "favorites": "Favoriter",
+    "noFavorites": "Inga favoriter än. Tryck på stjärnan på vilket kommando som helst för att lägga till det.",
+    "categories": "Kategorier",
+    "customCommand": "Anpassat kommando",
+    "connectionFailed": "Anslutning misslyckades",
+    "setupFailed": "Installation misslyckades",
+    "commandFailed": "Kommando misslyckades",
+    "fullscreenHint": "Dubbelknacka i vilket hörn som helst för att avsluta helskärm"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Koppla från",
+      "message": "Är du säker på att du vill koppla från FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Aktivera gränssnitt",
+      "invalidPort": "Ogiltig port",
+      "invalidPortMessage": "Ange ett giltigt portnummer mellan 1 och 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Kan inte inaktivera gränssnitt",
+      "cannotDisableMessage": "Minst ett gränssnitt måste vara aktiverat. Aktivera ett annat gränssnitt innan du inaktiverar detta."
+    },
+    "runCommand": {
+      "title": "Kör kommando",
+      "message": "Är du säker på att du vill köra detta kommando?"
+    },
+    "clearHistory": {
+      "title": "Rensa historik",
+      "message": "Är du säker på att du vill rensa all anslutningshistorik?"
+    },
+    "removeConnection": {
+      "title": "Ta bort anslutning",
+      "message": "Är du säker på att du vill ta bort denna anslutning från historiken?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Ingen anslutningsvärd tillgänglig",
+    "failedToCopyUrl": "Kunde inte kopiera URL till urklipp",
+    "cannotOpenUrl": "Kan inte öppna URL i webbläsare",
+    "failedToOpenUrl": "Kunde inte öppna URL i webbläsare",
+    "failedToEnableInterface": "Kunde inte aktivera gränssnitt. Försök igen.",
+    "failedToDisableInterface": "Kunde inte inaktivera gränssnitt. Försök igen.",
+    "notConnectedToFreeShow": "Inte ansluten till FreeShow",
+    "connectionFailed": "Anslutning misslyckades",
+    "invalidConfiguration": "Ogiltig konfiguration"
+  },
+  "validation": {
+    "invalidHost": "Ange en giltig värdadress",
+    "invalidPortConfig": "Ogiltig portkonfiguration"
+  },
+  "ports": {
+    "remote": "Fjärr",
+    "stage": "Scen",
+    "control": "Kontroll",
+    "output": "Utgång",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Anslutningshistorik",
+    "subtitle": "Visa och hantera dina tidigare anslutningar",
+    "noHistory": "Ingen anslutningshistorik än",
+    "noHistoryDescription": "Dina tidigare anslutningar kommer att visas här",
+    "lastUsed": "Senast använd",
+    "remove": "Ta bort",
+    "clear": "Rensa",
+    "clearAll": "Rensa alla"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopiera URL",
+    "openInBrowser": "Öppna i webbläsare",
+    "openInterface": "Öppna gränssnitt",
+    "enableInterface": "Aktivera gränssnitt",
+    "disableInterface": "Inaktivera gränssnitt",
+    "interfaceDisabled": "Gränssnitt inaktiverat",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Redigera anslutningsnamn",
+    "label": "Anslutningsnamn",
+    "placeholder": "Ange ett namn för denna anslutning"
+  }
+}

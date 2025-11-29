@@ -1,3 +1,5 @@
+import './src/i18n';
+
 import { Ionicons } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNavigationContainerRef, DarkTheme, NavigationContainer } from '@react-navigation/native'
@@ -6,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { StatusBar } from 'expo-status-bar'
 import * as Updates from 'expo-updates'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Dimensions, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -58,6 +61,7 @@ const EXTERNAL_ROUTES = ['WebView', 'APIScreen', 'ConnectionHistory', 'Main'];
 
 // Sidebar Layout with content area
 function SidebarLayout() {
+  const { t } = useTranslation();
   const autoConnectExpected = useAutoConnectExpected();
   
   // Always call all hooks first
@@ -158,7 +162,7 @@ function SidebarLayout() {
   if (autoConnectExpected === null) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: FreeShowTheme.colors.primary }}>
-        <Text style={{ color: FreeShowTheme.colors.text }}>Loading...</Text>
+        <Text style={{ color: FreeShowTheme.colors.text }}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -201,7 +205,7 @@ function SidebarLayout() {
               fontWeight: '700',
               color: FreeShowTheme.colors.text,
             }}>
-              FreeShow Remote
+              {t('app.name')}
             </Text>
           </View>
         </View>
@@ -249,6 +253,7 @@ function SidebarLayout() {
 
 // Floating Navigation Layout
 function FloatingNavLayout() {
+  const { t } = useTranslation();
   const autoConnectExpected = useAutoConnectExpected();
   const insets = useSafeAreaInsets();
   
@@ -339,7 +344,7 @@ function FloatingNavLayout() {
         colors={['#0a0a0f', '#0d0d15', '#0f0f18']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
       >
-        <Text style={{ color: FreeShowTheme.colors.text }}>Loading...</Text>
+        <Text style={{ color: FreeShowTheme.colors.text }}>{t('common.loading')}</Text>
       </LinearGradient>
     );
   }

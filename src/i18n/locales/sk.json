@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Zrušiť",
+    "confirm": "Potvrdiť",
+    "ok": "OK",
+    "save": "Uložiť",
+    "delete": "Odstrániť",
+    "edit": "Upraviť",
+    "close": "Zavrieť",
+    "loading": "Načítava sa...",
+    "error": "Chyba",
+    "retry": "Skúsiť znova",
+    "share": "Zdieľať",
+    "disconnect": "Odpojiť",
+    "connect": "Pripojiť",
+    "gotIt": "Rozumiem"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Ovládajte vaše prezentácie",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Rozhranie",
+    "connect": "Pripojiť",
+    "settings": "Nastavenia"
+  },
+  "sidebar": {
+    "connected": "Pripojené",
+    "connecting": "Pripája sa...",
+    "disconnected": "Odpojené"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Ovládajte vaše prezentácie",
+    "manualConnection": "Manuálne pripojenie",
+    "connectionDetails": "Podrobnosti pripojenia",
+    "serverAddress": "Adresa servera",
+    "interfacePorts": "Porty rozhrania",
+    "restoreDefaults": "Obnoviť predvolené",
+    "portHelpText": "Nechajte porty prázdne pre vypnutie. Každý port bude otestovaný pred pripojením.",
+    "connectingToInterface": "Pripája sa k rozhraniu",
+    "scanQrCode": "Skenovať QR kód"
+  },
+  "connectStatus": {
+    "connected": "Pripojené",
+    "connecting": "Pripája sa...",
+    "offline": "Offline",
+    "error": "Chyba",
+    "attemptingToConnect": "Pokúša sa pripojiť",
+    "notConnected": "Nepripojené",
+    "connectedTo": "Pripojené k {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Pomoc s pripojením",
+    "sameNetwork": "Obe zariadenia by mali byť na rovnakej WiFi sieti",
+    "useLocalIP": "Použite lokálnu IP adresu vášho počítača (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Rýchle pripojenie",
+    "subtitle": "Dostupné pripojenia",
+    "networkScan": "Skenovanie siete",
+    "scan": "Skenovať",
+    "scanning": "Skenuje sa...",
+    "recentConnections": "Nedávne pripojenia",
+    "clearAll": "Vymazať všetko",
+    "noDevicesFound": "Nenašli sa žiadne zariadenia",
+    "tapToScan": "Ťuknite na skenovať pre vyhľadanie zariadení",
+    "noServices": "Žiadne služby",
+    "expoGoNotice": "Zobrazujú sa simulované výsledky v Expo Go. Vytvorte vývojového klienta pre skutočné vyhľadávanie.",
+    "networkDiscoveryNotAvailable": "Vyhľadávanie v sieti nie je dostupné",
+    "networkDiscoveryMessage": "Skenovanie siete (Bonjour/Zeroconf) nefunguje v Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Dostupné rozhrania",
+    "notConnectedTitle": "Nepripojené",
+    "notConnectedSubtitle": "Pripojte sa k FreeShow pre prístup k rozhraniam",
+    "connectToFreeShow": "Pripojiť k FreeShow",
+    "connectingTitle": "Pripája sa",
+    "establishingConnection": "Nadväzuje sa spojenie s FreeShow",
+    "retryingConnection": "Opakuje sa pripojenie k FreeShow",
+    "attemptingReconnect": "Pokúša sa znova pripojiť k FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Ovládanie snímok a prezentácií"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Displej pre ľudí na pódiu"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Ovládacie rozhranie pre operátorov"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Výstupný displej pre obrazovky"
+    },
+    "api": {
+      "title": "API ovládanie",
+      "description": "Natívne API ovládanie"
+    }
+  },
+  "settingsScreen": {
+    "title": "Nastavenia",
+    "subtitle": "Prispôsobte si vaše prostredie",
+    "keepAwake": "Držať aktívne",
+    "keepAwakeDescription": "Zabráňte uspaniu obrazovky zariadenia, keď je aplikácia otvorená",
+    "autoConnection": "AUTOMATICKÉ PRIPOJENIE",
+    "autoReconnect": "Automatické znovupripojenie",
+    "autoReconnectDescription": "Automaticky sa znova pripojiť k FreeShow pri strate spojenia",
+    "autoLaunchInterface": "Automatické spustenie rozhrania",
+    "autoLaunchInterfaceDescription": "Automaticky otvoriť konkrétne rozhranie pri pripojení",
+    "autoLaunchFullscreen": "Automatický celoobrazovkový režim",
+    "autoLaunchFullscreenDescription": "Automaticky otvoriť rozhranie v celoobrazovkovom režime",
+    "history": "HISTÓRIA",
+    "connectionHistory": "História pripojení",
+    "connectionHistoryDescription": "Zobraziť a spravovať všetky minulé pripojenia ({{count}} celkom)",
+    "none": "Žiadne",
+    "noneDescription": "Zostať na obrazovke Pripojiť"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Nepripojené k FreeShow",
+    "goToConnect": "Prejsť na Pripojiť",
+    "apiNotAvailable": "API rozhranie nie je dostupné",
+    "apiNotAvailableDescription": "API rozhranie je vypnuté vo vašom aktuálnom pripojení. Pre použitie API funkcií povoľte API port vo FreeShow a znova sa pripojte.",
+    "reconnectWithApi": "Pripojiť znova s API",
+    "favorites": "Obľúbené",
+    "noFavorites": "Zatiaľ žiadne obľúbené. Ťuknite na hviezdičku pri akomkoľvek príkaze pre pridanie.",
+    "categories": "Kategórie",
+    "customCommand": "Vlastný príkaz",
+    "connectionFailed": "Pripojenie zlyhalo",
+    "setupFailed": "Nastavenie zlyhalo",
+    "commandFailed": "Príkaz zlyhal",
+    "fullscreenHint": "Dvakrát ťuknite na ktorýkoľvek roh pre opustenie celoobrazovkového režimu"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Odpojiť",
+      "message": "Ste si istí, že sa chcete odpojiť od FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Povoliť rozhranie",
+      "invalidPort": "Neplatný port",
+      "invalidPortMessage": "Prosím zadajte platné číslo portu medzi 1 a 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Nie je možné vypnúť rozhranie",
+      "cannotDisableMessage": "Aspoň jedno rozhranie musí zostať povolené. Prosím povoľte iné rozhranie pred vypnutím tohto."
+    },
+    "runCommand": {
+      "title": "Spustiť príkaz",
+      "message": "Ste si istí, že chcete spustiť tento príkaz?"
+    },
+    "clearHistory": {
+      "title": "Vymazať históriu",
+      "message": "Ste si istí, že chcete vymazať celú históriu pripojení?"
+    },
+    "removeConnection": {
+      "title": "Odstrániť pripojenie",
+      "message": "Ste si istí, že chcete odstrániť toto pripojenie z histórie?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nie je dostupný hostiteľ pripojenia",
+    "failedToCopyUrl": "Nepodarilo sa skopírovať URL do schránky",
+    "cannotOpenUrl": "Nie je možné otvoriť URL v prehliadači",
+    "failedToOpenUrl": "Nepodarilo sa otvoriť URL v prehliadači",
+    "failedToEnableInterface": "Nepodarilo sa povoliť rozhranie. Prosím skúste znova.",
+    "failedToDisableInterface": "Nepodarilo sa vypnúť rozhranie. Prosím skúste znova.",
+    "notConnectedToFreeShow": "Nepripojené k FreeShow",
+    "connectionFailed": "Pripojenie zlyhalo",
+    "invalidConfiguration": "Neplatná konfigurácia"
+  },
+  "validation": {
+    "invalidHost": "Prosím zadajte platnú adresu hostiteľa",
+    "invalidPortConfig": "Neplatná konfigurácia portu"
+  },
+  "ports": {
+    "remote": "Diaľkové",
+    "stage": "Pódium",
+    "control": "Ovládanie",
+    "output": "Výstup",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "História pripojení",
+    "subtitle": "Zobraziť a spravovať vaše minulé pripojenia",
+    "noHistory": "Zatiaľ žiadna história pripojení",
+    "noHistoryDescription": "Vaše minulé pripojenia sa zobrazia tu",
+    "lastUsed": "Naposledy použité",
+    "remove": "Odstrániť",
+    "clear": "Vymazať",
+    "clearAll": "Vymazať všetko"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopírovať URL",
+    "openInBrowser": "Otvoriť v prehliadači",
+    "openInterface": "Otvoriť rozhranie",
+    "enableInterface": "Povoliť rozhranie",
+    "disableInterface": "Vypnúť rozhranie",
+    "interfaceDisabled": "Rozhranie vypnuté",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Upraviť názov pripojenia",
+    "label": "Názov pripojenia",
+    "placeholder": "Zadajte názov pre toto pripojenie"
+  }
+}

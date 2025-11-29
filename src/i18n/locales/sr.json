@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Otkaži",
+    "confirm": "Potvrdi",
+    "ok": "U redu",
+    "save": "Sačuvaj",
+    "delete": "Obriši",
+    "edit": "Izmeni",
+    "close": "Zatvori",
+    "loading": "Učitavanje...",
+    "error": "Greška",
+    "retry": "Pokušaj ponovo",
+    "share": "Podeli",
+    "disconnect": "Prekini vezu",
+    "connect": "Poveži se",
+    "gotIt": "Razumem"
+  },
+  "app": {
+    "name": "FreeShow Daljinski",
+    "subtitle": "Kontrolišite svoje prezentacije",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Daljinski"
+  },
+  "navigation": {
+    "interface": "Interfejs",
+    "connect": "Povezivanje",
+    "settings": "Podešavanja"
+  },
+  "sidebar": {
+    "connected": "Povezan",
+    "connecting": "Povezivanje...",
+    "disconnected": "Prekinuta veza"
+  },
+  "connectScreen": {
+    "title": "FreeShow Daljinski",
+    "subtitle": "Kontrolišite svoje prezentacije",
+    "manualConnection": "Ručno povezivanje",
+    "connectionDetails": "Detalji veze",
+    "serverAddress": "Adresa servera",
+    "interfacePorts": "Portovi interfejsa",
+    "restoreDefaults": "Vrati podrazumevano",
+    "portHelpText": "Ostavite portove prazne da biste onemogućili. Svaki port će biti testiran pre povezivanja.",
+    "connectingToInterface": "Povezivanje sa interfejsom",
+    "scanQrCode": "Skeniraj QR kod"
+  },
+  "connectStatus": {
+    "connected": "Povezan",
+    "connecting": "Povezivanje...",
+    "offline": "Van mreže",
+    "error": "Greška",
+    "attemptingToConnect": "Pokušaj povezivanja",
+    "notConnected": "Nije povezan",
+    "connectedTo": "Povezan sa {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Pomoć pri povezivanju",
+    "sameNetwork": "Oba uređaja treba da budu na istoj WiFi mreži",
+    "useLocalIP": "Koristite lokalnu IP adresu vašeg računara (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Brzo povezivanje",
+    "subtitle": "Dostupne veze",
+    "networkScan": "Skeniranje mreže",
+    "scan": "Skeniraj",
+    "scanning": "Skeniranje...",
+    "recentConnections": "Nedavne veze",
+    "clearAll": "Obriši sve",
+    "noDevicesFound": "Nisu pronađeni uređaji",
+    "tapToScan": "Dodirnite skeniranje da pronađete uređaje",
+    "noServices": "Nema usluga",
+    "expoGoNotice": "Prikazivanje simuliranih rezultata u Expo Go. Napravite razvojnog klijenta za pravo otkrivanje.",
+    "networkDiscoveryNotAvailable": "Otkrivanje mreže nije dostupno",
+    "networkDiscoveryMessage": "Skeniranje mreže (Bonjour/Zeroconf) ne radi u Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Dostupni interfejsi",
+    "notConnectedTitle": "Nije povezan",
+    "notConnectedSubtitle": "Povežite se sa FreeShow da biste pristupili interfejsima",
+    "connectToFreeShow": "Poveži se sa FreeShow",
+    "connectingTitle": "Povezivanje",
+    "establishingConnection": "Uspostavljanje veze sa FreeShow",
+    "retryingConnection": "Ponovni pokušaj povezivanja sa FreeShow",
+    "attemptingReconnect": "Pokušaj ponovnog povezivanja sa FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Kontrola slajdova i prezentacija"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Prikaz za ljude na bini"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Kontrolni interfejs za operatere"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Izlazni prikaz za ekrane"
+    },
+    "api": {
+      "title": "API kontrole",
+      "description": "Nativne API kontrole"
+    }
+  },
+  "settingsScreen": {
+    "title": "Podešavanja",
+    "subtitle": "Prilagodite svoje iskustvo",
+    "keepAwake": "Održavaj budnim",
+    "keepAwakeDescription": "Sprečite ekran uređaja da se ugasi dok je aplikacija otvorena",
+    "autoConnection": "AUTOMATSKO POVEZIVANJE",
+    "autoReconnect": "Automatsko ponovno povezivanje",
+    "autoReconnectDescription": "Automatski se ponovo poveži sa FreeShow kada se veza izgubi",
+    "autoLaunchInterface": "Automatsko pokretanje interfejsa",
+    "autoLaunchInterfaceDescription": "Automatski otvori određeni interfejs kada se poveže",
+    "autoLaunchFullscreen": "Automatsko pokretanje preko celog ekrana",
+    "autoLaunchFullscreenDescription": "Automatski otvori interfejs u režimu preko celog ekrana",
+    "history": "ISTORIJA",
+    "connectionHistory": "Istorija veza",
+    "connectionHistoryDescription": "Pogledajte i upravljajte svim prošlim vezama (ukupno {{count}})",
+    "none": "Nijedan",
+    "noneDescription": "Ostani na ekranu za povezivanje"
+  },
+  "apiScreen": {
+    "title": "FreeShow Daljinski",
+    "notConnected": "Nije povezan sa FreeShow",
+    "goToConnect": "Idi na povezivanje",
+    "apiNotAvailable": "API interfejs nije dostupan",
+    "apiNotAvailableDescription": "API interfejs je onemogućen u vašoj trenutnoj vezi. Da biste koristili API funkcije, omogućite API port u FreeShow i ponovo se povežite.",
+    "reconnectWithApi": "Ponovo se poveži sa API",
+    "favorites": "Omiljeno",
+    "noFavorites": "Još nema omiljenih. Dodirnite zvezdicu na bilo kojoj komandi da je dodate.",
+    "categories": "Kategorije",
+    "customCommand": "Prilagođena komanda",
+    "connectionFailed": "Povezivanje neuspešno",
+    "setupFailed": "Podešavanje neuspešno",
+    "commandFailed": "Komanda neuspešna",
+    "fullscreenHint": "Dvaput dodirnite bilo koji ugao da izađete iz režima preko celog ekrana"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Prekini vezu",
+      "message": "Da li ste sigurni da želite da prekinete vezu sa FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Omogući interfejs",
+      "invalidPort": "Neispravan port",
+      "invalidPortMessage": "Molimo unesite ispravan broj porta između 1 i 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Nije moguće onemogućiti interfejs",
+      "cannotDisableMessage": "Najmanje jedan interfejs mora ostati omogućen. Molimo omogućite drugi interfejs pre nego što onemogućite ovaj."
+    },
+    "runCommand": {
+      "title": "Pokreni komandu",
+      "message": "Da li ste sigurni da želite da pokrenete ovu komandu?"
+    },
+    "clearHistory": {
+      "title": "Obriši istoriju",
+      "message": "Da li ste sigurni da želite da obrišete svu istoriju veza?"
+    },
+    "removeConnection": {
+      "title": "Ukloni vezu",
+      "message": "Da li ste sigurni da želite da uklonite ovu vezu iz istorije?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nema dostupnog hosta za vezu",
+    "failedToCopyUrl": "Neuspelo kopiranje URL-a u clipboard",
+    "cannotOpenUrl": "Nije moguće otvoriti URL u pregledaču",
+    "failedToOpenUrl": "Neuspelo otvaranje URL-a u pregledaču",
+    "failedToEnableInterface": "Neuspelo omogućavanje interfejsa. Molimo pokušajte ponovo.",
+    "failedToDisableInterface": "Neuspelo onemogućavanje interfejsa. Molimo pokušajte ponovo.",
+    "notConnectedToFreeShow": "Nije povezan sa FreeShow",
+    "connectionFailed": "Povezivanje neuspešno",
+    "invalidConfiguration": "Neispravna konfiguracija"
+  },
+  "validation": {
+    "invalidHost": "Molimo unesite ispravnu adresu hosta",
+    "invalidPortConfig": "Neispravna konfiguracija porta"
+  },
+  "ports": {
+    "remote": "Daljinski",
+    "stage": "Bina",
+    "control": "Kontrola",
+    "output": "Izlaz",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Istorija veza",
+    "subtitle": "Pogledajte i upravljajte svojim prošlim vezama",
+    "noHistory": "Još nema istorije veza",
+    "noHistoryDescription": "Vaše prošle veze će se pojaviti ovde",
+    "lastUsed": "Poslednje korišćeno",
+    "remove": "Ukloni",
+    "clear": "Obriši",
+    "clearAll": "Obriši sve"
+  },
+  "compactPopup": {
+    "copyUrl": "Kopiraj URL",
+    "openInBrowser": "Otvori u pregledaču",
+    "openInterface": "Otvori interfejs",
+    "enableInterface": "Omogući interfejs",
+    "disableInterface": "Onemogući interfejs",
+    "interfaceDisabled": "Interfejs onemogućen",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Izmeni naziv veze",
+    "label": "Naziv veze",
+    "placeholder": "Unesite naziv za ovu vezu"
+  }
+}

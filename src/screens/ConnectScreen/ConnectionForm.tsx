@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useCallback, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Animated, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import FocusableTextInput from '../../components/FocusableTextInput'
 import TVFocusable from '../../components/TVFocusable'
@@ -60,6 +61,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
   onShowShareQR,
   navigation: _navigation,
 }) => {
+  const { t } = useTranslation();
   const connection = useConnection();
   const { updateShowPorts } = connection.actions;
   const defaultPorts = configService.getDefaultShowPorts();
@@ -207,11 +209,11 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
   return (
     <View style={styles.mainCard}>
       <Text style={styles.cardTitle}>
-        {isConnected ? 'Connection Details' : 'Manual Connection'}
+        {isConnected ? t('connectScreen.connectionDetails') : t('connectScreen.manualConnection')}
       </Text>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Server Address</Text>
+        <Text style={styles.inputLabel}>{t('connectScreen.serverAddress')}</Text>
         <View style={styles.inputRow}>
           <FocusableTextInput
             style={styles.textInput}
@@ -249,7 +251,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
           accessibilityLabel={showAdvanced ? "Hide interface ports" : "Show interface ports"}
           accessibilityHint="Toggle display of advanced port configuration options"
         >
-          <Text style={styles.advancedText}>Interface Ports</Text>
+          <Text style={styles.advancedText}>{t('connectScreen.interfacePorts')}</Text>
           <Ionicons
             name={showAdvanced ? "chevron-up" : "chevron-down"}
             size={20}
@@ -263,7 +265,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
         <View style={styles.advancedSection}>
           <View style={styles.portGrid}>
             <View style={styles.portItem}>
-              <Text style={styles.portLabel}>Remote</Text>
+              <Text style={styles.portLabel}>{t('ports.remote')}</Text>
               <View style={styles.portInputContainer}>
                 <FocusableTextInput
                   style={styles.portInput}
@@ -289,7 +291,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </View>
 
             <View style={styles.portItem}>
-              <Text style={styles.portLabel}>Stage</Text>
+              <Text style={styles.portLabel}>{t('ports.stage')}</Text>
               <View style={styles.portInputContainer}>
                 <FocusableTextInput
                   style={styles.portInput}
@@ -313,7 +315,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </View>
 
             <View style={styles.portItem}>
-              <Text style={styles.portLabel}>Control</Text>
+              <Text style={styles.portLabel}>{t('ports.control')}</Text>
               <View style={styles.portInputContainer}>
                 <TextInput
                   style={styles.portInput}
@@ -337,7 +339,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </View>
 
             <View style={styles.portItem}>
-              <Text style={styles.portLabel}>Output</Text>
+              <Text style={styles.portLabel}>{t('ports.output')}</Text>
               <View style={styles.portInputContainer}>
                 <TextInput
                   style={styles.portInput}
@@ -361,7 +363,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </View>
 
             <View style={styles.portItem}>
-              <Text style={styles.portLabel}>API</Text>
+              <Text style={styles.portLabel}>{t('ports.api')}</Text>
               <View style={styles.portInputContainer}>
                 <TextInput
                   style={styles.portInput}
@@ -389,7 +391,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
           <View style={styles.portHelpContainer}>
             <Text style={styles.portHelpText}>
               <Ionicons name="information-circle-outline" size={14} color={FreeShowTheme.colors.textSecondary} />
-              {' '}Leave ports empty to disable. Each port will be tested before connecting.
+              {' '}{t('connectScreen.portHelpText')}
             </Text>
           </View>
 
@@ -401,7 +403,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                 onPress={handleRestoreDefaults}
               >
                 <Ionicons name="refresh" size={16} color={FreeShowTheme.colors.textSecondary} />
-                <Text style={styles.restoreDefaultsText}>Restore Defaults</Text>
+                <Text style={styles.restoreDefaultsText}>{t('connectScreen.restoreDefaults')}</Text>
               </TouchableOpacity>
             </TVFocusable>
           )}
@@ -427,7 +429,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
               />
               <View style={styles.secondaryButtonContent}>
                 <Ionicons name="share-outline" size={20} color="white" />
-                <Text style={styles.secondaryButtonText}>Share</Text>
+                <Text style={styles.secondaryButtonText}>{t('common.share')}</Text>
               </View>
             </TouchableOpacity>
 
@@ -447,7 +449,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                 />
                 <View style={styles.secondaryButtonContent}>
                   <Ionicons name="log-out-outline" size={20} color="white" />
-                  <Text style={styles.secondaryButtonText}>Disconnect</Text>
+                  <Text style={styles.secondaryButtonText}>{t('common.disconnect')}</Text>
                 </View>
               </TouchableOpacity>
             </TVFocusable>
@@ -470,7 +472,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                 />
                 <View style={styles.buttonContent}>
                   <Animated.View style={[styles.spinner, { transform: [{ rotate: spinInterpolation }] }]} />
-                  <Text style={styles.buttonText}>Connecting to interface</Text>
+                  <Text style={styles.buttonText}>{t('connectScreen.connectingToInterface')}</Text>
                 </View>
               </TouchableOpacity>
             </TVFocusable>
@@ -491,7 +493,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
                 />
                 <View style={styles.buttonContent}>
                   <Ionicons name="wifi" size={24} color="white" />
-                  <Text style={styles.buttonText}>Connect</Text>
+                  <Text style={styles.buttonText}>{t('common.connect')}</Text>
                 </View>
               </TouchableOpacity>
             </TVFocusable>

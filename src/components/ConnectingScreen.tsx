@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   Animated,
   Pressable,
@@ -22,23 +23,24 @@ interface ConnectingScreenProps {
  * Connecting Screen Component
  * Shows a clean, mature connecting state that matches the not connected screen design
  */
-const ConnectingScreen: React.FC<ConnectingScreenProps> = ({ 
-  onCancel, 
+const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
+  onCancel,
   connectionStatus
 }) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
 
 
   const getStatusMessage = () => {
     switch (connectionStatus) {
       case 'connecting':
-        return 'Establishing connection to FreeShow';
+        return t('interfaceScreen.establishingConnection');
       case 'error':
-        return 'Retrying connection to FreeShow';
+        return t('interfaceScreen.retryingConnection');
       case 'disconnected':
-        return 'Attempting to reconnect to FreeShow';
+        return t('interfaceScreen.attemptingReconnect');
       default:
-        return 'Connecting to FreeShow';
+        return t('interfaceScreen.connectingTitle');
     }
   };
 
@@ -92,7 +94,7 @@ const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
           </Animated.View>
         </View>
 
-        <Text style={styles.connectingTitle}>Connecting</Text>
+        <Text style={styles.connectingTitle}>{t('interfaceScreen.connectingTitle')}</Text>
         <Text style={styles.connectingSubtitle}>
           {getStatusMessage()}
         </Text>
@@ -107,7 +109,7 @@ const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
           accessibilityLabel="Cancel connection attempt"
           accessibilityHint="Stop the current connection attempt"
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
         </Pressable>
       </Animated.View>
     </LinearGradient>

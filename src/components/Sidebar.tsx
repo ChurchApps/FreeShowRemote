@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -43,15 +44,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onClose,
   currentRoute,
 }) => {
+  const { t } = useTranslation();
   const [slideAnim] = useState(new Animated.Value(-SIDEBAR_WIDTH));
   const [backdropOpacity] = useState(new Animated.Value(0));
   const { state } = useConnection();
   const { isConnected, connectionStatus } = state;
 
   const navigationItems: NavigationItem[] = [
-    { key: 'Interface', label: 'Interface', icon: 'apps-outline', iconFocused: 'apps', route: 'Interface' },
-    { key: 'Connect', label: 'Connect', icon: 'wifi-outline', iconFocused: 'wifi', route: 'Connect' },
-    { key: 'Settings', label: 'Settings', icon: 'settings-outline', iconFocused: 'settings', route: 'Settings' },
+    { key: 'Interface', label: t('navigation.interface'), icon: 'apps-outline', iconFocused: 'apps', route: 'Interface' },
+    { key: 'Connect', label: t('navigation.connect'), icon: 'wifi-outline', iconFocused: 'wifi', route: 'Connect' },
+    { key: 'Settings', label: t('navigation.settings'), icon: 'settings-outline', iconFocused: 'settings', route: 'Settings' },
   ];
 
   useEffect(() => {
@@ -101,8 +103,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </TVFocusable>
 
               <View style={styles.headerText}>
-                <Text style={styles.appName}>FreeShow</Text>
-                <Text style={styles.appSubtitle}>Remote</Text>
+                <Text style={styles.appName}>{t('app.brandName')}</Text>
+                <Text style={styles.appSubtitle}>{t('app.brandSubtitle')}</Text>
               </View>
 
               <View style={styles.logoContainer}>
@@ -141,7 +143,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <View style={styles.statusIndicator}>
                   <View style={[styles.statusDot, { backgroundColor: getConnectionColor() }]} />
                   <Text style={styles.statusText}>
-                    {isConnected ? 'Connected' : connectionStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}
+                    {isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}
                   </Text>
                 </View>
               </View>
@@ -161,15 +163,16 @@ interface SidebarTraditionalProps {
 }
 
 export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentRoute, onNavigate }) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(true);
   const [animatedWidth] = useState(new Animated.Value(SIDEBAR_WIDTH));
   const { state } = useConnection();
   const { isConnected, connectionStatus } = state;
 
   const navigationItems: NavigationItem[] = [
-    { key: 'Interface', label: 'Interface', icon: 'apps-outline', iconFocused: 'apps', route: 'Interface' },
-    { key: 'Connect', label: 'Connect', icon: 'wifi-outline', iconFocused: 'wifi', route: 'Connect' },
-    { key: 'Settings', label: 'Settings', icon: 'settings-outline', iconFocused: 'settings', route: 'Settings' },
+    { key: 'Interface', label: t('navigation.interface'), icon: 'apps-outline', iconFocused: 'apps', route: 'Interface' },
+    { key: 'Connect', label: t('navigation.connect'), icon: 'wifi-outline', iconFocused: 'wifi', route: 'Connect' },
+    { key: 'Settings', label: t('navigation.settings'), icon: 'settings-outline', iconFocused: 'settings', route: 'Settings' },
   ];
 
   const toggleSidebar = () => {
@@ -202,8 +205,8 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
           {isExpanded && (
             <>
               <View style={traditionalStyles.headerText}>
-                <Text style={traditionalStyles.appName}>FreeShow</Text>
-                <Text style={traditionalStyles.appSubtitle}>Remote</Text>
+                <Text style={traditionalStyles.appName}>{t('app.brandName')}</Text>
+                <Text style={traditionalStyles.appSubtitle}>{t('app.brandSubtitle')}</Text>
               </View>
 
               <View style={traditionalStyles.logoContainer}>
@@ -250,7 +253,7 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
               <View style={traditionalStyles.statusIndicator}>
                 <View style={[traditionalStyles.statusDot, { backgroundColor: getConnectionColor() }]} />
                 <Text style={traditionalStyles.statusText}>
-                  {isConnected ? 'Connected' : connectionStatus === 'connecting' ? 'Connecting...' : 'Disconnected'}
+                  {isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}
                 </Text>
               </View>
             </View>

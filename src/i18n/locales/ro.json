@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Anulează",
+    "confirm": "Confirmă",
+    "ok": "OK",
+    "save": "Salvează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "close": "Închide",
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "retry": "Reîncearcă",
+    "share": "Distribuie",
+    "disconnect": "Deconectează",
+    "connect": "Conectează",
+    "gotIt": "Am înțeles"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Controlează prezentările tale",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interfață",
+    "connect": "Conectare",
+    "settings": "Setări"
+  },
+  "sidebar": {
+    "connected": "Conectat",
+    "connecting": "Se conectează...",
+    "disconnected": "Deconectat"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Controlează prezentările tale",
+    "manualConnection": "Conexiune Manuală",
+    "connectionDetails": "Detalii Conexiune",
+    "serverAddress": "Adresa Serverului",
+    "interfacePorts": "Porturi Interfață",
+    "restoreDefaults": "Restabilește Valorile Implicite",
+    "portHelpText": "Lasă porturile goale pentru a dezactiva. Fiecare port va fi testat înainte de conectare.",
+    "connectingToInterface": "Se conectează la interfață",
+    "scanQrCode": "Scanează cod QR"
+  },
+  "connectStatus": {
+    "connected": "Conectat",
+    "connecting": "Se conectează...",
+    "offline": "Offline",
+    "error": "Eroare",
+    "attemptingToConnect": "Se încearcă conectarea",
+    "notConnected": "Neconectat",
+    "connectedTo": "Conectat la {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Ajutor Conexiune",
+    "sameNetwork": "Ambele dispozitive trebuie să fie pe aceeași rețea WiFi",
+    "useLocalIP": "Folosește adresa IP locală a computerului tău (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Conexiune Rapidă",
+    "subtitle": "Conexiuni disponibile",
+    "networkScan": "Scanare Rețea",
+    "scan": "Scanează",
+    "scanning": "Se scanează...",
+    "recentConnections": "Conexiuni Recente",
+    "clearAll": "Șterge Tot",
+    "noDevicesFound": "Nu s-au găsit dispozitive",
+    "tapToScan": "Apasă scanează pentru a găsi dispozitive",
+    "noServices": "Fără Servicii",
+    "expoGoNotice": "Se afișează rezultate simulate în Expo Go. Construiește un client de dezvoltare pentru descoperire reală.",
+    "networkDiscoveryNotAvailable": "Descoperirea Rețelei Nu Este Disponibilă",
+    "networkDiscoveryMessage": "Scanarea rețelei (Bonjour/Zeroconf) nu funcționează în Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Interfețe Disponibile",
+    "notConnectedTitle": "Neconectat",
+    "notConnectedSubtitle": "Conectează-te la FreeShow pentru a accesa interfețele",
+    "connectToFreeShow": "Conectează-te la FreeShow",
+    "connectingTitle": "Se conectează",
+    "establishingConnection": "Se stabilește conexiunea la FreeShow",
+    "retryingConnection": "Se reîncearcă conexiunea la FreeShow",
+    "attemptingReconnect": "Se încearcă reconectarea la FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Controlează diapozitivele și prezentările"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Afișaj pentru persoanele de pe scenă"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Interfață de control pentru operatori"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Afișaj de ieșire pentru ecrane"
+    },
+    "api": {
+      "title": "Controale API",
+      "description": "Controale native API"
+    }
+  },
+  "settingsScreen": {
+    "title": "Setări",
+    "subtitle": "Personalizează experiența ta",
+    "keepAwake": "Menține Activ",
+    "keepAwakeDescription": "Împiedică ecranul dispozitivului să se închidă cât timp aplicația este deschisă",
+    "autoConnection": "CONEXIUNE AUTOMATĂ",
+    "autoReconnect": "Reconectare Automată",
+    "autoReconnectDescription": "Reconectează automat la FreeShow când conexiunea este pierdută",
+    "autoLaunchInterface": "Lansare Automată Interfață",
+    "autoLaunchInterfaceDescription": "Deschide automat o interfață specifică la conectare",
+    "autoLaunchFullscreen": "Lansare Automată în Ecran Complet",
+    "autoLaunchFullscreenDescription": "Deschide automat interfața în modul ecran complet",
+    "history": "ISTORIC",
+    "connectionHistory": "Istoric Conexiuni",
+    "connectionHistoryDescription": "Vizualizează și gestionează toate conexiunile anterioare ({{count}} total)",
+    "none": "Niciunul",
+    "noneDescription": "Rămâi pe ecranul de Conectare"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Neconectat la FreeShow",
+    "goToConnect": "Mergi la Conectare",
+    "apiNotAvailable": "Interfața API Nu Este Disponibilă",
+    "apiNotAvailableDescription": "Interfața API este dezactivată în conexiunea ta curentă. Pentru a folosi funcțiile API, activează portul API în FreeShow și reconectează-te.",
+    "reconnectWithApi": "Reconectează cu API",
+    "favorites": "Favorite",
+    "noFavorites": "Nu există favorite încă. Apasă steaua pe orice comandă pentru a o adăuga.",
+    "categories": "Categorii",
+    "customCommand": "Comandă Personalizată",
+    "connectionFailed": "Conexiune Eșuată",
+    "setupFailed": "Configurare Eșuată",
+    "commandFailed": "Comandă Eșuată",
+    "fullscreenHint": "Apasă dublu pe orice colț pentru a ieși din ecran complet"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Deconectare",
+      "message": "Ești sigur că vrei să te deconectezi de la FreeShow?"
+    },
+    "enableInterface": {
+      "title": "Activează Interfața",
+      "invalidPort": "Port Invalid",
+      "invalidPortMessage": "Te rugăm să introduci un număr de port valid între 1 și 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Nu Se Poate Dezactiva Interfața",
+      "cannotDisableMessage": "Cel puțin o interfață trebuie să rămână activată. Te rugăm să activezi o altă interfață înainte de a dezactiva aceasta."
+    },
+    "runCommand": {
+      "title": "Execută Comanda",
+      "message": "Ești sigur că vrei să execuți această comandă?"
+    },
+    "clearHistory": {
+      "title": "Șterge Istoricul",
+      "message": "Ești sigur că vrei să ștergi tot istoricul conexiunilor?"
+    },
+    "removeConnection": {
+      "title": "Elimină Conexiunea",
+      "message": "Ești sigur că vrei să elimini această conexiune din istoric?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Nu există host de conexiune disponibil",
+    "failedToCopyUrl": "Copierea URL-ului în clipboard a eșuat",
+    "cannotOpenUrl": "Nu se poate deschide URL-ul în browser",
+    "failedToOpenUrl": "Deschiderea URL-ului în browser a eșuat",
+    "failedToEnableInterface": "Activarea interfeței a eșuat. Te rugăm să încerci din nou.",
+    "failedToDisableInterface": "Dezactivarea interfeței a eșuat. Te rugăm să încerci din nou.",
+    "notConnectedToFreeShow": "Neconectat la FreeShow",
+    "connectionFailed": "Conexiune eșuată",
+    "invalidConfiguration": "Configurare invalidă"
+  },
+  "validation": {
+    "invalidHost": "Te rugăm să introduci o adresă host validă",
+    "invalidPortConfig": "Configurare port invalidă"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Scenă",
+    "control": "Control",
+    "output": "Ieșire",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Istoric Conexiuni",
+    "subtitle": "Vizualizează și gestionează conexiunile tale anterioare",
+    "noHistory": "Nu există istoric de conexiuni încă",
+    "noHistoryDescription": "Conexiunile tale anterioare vor apărea aici",
+    "lastUsed": "Ultima utilizare",
+    "remove": "Elimină",
+    "clear": "Șterge",
+    "clearAll": "Șterge Tot"
+  },
+  "compactPopup": {
+    "copyUrl": "Copiază URL",
+    "openInBrowser": "Deschide în Browser",
+    "openInterface": "Deschide Interfața",
+    "enableInterface": "Activează Interfața",
+    "disableInterface": "Dezactivează Interfața",
+    "interfaceDisabled": "Interfață Dezactivată",
+    "port": "Port"
+  },
+  "editNickname": {
+    "title": "Editează Numele Conexiunii",
+    "label": "Nume Conexiune",
+    "placeholder": "Introdu un nume pentru această conexiune"
+  }
+}

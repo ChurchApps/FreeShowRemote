@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "取消",
+    "confirm": "确认",
+    "ok": "确定",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "close": "关闭",
+    "loading": "加载中...",
+    "error": "错误",
+    "retry": "重试",
+    "share": "分享",
+    "disconnect": "断开连接",
+    "connect": "连接",
+    "gotIt": "知道了"
+  },
+  "app": {
+    "name": "FreeShow 遥控器",
+    "subtitle": "控制您的演示文稿",
+    "brandName": "FreeShow",
+    "brandSubtitle": "遥控器"
+  },
+  "navigation": {
+    "interface": "界面",
+    "connect": "连接",
+    "settings": "设置"
+  },
+  "sidebar": {
+    "connected": "已连接",
+    "connecting": "连接中...",
+    "disconnected": "已断开"
+  },
+  "connectScreen": {
+    "title": "FreeShow 遥控器",
+    "subtitle": "控制您的演示文稿",
+    "manualConnection": "手动连接",
+    "connectionDetails": "连接详情",
+    "serverAddress": "服务器地址",
+    "interfacePorts": "界面端口",
+    "restoreDefaults": "恢复默认",
+    "portHelpText": "留空端口以禁用。连接前将测试每个端口。",
+    "connectingToInterface": "正在连接到界面",
+    "scanQrCode": "扫描二维码"
+  },
+  "connectStatus": {
+    "connected": "已连接",
+    "connecting": "连接中...",
+    "offline": "离线",
+    "error": "错误",
+    "attemptingToConnect": "正在尝试连接",
+    "notConnected": "未连接",
+    "connectedTo": "已连接到 {{name}}"
+  },
+  "connectionHelp": {
+    "title": "连接帮助",
+    "sameNetwork": "两台设备应连接到同一 WiFi 网络",
+    "useLocalIP": "使用您计算机的本地 IP 地址（192.168.x.x）"
+  },
+  "quickConnect": {
+    "title": "快速连接",
+    "subtitle": "可用连接",
+    "networkScan": "网络扫描",
+    "scan": "扫描",
+    "scanning": "扫描中...",
+    "recentConnections": "最近的连接",
+    "clearAll": "全部清除",
+    "noDevicesFound": "未找到设备",
+    "tapToScan": "点击扫描以查找设备",
+    "noServices": "无服务",
+    "expoGoNotice": "在 Expo Go 中显示模拟结果。构建开发客户端以进行真实发现。",
+    "networkDiscoveryNotAvailable": "网络发现不可用",
+    "networkDiscoveryMessage": "网络扫描（Bonjour/Zeroconf）在 Expo Go 中不起作用。"
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "可用界面",
+    "notConnectedTitle": "未连接",
+    "notConnectedSubtitle": "连接到 FreeShow 以访问界面",
+    "connectToFreeShow": "连接到 FreeShow",
+    "connectingTitle": "连接中",
+    "establishingConnection": "正在建立与 FreeShow 的连接",
+    "retryingConnection": "正在重试连接到 FreeShow",
+    "attemptingReconnect": "正在尝试重新连接到 FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "控制幻灯片和演示文稿"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "舞台人员显示器"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "操作员控制界面"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "屏幕输出显示"
+    },
+    "api": {
+      "title": "API 控制",
+      "description": "原生 API 控制"
+    }
+  },
+  "settingsScreen": {
+    "title": "设置",
+    "subtitle": "自定义您的体验",
+    "keepAwake": "保持唤醒",
+    "keepAwakeDescription": "在应用打开时防止设备屏幕休眠",
+    "autoConnection": "自动连接",
+    "autoReconnect": "自动重连",
+    "autoReconnectDescription": "连接丢失时自动重新连接到 FreeShow",
+    "autoLaunchInterface": "自动启动界面",
+    "autoLaunchInterfaceDescription": "连接时自动打开特定界面",
+    "autoLaunchFullscreen": "自动全屏启动",
+    "autoLaunchFullscreenDescription": "自动以全屏模式打开界面",
+    "history": "历史记录",
+    "connectionHistory": "连接历史",
+    "connectionHistoryDescription": "查看和管理所有过往连接（共 {{count}} 条）",
+    "none": "无",
+    "noneDescription": "停留在连接屏幕"
+  },
+  "apiScreen": {
+    "title": "FreeShow 遥控器",
+    "notConnected": "未连接到 FreeShow",
+    "goToConnect": "前往连接",
+    "apiNotAvailable": "API 界面不可用",
+    "apiNotAvailableDescription": "当前连接中 API 界面已禁用。要使用 API 功能，请在 FreeShow 中启用 API 端口并重新连接。",
+    "reconnectWithApi": "使用 API 重新连接",
+    "favorites": "收藏",
+    "noFavorites": "暂无收藏。点击任意命令的星标即可添加。",
+    "categories": "分类",
+    "customCommand": "自定义命令",
+    "connectionFailed": "连接失败",
+    "setupFailed": "设置失败",
+    "commandFailed": "命令失败",
+    "fullscreenHint": "双击任意角落退出全屏"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "断开连接",
+      "message": "确定要断开与 FreeShow 的连接吗？"
+    },
+    "enableInterface": {
+      "title": "启用界面",
+      "invalidPort": "无效端口",
+      "invalidPortMessage": "请输入 1 到 65535 之间的有效端口号"
+    },
+    "disableInterface": {
+      "cannotDisable": "无法禁用界面",
+      "cannotDisableMessage": "必须至少保留一个界面处于启用状态。请先启用另一个界面，然后再禁用此界面。"
+    },
+    "runCommand": {
+      "title": "运行命令",
+      "message": "确定要运行此命令吗？"
+    },
+    "clearHistory": {
+      "title": "清除历史",
+      "message": "确定要清除所有连接历史吗？"
+    },
+    "removeConnection": {
+      "title": "移除连接",
+      "message": "确定要从历史记录中移除此连接吗？"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "没有可用的连接主机",
+    "failedToCopyUrl": "无法将 URL 复制到剪贴板",
+    "cannotOpenUrl": "无法在浏览器中打开 URL",
+    "failedToOpenUrl": "无法在浏览器中打开 URL",
+    "failedToEnableInterface": "启用界面失败。请重试。",
+    "failedToDisableInterface": "禁用界面失败。请重试。",
+    "notConnectedToFreeShow": "未连接到 FreeShow",
+    "connectionFailed": "连接失败",
+    "invalidConfiguration": "无效配置"
+  },
+  "validation": {
+    "invalidHost": "请输入有效的主机地址",
+    "invalidPortConfig": "无效的端口配置"
+  },
+  "ports": {
+    "remote": "遥控",
+    "stage": "舞台",
+    "control": "控制",
+    "output": "输出",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "连接历史",
+    "subtitle": "查看和管理您的过往连接",
+    "noHistory": "暂无连接历史",
+    "noHistoryDescription": "您的过往连接将显示在这里",
+    "lastUsed": "最后使用",
+    "remove": "移除",
+    "clear": "清除",
+    "clearAll": "全部清除"
+  },
+  "compactPopup": {
+    "copyUrl": "复制 URL",
+    "openInBrowser": "在浏览器中打开",
+    "openInterface": "打开界面",
+    "enableInterface": "启用界面",
+    "disableInterface": "禁用界面",
+    "interfaceDisabled": "界面已禁用",
+    "port": "端口"
+  },
+  "editNickname": {
+    "title": "编辑连接名称",
+    "label": "连接名称",
+    "placeholder": "为此连接输入名称"
+  }
+}

@@ -1,0 +1,214 @@
+{
+  "common": {
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "ok": "OK",
+    "save": "Opslaan",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "close": "Sluiten",
+    "loading": "Laden...",
+    "error": "Fout",
+    "retry": "Opnieuw proberen",
+    "share": "Delen",
+    "disconnect": "Verbinding verbreken",
+    "connect": "Verbinden",
+    "gotIt": "Begrepen"
+  },
+  "app": {
+    "name": "FreeShow Remote",
+    "subtitle": "Bedien je presentaties",
+    "brandName": "FreeShow",
+    "brandSubtitle": "Remote"
+  },
+  "navigation": {
+    "interface": "Interface",
+    "connect": "Verbinden",
+    "settings": "Instellingen"
+  },
+  "sidebar": {
+    "connected": "Verbonden",
+    "connecting": "Verbinden...",
+    "disconnected": "Niet verbonden"
+  },
+  "connectScreen": {
+    "title": "FreeShow Remote",
+    "subtitle": "Bedien je presentaties",
+    "manualConnection": "Handmatige verbinding",
+    "connectionDetails": "Verbindingsdetails",
+    "serverAddress": "Serveradres",
+    "interfacePorts": "Interface-poorten",
+    "restoreDefaults": "Standaardwaarden herstellen",
+    "portHelpText": "Laat poorten leeg om uit te schakelen. Elke poort wordt getest voordat er verbinding wordt gemaakt.",
+    "connectingToInterface": "Verbinden met interface",
+    "scanQrCode": "QR-code scannen"
+  },
+  "connectStatus": {
+    "connected": "Verbonden",
+    "connecting": "Verbinden...",
+    "offline": "Offline",
+    "error": "Fout",
+    "attemptingToConnect": "Poging tot verbinden",
+    "notConnected": "Niet verbonden",
+    "connectedTo": "Verbonden met {{name}}"
+  },
+  "connectionHelp": {
+    "title": "Verbindingshulp",
+    "sameNetwork": "Beide apparaten moeten op hetzelfde WiFi-netwerk zijn",
+    "useLocalIP": "Gebruik het lokale IP-adres van je computer (192.168.x.x)"
+  },
+  "quickConnect": {
+    "title": "Snel verbinden",
+    "subtitle": "Beschikbare verbindingen",
+    "networkScan": "Netwerkscan",
+    "scan": "Scannen",
+    "scanning": "Scannen...",
+    "recentConnections": "Recente verbindingen",
+    "clearAll": "Alles wissen",
+    "noDevicesFound": "Geen apparaten gevonden",
+    "tapToScan": "Tik op scannen om apparaten te vinden",
+    "noServices": "Geen services",
+    "expoGoNotice": "Gesimuleerde resultaten weergegeven in Expo Go. Bouw een dev-client voor echte detectie.",
+    "networkDiscoveryNotAvailable": "Netwerkdetectie niet beschikbaar",
+    "networkDiscoveryMessage": "Netwerk scannen (Bonjour/Zeroconf) werkt niet in Expo Go."
+  },
+  "interfaceScreen": {
+    "availableInterfaces": "Beschikbare interfaces",
+    "notConnectedTitle": "Niet verbonden",
+    "notConnectedSubtitle": "Verbind met FreeShow om toegang te krijgen tot interfaces",
+    "connectToFreeShow": "Verbinden met FreeShow",
+    "connectingTitle": "Verbinden",
+    "establishingConnection": "Verbinding maken met FreeShow",
+    "retryingConnection": "Opnieuw proberen verbinding te maken met FreeShow",
+    "attemptingReconnect": "Poging tot herverbinden met FreeShow"
+  },
+  "interfaces": {
+    "remote": {
+      "title": "RemoteShow",
+      "description": "Bedien dia's en presentaties"
+    },
+    "stage": {
+      "title": "StageShow",
+      "description": "Weergave voor mensen op het podium"
+    },
+    "control": {
+      "title": "ControlShow",
+      "description": "Bedieningsinterface voor operators"
+    },
+    "output": {
+      "title": "OutputShow",
+      "description": "Uitvoerweergave voor schermen"
+    },
+    "api": {
+      "title": "API-bediening",
+      "description": "Ingebouwde API-bediening"
+    }
+  },
+  "settingsScreen": {
+    "title": "Instellingen",
+    "subtitle": "Pas je ervaring aan",
+    "keepAwake": "Wakker houden",
+    "keepAwakeDescription": "Voorkom dat je apparaatscherm in slaapstand gaat terwijl de app open is",
+    "autoConnection": "AUTOMATISCHE VERBINDING",
+    "autoReconnect": "Automatisch herverbinden",
+    "autoReconnectDescription": "Automatisch opnieuw verbinden met FreeShow wanneer de verbinding wordt verbroken",
+    "autoLaunchInterface": "Interface automatisch openen",
+    "autoLaunchInterfaceDescription": "Een specifieke interface automatisch openen wanneer verbonden",
+    "autoLaunchFullscreen": "Volledig scherm automatisch openen",
+    "autoLaunchFullscreenDescription": "De interface automatisch openen in volledig scherm modus",
+    "history": "GESCHIEDENIS",
+    "connectionHistory": "Verbindingsgeschiedenis",
+    "connectionHistoryDescription": "Bekijk en beheer alle eerdere verbindingen ({{count}} totaal)",
+    "none": "Geen",
+    "noneDescription": "Blijf op verbindingsscherm"
+  },
+  "apiScreen": {
+    "title": "FreeShow Remote",
+    "notConnected": "Niet verbonden met FreeShow",
+    "goToConnect": "Ga naar verbinden",
+    "apiNotAvailable": "API-interface niet beschikbaar",
+    "apiNotAvailableDescription": "De API-interface is uitgeschakeld in je huidige verbinding. Om API-functies te gebruiken, schakel de API-poort in FreeShow in en maak opnieuw verbinding.",
+    "reconnectWithApi": "Opnieuw verbinden met API",
+    "favorites": "Favorieten",
+    "noFavorites": "Nog geen favorieten. Tik op de ster bij een commando om het toe te voegen.",
+    "categories": "Categorieën",
+    "customCommand": "Aangepast commando",
+    "connectionFailed": "Verbinding mislukt",
+    "setupFailed": "Installatie mislukt",
+    "commandFailed": "Commando mislukt",
+    "fullscreenHint": "Dubbeltik op een hoek om volledig scherm te verlaten"
+  },
+  "modals": {
+    "disconnect": {
+      "title": "Verbinding verbreken",
+      "message": "Weet je zeker dat je de verbinding met FreeShow wilt verbreken?"
+    },
+    "enableInterface": {
+      "title": "Interface inschakelen",
+      "invalidPort": "Ongeldige poort",
+      "invalidPortMessage": "Voer een geldig poortnummer in tussen 1 en 65535"
+    },
+    "disableInterface": {
+      "cannotDisable": "Kan interface niet uitschakelen",
+      "cannotDisableMessage": "Minimaal één interface moet ingeschakeld blijven. Schakel eerst een andere interface in voordat je deze uitschakelt."
+    },
+    "runCommand": {
+      "title": "Commando uitvoeren",
+      "message": "Weet je zeker dat je dit commando wilt uitvoeren?"
+    },
+    "clearHistory": {
+      "title": "Geschiedenis wissen",
+      "message": "Weet je zeker dat je alle verbindingsgeschiedenis wilt wissen?"
+    },
+    "removeConnection": {
+      "title": "Verbinding verwijderen",
+      "message": "Weet je zeker dat je deze verbinding uit de geschiedenis wilt verwijderen?"
+    }
+  },
+  "errors": {
+    "noConnectionHost": "Geen verbindingshost beschikbaar",
+    "failedToCopyUrl": "URL kopiëren naar klembord mislukt",
+    "cannotOpenUrl": "Kan URL niet openen in browser",
+    "failedToOpenUrl": "URL openen in browser mislukt",
+    "failedToEnableInterface": "Interface inschakelen mislukt. Probeer het opnieuw.",
+    "failedToDisableInterface": "Interface uitschakelen mislukt. Probeer het opnieuw.",
+    "notConnectedToFreeShow": "Niet verbonden met FreeShow",
+    "connectionFailed": "Verbinding mislukt",
+    "invalidConfiguration": "Ongeldige configuratie"
+  },
+  "validation": {
+    "invalidHost": "Voer een geldig hostadres in",
+    "invalidPortConfig": "Ongeldige poortconfiguratie"
+  },
+  "ports": {
+    "remote": "Remote",
+    "stage": "Podium",
+    "control": "Bediening",
+    "output": "Uitvoer",
+    "api": "API"
+  },
+  "connectionHistory": {
+    "title": "Verbindingsgeschiedenis",
+    "subtitle": "Bekijk en beheer je eerdere verbindingen",
+    "noHistory": "Nog geen verbindingsgeschiedenis",
+    "noHistoryDescription": "Je eerdere verbindingen verschijnen hier",
+    "lastUsed": "Laatst gebruikt",
+    "remove": "Verwijderen",
+    "clear": "Wissen",
+    "clearAll": "Alles wissen"
+  },
+  "compactPopup": {
+    "copyUrl": "URL kopiëren",
+    "openInBrowser": "Openen in browser",
+    "openInterface": "Interface openen",
+    "enableInterface": "Interface inschakelen",
+    "disableInterface": "Interface uitschakelen",
+    "interfaceDisabled": "Interface uitgeschakeld",
+    "port": "Poort"
+  },
+  "editNickname": {
+    "title": "Verbindingsnaam bewerken",
+    "label": "Verbindingsnaam",
+    "placeholder": "Voer een naam in voor deze verbinding"
+  }
+}
