@@ -2,7 +2,7 @@
   "expo": {
     "name": "FreeShow Remote",
     "slug": "freeshow-remote",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -37,8 +37,8 @@
         ],
         "NSLocalNetworkUsageDescription": "Allow FreeShow Remote to discover devices on the local network.",
         "CFBundleDisplayName": "FreeShow Remote",
-        "CFBundleShortVersionString": "1.0.3",
-        "CFBundleVersion": "1",
+        "CFBundleShortVersionString": "1.1.0",
+        "CFBundleVersion": "2",
         "UIStatusBarHidden": false,
         "UIViewControllerBasedStatusBarAppearance": true,
         "UISupportedInterfaceOrientations": [

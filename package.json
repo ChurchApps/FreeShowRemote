@@ -1,6 +1,6 @@
 {
   "name": "FreeShowRemote",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A mobile remote app for FreeShow presentation software",
   "main": "index.ts",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "build:ios": "eas build --platform ios --profile production-ios",
     "build:android": "eas build --platform android --profile production-android-aab",
     "build:amazon": "eas build --platform android --profile production-android-apk",
-    "submit:ios": "eas submit --platform ios --profile production-ios",
+    "submit:ios": "eas submit --platform ios",
     "submit:android": "eas submit --platform android --profile production-android-aab",
     "update": "eas update --channel production",
     "update:preview": "eas update --channel preview",
