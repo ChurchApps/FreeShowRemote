@@ -26,7 +26,7 @@ export class InputValidationService {
       .trim() // Remove leading/trailing whitespace
       .replace(/[<>]/g, '') // Remove potential HTML/XML tags
       .replace(/['";]/g, '') // Remove potential SQL injection characters
-      .replace(/[^\w\s\-._:]/g, ''); // Keep only alphanumeric, spaces, and safe punctuation
+      .replace(/[^\w\s\-._:\[\]]/g, ''); // Keep only alphanumeric, spaces, and safe punctuation
   }
 
   /**

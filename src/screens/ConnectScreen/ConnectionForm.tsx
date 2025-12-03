@@ -138,7 +138,7 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
       const hostValidation = ValidationService.validateHost(host.trim());
       if (!hostValidation.isValid) {
         // Error handling would be done in parent component
-        throw new Error(`Invalid host: ${hostValidation.error || 'Please enter a valid host address'}`);
+        throw new Error(hostValidation.error || 'Please enter a valid host address');
       }
 
       // Validate show ports (allow blank ports to be treated as disabled)
