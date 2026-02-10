@@ -50,25 +50,19 @@ function parseServiceCapability(serviceName: string): {
   portKey: string; 
   isApi: boolean;
 } {
-  const name = serviceName?.trim() || '';
-  const parts = name.split('-');
-  
-  // Handle new format: HOSTNAME-CONNECTION-RANDOMHEX
-  if (parts.length >= 3) {
-    const connectionType = parts[parts.length - 2].toUpperCase() as keyof typeof SERVICE_TYPE_MAPPINGS;
-    const mapping = SERVICE_TYPE_MAPPINGS[connectionType];
-    if (mapping) return mapping;
+  const name = serviceName?.toUpperCase() || '';
+
+  // Look for role token anywhere in the name
+  for (const key of Object.keys(SERVICE_TYPE_MAPPINGS) as (keyof typeof SERVICE_TYPE_MAPPINGS)[]) {
+    if (name.includes(key)) {
+      return SERVICE_TYPE_MAPPINGS[key];
+    }
   }
-  
-  // Handle old format for backward compatibility
-  const upperName = name.toUpperCase() as keyof typeof SERVICE_TYPE_MAPPINGS;
-  const mapping = SERVICE_TYPE_MAPPINGS[upperName];
-  if (mapping) return mapping;
-  
-  // Fallback for unknown services
+
+  // Fallback for old / unknown formats
   return { 
-    capability: `unknown:${upperName}`, 
-    portKey: upperName.toLowerCase() || 'unknown', 
+    capability: `unknown:${name}`, 
+    portKey: 'unknown', 
     isApi: false 
   };
 }
@@ -76,23 +70,20 @@ function parseServiceCapability(serviceName: string): {
 /**
  * Extract hostname from service name and format for display
  */
-function getDisplayName(serviceName: string, hostName: string, ip: string): string {
-  const parts = serviceName.split('-');
-  
-  // Extract hostname from new format service names
-  if (parts.length >= 3) {
-    const hostnameParts = parts.slice(0, parts.length - 2);
-    return hostnameParts.join('-').replace(/-/g, ' ');
-  }
-  
-  // Use hostname if available
+function getDisplayName(_serviceName: string, hostName: string, ip: string): string {
+  // 1. Prefer real mDNS hostname
   if (hostName) {
-    const hostname = hostName.replace(/\.local\.?$/, '');
-    if (hostname && hostname !== ip) {
-      return hostname.replace(/-/g, ' ');
+    const cleaned = hostName
+      .replace(/\.local\.?$/, '')
+      .replace(/-/g, ' ')
+      .trim();
+
+    if (cleaned && cleaned !== ip) {
+      return cleaned;
     }
   }
-  
+
+  // 2. Fallback to IP
   return ip;
 }
 
