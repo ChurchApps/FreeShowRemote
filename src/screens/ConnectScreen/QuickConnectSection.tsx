@@ -25,352 +25,411 @@ interface QuickConnectSectionProps {
   onClearAllHistory: () => void;
 }
 
-const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(({
-  history,
-  discoveredServices,
-  isDiscoveryAvailable,
-  isScanActive,
-  scanComplete,
-  animatedScanProgress,
-  onScanPress,
-  onDiscoveredConnect,
-  onHistoryConnect,
-  onRemoveFromHistory,
-  onEditNickname,
-  onClearAllHistory,
-}) => {
-  const { t } = useTranslation();
-  const _discoveryTimeout = configService.getNetworkConfig().discoveryTimeout;
-  const isIpAddress = useCallback((str: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(str), []);
+const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
+  ({
+    history,
+    discoveredServices,
+    isDiscoveryAvailable,
+    isScanActive,
+    scanComplete,
+    animatedScanProgress,
+    onScanPress,
+    onDiscoveredConnect,
+    onHistoryConnect,
+    onRemoveFromHistory,
+    onEditNickname,
+    onClearAllHistory,
+  }) => {
+    const { t } = useTranslation();
+    const _discoveryTimeout = configService.getNetworkConfig().discoveryTimeout;
+    const isIpAddress = useCallback((str: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(str), []);
 
-  // Check if running in Expo Go
-  const isExpoGo = Constants.executionEnvironment === 'storeClient';
+    // Check if running in Expo Go
+    const isExpoGo = Constants.executionEnvironment === 'storeClient';
 
-  // Modal state
-  const [showExpoGoWarning, setShowExpoGoWarning] = useState(false);
-  // Expo Go mock discovery state
-  const [isMockScanActive, setIsMockScanActive] = useState(false);
-  const [mockedServices, setMockedServices] = useState<DiscoveredFreeShowInstance[]>([]);
-  const [showExpoMockNotice, setShowExpoMockNotice] = useState(false);
+    // Modal state
+    const [showExpoGoWarning, setShowExpoGoWarning] = useState(false);
+    // Expo Go mock discovery state
+    const [isMockScanActive, setIsMockScanActive] = useState(false);
+    const [mockedServices, setMockedServices] = useState<DiscoveredFreeShowInstance[]>([]);
+    const [showExpoMockNotice, setShowExpoMockNotice] = useState(false);
 
-  // Handle scan press with Expo Go check
-  const handleScanPress = useCallback(() => {
-    if (isExpoGo) {
-      // Simulate discovery results in Expo Go
-      setShowExpoMockNotice(true);
-      setIsMockScanActive(true);
-      const defaultPort = configService.getNetworkConfig().defaultPort;
-      const mocks: DiscoveredFreeShowInstance[] = [
-        {
-          name: 'Main Hall Server',
-          host: 'main-hall.local',
-          port: defaultPort,
-          ip: '192.168.1.50',
-          ports: { 
-            api: defaultPort, 
-            remote: configService.getDefaultShowPorts().remote, 
-            stage: configService.getDefaultShowPorts().stage, 
-            control: configService.getDefaultShowPorts().control, 
-            output: configService.getDefaultShowPorts().output 
+    // Handle scan press with Expo Go check
+    const handleScanPress = useCallback(() => {
+      if (isExpoGo) {
+        // Simulate discovery results in Expo Go
+        setShowExpoMockNotice(true);
+        setIsMockScanActive(true);
+        const defaultPort = configService.getNetworkConfig().defaultPort;
+        const mocks: DiscoveredFreeShowInstance[] = [
+          {
+            name: 'Main Hall Server',
+            host: 'main-hall.local',
+            port: defaultPort,
+            ip: '192.168.1.50',
+            ips: ['192.168.1.50'],
+            ports: {
+              api: defaultPort,
+              remote: configService.getDefaultShowPorts().remote,
+              stage: configService.getDefaultShowPorts().stage,
+              control: configService.getDefaultShowPorts().control,
+              output: configService.getDefaultShowPorts().output,
+            },
+            capabilities: ['remoteshow', 'stageshow', 'controlshow', 'outputshow'],
+            apiEnabled: true,
           },
-          capabilities: ['remoteshow', 'stageshow', 'controlshow', 'outputshow'],
-          apiEnabled: true,
-        },
-        {
-          name: 'Stage Left',
-          host: 'stage-left.local',
-          port: defaultPort,
-          ip: '192.168.1.71',
-          ports: { 
-            api: defaultPort, 
-            remote: configService.getDefaultShowPorts().remote, 
-            stage: 0, 
-            control: configService.getDefaultShowPorts().control, 
-            output: 0 
+          {
+            name: 'Stage Left',
+            host: 'stage-left.local',
+            port: defaultPort,
+            ip: '192.168.1.71',
+            ips: ['192.168.1.71'],
+            ports: {
+              api: defaultPort,
+              remote: configService.getDefaultShowPorts().remote,
+              stage: 0,
+              control: configService.getDefaultShowPorts().control,
+              output: 0,
+            },
+            capabilities: ['remoteshow', 'controlshow'],
+            apiEnabled: true,
           },
-          capabilities: ['remoteshow', 'controlshow'],
-          apiEnabled: true,
-        },
-        {
-          name: 'Lobby Display',
-          host: 'lobby-screen.local',
-          port: defaultPort,
-          ip: '192.168.1.89',
-          ports: { 
-            api: defaultPort, 
-            remote: 0, 
-            stage: 0, 
-            control: 0, 
-            output: configService.getDefaultShowPorts().output 
+          {
+            name: 'Lobby Display',
+            host: 'lobby-screen.local',
+            port: defaultPort,
+            ip: '192.168.1.89',
+            ips: ['192.168.1.89'],
+            ports: {
+              api: defaultPort,
+              remote: 0,
+              stage: 0,
+              control: 0,
+              output: configService.getDefaultShowPorts().output,
+            },
+            capabilities: ['outputshow'],
+            apiEnabled: true,
           },
-          capabilities: ['outputshow'],
-          apiEnabled: true,
-        },
-      ];
-      setMockedServices(mocks);
-      // Animate progress briefly for UX, then stop
-      Animated.timing(animatedScanProgress, {
-        toValue: 1,
-        duration: 800,
-        useNativeDriver: false,
-      }).start(() => {
-        setIsMockScanActive(false);
+        ];
+        setMockedServices(mocks);
+        // Animate progress briefly for UX, then stop
         Animated.timing(animatedScanProgress, {
-          toValue: 0,
-          duration: 0,
+          toValue: 1,
+          duration: 800,
           useNativeDriver: false,
-        }).start();
-      });
-      return;
-    }
-    onScanPress();
-  }, [isExpoGo, onScanPress, animatedScanProgress]);
+        }).start(() => {
+          setIsMockScanActive(false);
+          Animated.timing(animatedScanProgress, {
+            toValue: 0,
+            duration: 0,
+            useNativeDriver: false,
+          }).start();
+        });
+        return;
+      }
+      onScanPress();
+    }, [isExpoGo, onScanPress, animatedScanProgress]);
 
-  // Memoize computed values
-  const recentHistory = useMemo(() => history.slice(0, 3), [history]);
+    // Memoize computed values
+    const recentHistory = useMemo(() => history.slice(0, 3), [history]);
 
-  const effectiveScanActive = isScanActive || (isExpoGo && isMockScanActive);
-  const effectiveServices = useMemo(() => {
-    return (isExpoGo && mockedServices.length > 0) ? mockedServices : discoveredServices;
-  }, [isExpoGo, mockedServices, discoveredServices]);
-  const hasDiscoveredServices = useMemo(() => effectiveServices.length > 0, [effectiveServices]);
-  const hasHistory = useMemo(() => history.length > 0, [history.length]);
+    const effectiveScanActive = isScanActive || (isExpoGo && isMockScanActive);
+    const effectiveServices = useMemo(() => {
+      return isExpoGo && mockedServices.length > 0 ? mockedServices : discoveredServices;
+    }, [isExpoGo, mockedServices, discoveredServices]);
+    const hasDiscoveredServices = useMemo(() => effectiveServices.length > 0, [effectiveServices]);
+    const hasHistory = useMemo(() => history.length > 0, [history.length]);
 
-  return (
-    <View style={styles.quickConnectCard}>
-      <View style={styles.quickConnectHeader}>
-        <Text style={styles.quickConnectTitle}>{t('quickConnect.title')}</Text>
-        <Text style={styles.quickConnectSubtitle}>{t('quickConnect.subtitle')}</Text>
-      </View>
-      
-      <View style={styles.quickConnectContent}>
-        {/* Auto Discovery */}
-        {isDiscoveryAvailable && (
-          <View style={styles.discoverySection}>
-            <View style={styles.discoverySectionHeader}>
-              <Text style={styles.discoveryTitle}>{t('quickConnect.networkScan')}</Text>
-              <TVFocusable onPress={handleScanPress}>
-                <TouchableOpacity
-                onPress={handleScanPress}
-                style={[
-                  styles.discoveryToggle,
-                  effectiveScanActive && styles.discoveryToggleActive,
-                  { overflow: 'hidden', position: 'relative' },
-                ]}
-                accessibilityLabel={isScanActive ? "Stop network scan" : "Start network scan"}
-                accessibilityHint={isScanActive ? "Stop scanning for FreeShow devices on the network" : "Scan the network for available FreeShow devices"}
-              >
-                {/* Progress fill overlay */}
-                {effectiveScanActive && (
-                  <Animated.View
-                    style={{
-                      position: 'absolute',
-                      left: 0,
-                      top: 0,
-                      bottom: 0,
-                      width: animatedScanProgress.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0%', '100%'],
-                      }),
-                      backgroundColor: FreeShowTheme.colors.secondary,
-                      opacity: 0.3,
-                      borderRadius: 20,
-                      zIndex: 1,
-                    }}
-                  />
-                )}
-                {/* Icon and label */}
-                <View style={styles.discoveryToggleContent}>
-                  <Ionicons
-                    name={effectiveScanActive ? 'stop' : 'search'}
-                    size={16}
-                    color="white"
-                  />
-                  <Text style={styles.discoveryToggleText}>
-                    {effectiveScanActive ? t('quickConnect.scanning') : t('quickConnect.scan')}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              </TVFocusable>
-            </View>
-            {isExpoGo && showExpoMockNotice && (
-              <View style={styles.mockNotice}>
-                <Ionicons name="alert-circle" size={14} color={FreeShowTheme.colors.textSecondary} />
-                <Text style={styles.mockNoticeText}>{t('quickConnect.expoGoNotice')}</Text>
-              </View>
-            )}
-            {hasDiscoveredServices ? (
-              <View style={styles.discoveredDevices}>
-                {effectiveServices.map((service: DiscoveredFreeShowInstance, _index: number) => {
-                  const showHost = service.host && !isIpAddress(service.host);
-                  const hasServices = service.capabilities && service.capabilities.length > 0;
-                  const connectDisabled = !hasServices || (isExpoGo && showExpoMockNotice);
-                  return (
-                    <TouchableOpacity
-                      key={service.ip}
-                      style={[
-                        styles.discoveredDevice,
-                        !hasServices && styles.discoveredDeviceDisabled
-                      ]}
-                      onPress={() => onDiscoveredConnect(service)}
-                      disabled={connectDisabled}
-                      accessibilityLabel={`Connect to ${service.name || service.ip}`}
-                      accessibilityHint={hasServices ? "Tap to connect to this FreeShow device" : "This device has no available services"}
-                    >
-                      <View style={styles.discoveredDeviceIcon}>
-                        <Ionicons 
-                          name="desktop" 
-                          size={20} 
-                          color={!hasServices ? FreeShowTheme.colors.textSecondary : FreeShowTheme.colors.text} 
-                        />
-                      </View>
-                      <View style={styles.discoveredDeviceInfo}>
-                        <Text style={[
-                          styles.discoveredDeviceIP,
-                          !hasServices && styles.discoveredDeviceTextDisabled
-                        ]}>
-                          {service.name || (showHost ? service.host : service.ip)}
-                        </Text>
-                        {showHost && (
-                          <Text style={[
-                            styles.discoveredDeviceStatus,
-                            !hasServices && styles.discoveredDeviceTextDisabled
-                          ]}>
-                            {service.ip}
-                          </Text>
-                        )}
-                        {/* Show capabilities */}
-                        <View style={styles.capabilitiesContainer}>
-                          {(!service.capabilities || service.capabilities.length === 0) ? (
-                            <View style={styles.capabilityBadgeDisabled}>
-                              <Text style={styles.capabilityBadgeText}>{t('quickConnect.noServices')}</Text>
-                            </View>
-                          ) : (
-                            <View style={styles.capabilityBadgesRow}>
-                              {service.ports?.remote && (
-                                <View style={styles.capabilityBadge}>
-                                  <Text style={styles.capabilityBadgeText}>Remote: {service.ports.remote}</Text>
-                                </View>
-                              )}
-                              {service.ports?.stage && (
-                                <View style={styles.capabilityBadge}>
-                                  <Text style={styles.capabilityBadgeText}>Stage: {service.ports.stage}</Text>
-                                </View>
-                              )}
-                              {service.ports?.control && (
-                                <View style={styles.capabilityBadge}>
-                                  <Text style={styles.capabilityBadgeText}>Control: {service.ports.control}</Text>
-                                </View>
-                              )}
-                              {service.ports?.output && (
-                                <View style={styles.capabilityBadge}>
-                                  <Text style={styles.capabilityBadgeText}>Output: {service.ports.output}</Text>
-                                </View>
-                              )}
-                            </View>
-                          )}
-                        </View>
-                      </View>
-                      <View style={styles.discoveredDeviceAction}>
-                        <Ionicons 
-                          name={connectDisabled ? "ban-outline" : "chevron-forward"} 
-                          size={20} 
-                          color={connectDisabled ? FreeShowTheme.colors.textSecondary : FreeShowTheme.colors.textSecondary} 
-                        />
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-            ) : (
-              <View style={styles.emptyDiscovery}>
-                {scanComplete && !isScanActive ? (
-                  <>
-                    <Ionicons name="alert-circle-outline" size={24} color={FreeShowTheme.colors.textSecondary} />
-                    <Text style={styles.emptyDiscoveryText}>{t('quickConnect.noDevicesFound')}</Text>
-                  </>
-                ) : (
-                  <>
-                    <Ionicons name="search-outline" size={24} color={FreeShowTheme.colors.textSecondary} />
-                    <Text style={styles.emptyDiscoveryText}>{t('quickConnect.tapToScan')}</Text>
-                  </>
-                )}
-              </View>
-            )}
-          </View>
-        )}
+    return (
+      <View style={styles.quickConnectCard}>
+        <View style={styles.quickConnectHeader}>
+          <Text style={styles.quickConnectTitle}>{t('quickConnect.title')}</Text>
+          <Text style={styles.quickConnectSubtitle}>{t('quickConnect.subtitle')}</Text>
+        </View>
 
-        {/* Recent Connections */}
-        {hasHistory && (
-          <View style={styles.recentSection}>
-            <View style={styles.recentSectionHeader}>
-              <Text style={styles.recentTitle}>{t('quickConnect.recentConnections')}</Text>
-              <TVFocusable onPress={onClearAllHistory}>
-                <TouchableOpacity
-                onPress={onClearAllHistory}
-                style={styles.clearAllButton}
-              >
-                <Ionicons name="trash-outline" size={16} color={FreeShowTheme.colors.textSecondary} />
-                <Text style={styles.clearAllText}>{t('quickConnect.clearAll')}</Text>
-              </TouchableOpacity>
-              </TVFocusable>
-            </View>
-            <View style={styles.recentDevices}>
-              {recentHistory.map((item: ConnectionHistory, _index: number) => (
-                <TVFocusable onPress={() => onHistoryConnect(item)} key={item.id}>
+        <View style={styles.quickConnectContent}>
+          {/* Auto Discovery */}
+          {isDiscoveryAvailable && (
+            <View style={styles.discoverySection}>
+              <View style={styles.discoverySectionHeader}>
+                <Text style={styles.discoveryTitle}>{t('quickConnect.networkScan')}</Text>
+                <TVFocusable onPress={handleScanPress}>
                   <TouchableOpacity
-                  key={item.id}
-                  style={styles.recentDevice}
-                  onPress={() => onHistoryConnect(item)}
-                  accessibilityLabel={`Connect to ${item.nickname || item.host}`}
-                  accessibilityHint="Tap to reconnect to this previously used FreeShow device"
-                >
-                  <View style={styles.recentDeviceInfo}>
-                    <Text style={styles.recentDeviceIP}>{item.nickname || item.host}</Text>
-                    <Text style={styles.recentDeviceTime}>
-                      {item.nickname && item.nickname !== item.host ? `${item.host} • ` : ''}{new Date(item.lastUsed).toLocaleDateString()}
-                    </Text>
-                  </View>
-                  <View style={styles.recentDeviceActions}>
-                    <TouchableOpacity
-                      style={styles.editConnectionButton}
-                      onPress={(e) => {
-                        e.stopPropagation();
-                        onEditNickname(item);
-                      }}
-                    >
-                      <Ionicons name="create-outline" size={16} color={FreeShowTheme.colors.textSecondary} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.deleteConnectionButton}
-                      onPress={(e) => {
-                        e.stopPropagation();
-                        onRemoveFromHistory(item.id);
-                      }}
-                    >
-                      <Ionicons name="trash-outline" size={16} color={FreeShowTheme.colors.textSecondary} />
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
+                    onPress={handleScanPress}
+                    style={[
+                      styles.discoveryToggle,
+                      effectiveScanActive && styles.discoveryToggleActive,
+                      { overflow: 'hidden', position: 'relative' },
+                    ]}
+                    accessibilityLabel={isScanActive ? 'Stop network scan' : 'Start network scan'}
+                    accessibilityHint={
+                      isScanActive
+                        ? 'Stop scanning for FreeShow devices on the network'
+                        : 'Scan the network for available FreeShow devices'
+                    }
+                  >
+                    {/* Progress fill overlay */}
+                    {effectiveScanActive && (
+                      <Animated.View
+                        style={{
+                          position: 'absolute',
+                          left: 0,
+                          top: 0,
+                          bottom: 0,
+                          width: animatedScanProgress.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: ['0%', '100%'],
+                          }),
+                          backgroundColor: FreeShowTheme.colors.secondary,
+                          opacity: 0.3,
+                          borderRadius: 20,
+                          zIndex: 1,
+                        }}
+                      />
+                    )}
+                    {/* Icon and label */}
+                    <View style={styles.discoveryToggleContent}>
+                      <Ionicons
+                        name={effectiveScanActive ? 'stop' : 'search'}
+                        size={16}
+                        color="white"
+                      />
+                      <Text style={styles.discoveryToggleText}>
+                        {effectiveScanActive ? t('quickConnect.scanning') : t('quickConnect.scan')}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </TVFocusable>
-              ))}
+              </View>
+              {isExpoGo && showExpoMockNotice && (
+                <View style={styles.mockNotice}>
+                  <Ionicons
+                    name="alert-circle"
+                    size={14}
+                    color={FreeShowTheme.colors.textSecondary}
+                  />
+                  <Text style={styles.mockNoticeText}>{t('quickConnect.expoGoNotice')}</Text>
+                </View>
+              )}
+              {hasDiscoveredServices ? (
+                <View style={styles.discoveredDevices}>
+                  {effectiveServices.map((service: DiscoveredFreeShowInstance, _index: number) => {
+                    const showHost = service.host && !isIpAddress(service.host);
+                    const hasServices = service.capabilities && service.capabilities.length > 0;
+                    const connectDisabled = !hasServices || (isExpoGo && showExpoMockNotice);
+                    return (
+                      <TouchableOpacity
+                        key={service.ip}
+                        style={[
+                          styles.discoveredDevice,
+                          !hasServices && styles.discoveredDeviceDisabled,
+                        ]}
+                        onPress={() => onDiscoveredConnect(service)}
+                        disabled={connectDisabled}
+                        accessibilityLabel={`Connect to ${service.name || service.ip}`}
+                        accessibilityHint={
+                          hasServices
+                            ? 'Tap to connect to this FreeShow device'
+                            : 'This device has no available services'
+                        }
+                      >
+                        <View style={styles.discoveredDeviceIcon}>
+                          <Ionicons
+                            name="desktop"
+                            size={20}
+                            color={
+                              !hasServices
+                                ? FreeShowTheme.colors.textSecondary
+                                : FreeShowTheme.colors.text
+                            }
+                          />
+                        </View>
+                        <View style={styles.discoveredDeviceInfo}>
+                          <Text
+                            style={[
+                              styles.discoveredDeviceIP,
+                              !hasServices && styles.discoveredDeviceTextDisabled,
+                            ]}
+                          >
+                            {service.name || (showHost ? service.host : service.ip)}
+                          </Text>
+                          {showHost && (
+                            <Text
+                              style={[
+                                styles.discoveredDeviceStatus,
+                                !hasServices && styles.discoveredDeviceTextDisabled,
+                              ]}
+                            >
+                              {service.ip}
+                            </Text>
+                          )}
+                          {/* Show capabilities */}
+                          <View style={styles.capabilitiesContainer}>
+                            {!service.capabilities || service.capabilities.length === 0 ? (
+                              <View style={styles.capabilityBadgeDisabled}>
+                                <Text style={styles.capabilityBadgeText}>
+                                  {t('quickConnect.noServices')}
+                                </Text>
+                              </View>
+                            ) : (
+                              <View style={styles.capabilityBadgesRow}>
+                                {service.ports?.remote && (
+                                  <View style={styles.capabilityBadge}>
+                                    <Text style={styles.capabilityBadgeText}>
+                                      Remote: {service.ports.remote}
+                                    </Text>
+                                  </View>
+                                )}
+                                {service.ports?.stage && (
+                                  <View style={styles.capabilityBadge}>
+                                    <Text style={styles.capabilityBadgeText}>
+                                      Stage: {service.ports.stage}
+                                    </Text>
+                                  </View>
+                                )}
+                                {service.ports?.control && (
+                                  <View style={styles.capabilityBadge}>
+                                    <Text style={styles.capabilityBadgeText}>
+                                      Control: {service.ports.control}
+                                    </Text>
+                                  </View>
+                                )}
+                                {service.ports?.output && (
+                                  <View style={styles.capabilityBadge}>
+                                    <Text style={styles.capabilityBadgeText}>
+                                      Output: {service.ports.output}
+                                    </Text>
+                                  </View>
+                                )}
+                              </View>
+                            )}
+                          </View>
+                        </View>
+                        <View style={styles.discoveredDeviceAction}>
+                          <Ionicons
+                            name={connectDisabled ? 'ban-outline' : 'chevron-forward'}
+                            size={20}
+                            color={
+                              connectDisabled
+                                ? FreeShowTheme.colors.textSecondary
+                                : FreeShowTheme.colors.textSecondary
+                            }
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              ) : (
+                <View style={styles.emptyDiscovery}>
+                  {scanComplete && !isScanActive ? (
+                    <>
+                      <Ionicons
+                        name="alert-circle-outline"
+                        size={24}
+                        color={FreeShowTheme.colors.textSecondary}
+                      />
+                      <Text style={styles.emptyDiscoveryText}>
+                        {t('quickConnect.noDevicesFound')}
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Ionicons
+                        name="search-outline"
+                        size={24}
+                        color={FreeShowTheme.colors.textSecondary}
+                      />
+                      <Text style={styles.emptyDiscoveryText}>{t('quickConnect.tapToScan')}</Text>
+                    </>
+                  )}
+                </View>
+              )}
             </View>
-          </View>
-        )}
-      </View>
+          )}
 
-      {/* Expo Go Warning Modal */}
-      <ErrorModal
-        visible={showExpoGoWarning}
-        title={t('quickConnect.networkDiscoveryNotAvailable')}
-        message={t('quickConnect.networkDiscoveryMessage')}
-        buttonText={t('common.gotIt')}
-        onClose={() => setShowExpoGoWarning(false)}
-        icon="information-circle"
-      />
-    </View>
-  );
-});
+          {/* Recent Connections */}
+          {hasHistory && (
+            <View style={styles.recentSection}>
+              <View style={styles.recentSectionHeader}>
+                <Text style={styles.recentTitle}>{t('quickConnect.recentConnections')}</Text>
+                <TVFocusable onPress={onClearAllHistory}>
+                  <TouchableOpacity onPress={onClearAllHistory} style={styles.clearAllButton}>
+                    <Ionicons
+                      name="trash-outline"
+                      size={16}
+                      color={FreeShowTheme.colors.textSecondary}
+                    />
+                    <Text style={styles.clearAllText}>{t('quickConnect.clearAll')}</Text>
+                  </TouchableOpacity>
+                </TVFocusable>
+              </View>
+              <View style={styles.recentDevices}>
+                {recentHistory.map((item: ConnectionHistory, _index: number) => (
+                  <TVFocusable onPress={() => onHistoryConnect(item)} key={item.id}>
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.recentDevice}
+                      onPress={() => onHistoryConnect(item)}
+                      accessibilityLabel={`Connect to ${item.nickname || item.host}`}
+                      accessibilityHint="Tap to reconnect to this previously used FreeShow device"
+                    >
+                      <View style={styles.recentDeviceInfo}>
+                        <Text style={styles.recentDeviceIP}>{item.nickname || item.host}</Text>
+                        <Text style={styles.recentDeviceTime}>
+                          {item.nickname && item.nickname !== item.host ? `${item.host} • ` : ''}
+                          {new Date(item.lastUsed).toLocaleDateString()}
+                        </Text>
+                      </View>
+                      <View style={styles.recentDeviceActions}>
+                        <TouchableOpacity
+                          style={styles.editConnectionButton}
+                          onPress={e => {
+                            e.stopPropagation();
+                            onEditNickname(item);
+                          }}
+                        >
+                          <Ionicons
+                            name="create-outline"
+                            size={16}
+                            color={FreeShowTheme.colors.textSecondary}
+                          />
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={styles.deleteConnectionButton}
+                          onPress={e => {
+                            e.stopPropagation();
+                            onRemoveFromHistory(item.id);
+                          }}
+                        >
+                          <Ionicons
+                            name="trash-outline"
+                            size={16}
+                            color={FreeShowTheme.colors.textSecondary}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  </TVFocusable>
+                ))}
+              </View>
+            </View>
+          )}
+        </View>
+
+        {/* Expo Go Warning Modal */}
+        <ErrorModal
+          visible={showExpoGoWarning}
+          title={t('quickConnect.networkDiscoveryNotAvailable')}
+          message={t('quickConnect.networkDiscoveryMessage')}
+          buttonText={t('common.gotIt')}
+          onClose={() => setShowExpoGoWarning(false)}
+          icon="information-circle"
+        />
+      </View>
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   // Quick Connect Styles
@@ -402,7 +461,7 @@ const styles = StyleSheet.create({
   quickConnectContent: {
     padding: FreeShowTheme.spacing.lg,
   },
-  
+
   // Discovery Section
   discoverySection: {
     marginBottom: FreeShowTheme.spacing.lg,
@@ -553,7 +612,7 @@ const styles = StyleSheet.create({
     marginTop: FreeShowTheme.spacing.sm,
     fontStyle: 'italic',
   },
-  
+
   // Recent Connections Section
   recentSection: {
     borderTopWidth: 1,
