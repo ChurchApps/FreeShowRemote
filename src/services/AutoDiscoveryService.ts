@@ -17,6 +17,7 @@ export interface DiscoveredFreeShowInstance {
   host: string;
   port: number;
   ip: string;
+  ips: string[];
   ports: {
     api?: number;
     remote?: number;
@@ -36,7 +37,7 @@ interface PendingService {
   name: string;
   host: string;
   port: number;
-  ip: string;
+  ips: string[];
   capability: string;
   portKey: string;
   isApi: boolean;
@@ -140,7 +141,8 @@ class AutoDiscoveryService {
     const config = configService.getNetworkConfig();
     const ports: Record<string, number> = {};
     const capabilities: string[] = [];
-    let displayName = ip;
+    let displayName = "";
+    let allIps: string[] = [];
     let host = '';
     
     // Process each service for this IP
@@ -159,6 +161,8 @@ class AutoDiscoveryService {
       
       // Get display name using helper function
       displayName = getDisplayName(service.name, service.host, ip);
+
+      allIps = Array.from(new Set([...allIps, ...service.ips]));
     });
     
     // Create the aggregated instance
@@ -166,7 +170,8 @@ class AutoDiscoveryService {
       name: displayName,
       host: host || '',
       port: ports.api || config.defaultPort,
-      ip: ip,
+      ip: allIps[0],
+      ips: allIps,
       ports: {
         api: ports.api,
         remote: ports.remote,
@@ -211,7 +216,11 @@ class AutoDiscoveryService {
       });
       
       // Get the primary IP address
-      const primaryIP = service.addresses?.[0] || service.host;
+      const txtIps = (service.txt as any)?.ips as string[] | undefined;
+      const ips = Array.isArray(txtIps) && txtIps.length > 0 ? txtIps : (service.addresses || []).filter(Boolean);      
+      if (!ips.length) return;
+      
+      const primaryIP = ips[0]; // just for map key
       
       // Parse service capability from name
       const { capability, portKey, isApi } = parseServiceCapability(service.name);
@@ -224,7 +233,7 @@ class AutoDiscoveryService {
         name: service.name || primaryIP,
         host: service.host || '',
         port: service.port,
-        ip: primaryIP,
+        ips,
         capability,
         portKey,
         isApi,
