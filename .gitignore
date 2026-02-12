@@ -53,5 +53,5 @@ QWEN.md
 # Build output
 .build/
 
-.env.local
 Notes.md
+config.bat
