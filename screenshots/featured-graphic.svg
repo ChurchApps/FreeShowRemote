@@ -23,8 +23,9 @@
 
     <!-- Icon placeholder with glow -->
     <g filter="url(#glow)">
-        <rect x="80" y="160" width="180" height="180" rx="30" fill="#FF0080"/>
-        <rect x="120" y="220" width="100" height="60" fill="#0a0a0f"/>
+        <rect x="80" y="180" width="180" height="140" rx="28" fill="#f0008c"/>
+        <rect x="102.5" y="202.5" width="135" height="95" rx="18" fill="#b9006c"/>
+        <rect x="125" y="225" width="90" height="50" rx="10" fill="#202129"/>
     </g>
 
     <!-- Main Title -->

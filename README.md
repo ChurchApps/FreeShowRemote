@@ -1,5 +1,5 @@
 # FreeShow Remote
-<img src="screenshots/logo512.png" width="150" align="right" />
+<img src="assets/app-icon.png" width="150" align="right" />
 
 > FreeShow Remote is the mobile companion app for [FreeShow](https://freeshow.app) presentation software. Control your presentations wirelessly from your iOS or Android device with features including slide navigation, stage display viewing, and auto-discovery of FreeShow instances on your local network.
 
