@@ -91,42 +91,22 @@ const Header: React.FC<HeaderProps> = ({
     <View style={styles.header}>
       {/* Brand Header Card */}
       <View style={styles.brandCard}>
-        <LinearGradient
-          colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.brandGradient}
-        >
+        <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
           {/* Title Section - Left */}
           <View style={styles.titleSection}>
             <Text style={[styles.title, isTablet && styles.titleTablet]}>{t('app.name')}</Text>
-            <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>
-              {t('app.subtitle')}
-            </Text>
+            <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>{t('app.subtitle')}</Text>
           </View>
 
           {/* Logo - Right */}
           <View style={styles.logoContainer}>
-            <Image 
-              source={require('../../../assets/splash-icon.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
+            <Image source={require('../../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
           </View>
 
           {/* Disconnect Button */}
           {onDisconnect && isConnected && (
-            <Pressable
-              style={({ pressed }) => [
-                styles.actionButton,
-                pressed && styles.actionButtonPressed
-              ]}
-              onPress={onDisconnect}
-            >
-              <LinearGradient
-                colors={['rgba(239, 83, 80, 0.2)', 'rgba(239, 83, 80, 0.1)']}
-                style={styles.actionButtonGradient}
-              >
+            <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]} onPress={onDisconnect}>
+              <LinearGradient colors={['rgba(239, 83, 80, 0.2)', 'rgba(239, 83, 80, 0.1)']} style={styles.actionButtonGradient}>
                 <Ionicons name="power" size={isTablet ? 22 : 20} color="#EF5350" />
               </LinearGradient>
             </Pressable>
@@ -142,8 +122,8 @@ const Header: React.FC<HeaderProps> = ({
               connectionStatus === 'connected' || isConnected
                 ? ['rgba(76, 175, 80, 0.15)', 'rgba(76, 175, 80, 0.05)']
                 : connectionStatus === 'connecting'
-                ? ['rgba(255, 152, 0, 0.15)', 'rgba(255, 152, 0, 0.05)']
-                : ['rgba(239, 83, 80, 0.15)', 'rgba(239, 83, 80, 0.05)']
+                  ? ['rgba(255, 152, 0, 0.15)', 'rgba(255, 152, 0, 0.05)']
+                  : ['rgba(239, 83, 80, 0.15)', 'rgba(239, 83, 80, 0.05)']
             }
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -158,21 +138,12 @@ const Header: React.FC<HeaderProps> = ({
             <View style={styles.statusInfo}>
               <View style={styles.statusHeader}>
                 <View style={[styles.statusDot, { backgroundColor: status.color }]} />
-                <Text style={[styles.statusLabel, isTablet && styles.statusLabelTablet]}>
-                  {status.label}
-                </Text>
+                <Text style={[styles.statusLabel, isTablet && styles.statusLabelTablet]}>{status.label}</Text>
               </View>
               {(connectionStatus === 'connected' || isConnected) && (
                 <TVFocusable onPress={onEditConnectionName}>
-                  <Pressable
-                    style={({ pressed }) => [
-                      pressed && onEditConnectionName && styles.connectionNamePressed
-                    ]}
-                    onPress={onEditConnectionName}
-                  >
-                    <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
-                      {connectionName || connectionHost || 'Connected'}
-                    </Text>
+                  <Pressable style={({ pressed }) => [pressed && onEditConnectionName && styles.connectionNamePressed]} onPress={onEditConnectionName}>
+                    <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>{connectionName || connectionHost || 'Connected'}</Text>
                   </Pressable>
                 </TVFocusable>
               )}

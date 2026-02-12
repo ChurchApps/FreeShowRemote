@@ -1,28 +1,19 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { useSettings, useConnection } from '../contexts';
-import { ConnectionHistory, settingsRepository } from '../repositories';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useCallback, useMemo, useState } from 'react';
+import { ActivityIndicator, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import ConfirmationModal from '../components/ConfirmationModal';
 import EditNicknameModal from '../components/EditNicknameModal';
 import ErrorModal from '../components/ErrorModal';
-import { ValidationService } from '../services/InputValidationService';
-import { configService } from '../config/AppConfig';
-import { ErrorLogger } from '../services/ErrorLogger';
-import { interfacePingService } from '../services/InterfacePingService';
 import TVFocusable from '../components/TVFocusable';
+import { configService } from '../config/AppConfig';
+import { useConnection, useSettings } from '../contexts';
+import { ConnectionHistory } from '../repositories';
+import { ErrorLogger } from '../services/ErrorLogger';
+import { ValidationService } from '../services/InputValidationService';
+import { interfacePingService } from '../services/InterfacePingService';
+import { FreeShowTheme } from '../theme/FreeShowTheme';
 
 interface ConnectionHistoryScreenProps {
   navigation: any;
@@ -39,10 +30,14 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
   const [showClearAllConfirm, setShowClearAllConfirm] = useState(false);
   const [connectionToRemove, setConnectionToRemove] = useState<string | null>(null);
   const [isPingingHost, setIsPingingHost] = useState<string | null>(null);
-  const [errorModal, setErrorModal] = useState<{ visible: boolean, title: string, message: string }>({
+  const [errorModal, setErrorModal] = useState<{
+    visible: boolean;
+    title: string;
+    message: string;
+  }>({
     visible: false,
     title: '',
-    message: ''
+    message: '',
   });
 
   // Memoize sorted history
@@ -106,7 +101,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
     setErrorModal({
       visible: true,
       title: 'Error',
-      message: `Failed to update nickname: ${error}`
+      message: `Failed to update nickname: ${error}`,
     });
   };
 
@@ -116,25 +111,14 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
   };
 
   return (
-    <LinearGradient
-      colors={FreeShowTheme.gradients.appBackground}
-      style={styles.container}
-    >
+    <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={styles.container}>
       <SafeAreaView style={[styles.safeArea, { backgroundColor: 'transparent' }]}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.brandCard}>
-            <LinearGradient
-              colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.brandGradient}
-            >
+            <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
               <TVFocusable onPress={() => navigation.goBack()}>
-                <TouchableOpacity
-                  style={styles.backButton}
-                  onPress={() => navigation.goBack()}
-                >
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
                   <Ionicons name="arrow-back" size={24} color={FreeShowTheme.colors.text} />
                 </TouchableOpacity>
               </TVFocusable>
@@ -148,20 +132,13 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
 
               {history.length > 0 ? (
                 <TVFocusable onPress={handleClearAllHistory}>
-                  <TouchableOpacity
-                    style={styles.clearAllButton}
-                    onPress={handleClearAllHistory}
-                  >
+                  <TouchableOpacity style={styles.clearAllButton} onPress={handleClearAllHistory}>
                     <Ionicons name="trash-outline" size={22} color="rgba(239, 83, 80, 0.9)" />
                   </TouchableOpacity>
                 </TVFocusable>
               ) : (
                 <View style={styles.logoContainer}>
-                  <Image
-                    source={require('../../assets/splash-icon.png')}
-                    style={styles.logo}
-                    resizeMode="contain"
-                  />
+                  <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
                 </View>
               )}
             </LinearGradient>
@@ -170,11 +147,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
 
         {/* Content */}
         {history.length > 0 ? (
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-          >
+          <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             {sortedHistory.map((item: ConnectionHistory, _index: number) => (
               <TouchableOpacity
                 key={item.id}
@@ -197,9 +170,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                     if (item.showPorts) {
                       const showPortsValidation = ValidationService.validateShowPorts(item.showPorts);
                       if (!showPortsValidation.isValid) {
-                        ErrorLogger.warn('History item has invalid show ports, using defaults', 'ConnectionHistoryScreen',
-                          new Error(`Invalid ports: ${JSON.stringify(item.showPorts)}`)
-                        );
+                        ErrorLogger.warn('History item has invalid show ports, using defaults', 'ConnectionHistoryScreen', new Error(`Invalid ports: ${JSON.stringify(item.showPorts)}`));
                         validatedShowPorts = configService.getDefaultShowPorts();
                       } else {
                         validatedShowPorts = showPortsValidation.sanitizedValue;
@@ -218,7 +189,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                         setErrorModal({
                           visible: true,
                           title: 'Host Not Reachable',
-                          message: `Cannot reach ${sanitizedHost}. Please check that the host is online and accessible from your network.`
+                          message: `Cannot reach ${sanitizedHost}. Please check that the host is online and accessible from your network.`,
                         });
                         return;
                       }
@@ -226,9 +197,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                       setIsPingingHost(null);
                     }
 
-                    ErrorLogger.info('Attempting connection from history with validated inputs', 'ConnectionHistoryScreen',
-                      new Error(`Host: ${sanitizedHost}, Ports: ${JSON.stringify(validatedShowPorts)}`)
-                    );
+                    ErrorLogger.info('Attempting connection from history with validated inputs', 'ConnectionHistoryScreen', new Error(`Host: ${sanitizedHost}, Ports: ${JSON.stringify(validatedShowPorts)}`));
 
                     const defaultPort = configService.getNetworkConfig().defaultPort;
                     const connected = await connect(sanitizedHost, defaultPort, item.nickname);
@@ -251,7 +220,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                     setErrorModal({
                       visible: true,
                       title: 'Connection Error',
-                      message: 'Failed to connect to this server. Please try again.'
+                      message: 'Failed to connect to this server. Please try again.',
                     });
                   }
                 }}
@@ -263,11 +232,13 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                   </View>
                   <View style={styles.historyItemInfo}>
                     <Text style={styles.historyItemHost}>{item.nickname || item.host}</Text>
-                    {item.nickname && item.nickname !== item.host && (
-                      <Text style={styles.historyItemIP}>{item.host}</Text>
-                    )}
+                    {item.nickname && item.nickname !== item.host && <Text style={styles.historyItemIP}>{item.host}</Text>}
                     <Text style={styles.historyItemTime}>
-                      Last used: {new Date(item.lastUsed).toLocaleDateString()} at {new Date(item.lastUsed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      Last used: {new Date(item.lastUsed).toLocaleDateString()} at{' '}
+                      {new Date(item.lastUsed).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
                     </Text>
                   </View>
                   <View style={styles.historyItemActions}>
@@ -282,7 +253,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                         >
                           <TouchableOpacity
                             style={styles.editButton}
-                            onPress={(e) => {
+                            onPress={e => {
                               e.stopPropagation();
                               handleEditNickname(item);
                             }}
@@ -298,7 +269,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                         >
                           <TouchableOpacity
                             style={styles.deleteButton}
-                            onPress={(e) => {
+                            onPress={e => {
                               e.stopPropagation();
                               handleRemoveFromHistory(item.id);
                             }}
@@ -311,7 +282,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
                   </View>
                 </View>
 
-                {!!(item.showPorts) && (
+                {!!item.showPorts && (
                   <View style={styles.portsContainer}>
                     <Text style={styles.portsLabel}>Port Configuration:</Text>
                     <View style={styles.portsGrid}>
@@ -341,20 +312,12 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
           <View style={styles.emptyState}>
             <Ionicons name="time-outline" size={64} color={FreeShowTheme.colors.textSecondary} />
             <Text style={styles.emptyTitle}>No Connection History</Text>
-            <Text style={styles.emptySubtitle}>
-              Connections you make will appear here for quick access
-            </Text>
+            <Text style={styles.emptySubtitle}>Connections you make will appear here for quick access</Text>
           </View>
         )}
 
         {/* Edit Nickname Modal */}
-        <EditNicknameModal
-          connection={editingConnection}
-          visible={showEditNickname}
-          onClose={handleCloseEditModal}
-          onSaved={handleNicknameSaved}
-          onError={handleEditError}
-        />
+        <EditNicknameModal connection={editingConnection} visible={showEditNickname} onClose={handleCloseEditModal} onSaved={handleNicknameSaved} onError={handleEditError} />
 
         {/* Remove Connection Confirmation Modal */}
         <ConfirmationModal
@@ -383,12 +346,7 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
         />
 
         {/* Error Modal */}
-        <ErrorModal
-          visible={errorModal.visible}
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={() => setErrorModal({ visible: false, title: '', message: '' })}
-        />
+        <ErrorModal visible={errorModal.visible} title={errorModal.title} message={errorModal.message} onClose={() => setErrorModal({ visible: false, title: '', message: '' })} />
       </SafeAreaView>
     </LinearGradient>
   );

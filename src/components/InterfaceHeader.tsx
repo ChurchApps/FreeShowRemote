@@ -1,8 +1,7 @@
-import React from 'react';
-import { View, Text, Pressable, StyleSheet, Dimensions, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { Dimensions, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import TVFocusable from './TVFocusable';
 
 interface InterfaceHeaderProps {
@@ -16,12 +15,7 @@ interface InterfaceHeaderProps {
  * Header component for the interface screen
  * Displays connection status and disconnect button
  */
-const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
-  connectionName,
-  connectionHost,
-  onDisconnect,
-  onEditConnectionName,
-}) => {
+const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({ connectionName, connectionHost, onDisconnect, onEditConnectionName }) => {
   const screenWidth = Dimensions.get('window').width;
   const isTablet = screenWidth >= 768;
 
@@ -29,39 +23,23 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
     <View style={styles.header}>
       {/* Brand Header Card */}
       <View style={styles.brandCard}>
-        <LinearGradient
-          colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.brandGradient}
-        >
+        <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
           {/* Title Section - Left */}
           <View style={styles.titleSection}>
             <Text style={[styles.title, isTablet && styles.titleTablet]}>FreeShow Remote</Text>
-            <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>
-              Select an interface
-            </Text>
+            <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>Select an interface</Text>
           </View>
 
           {/* Logo - Right */}
           <View style={styles.logoContainer}>
-            <Image 
-              source={require('../../assets/splash-icon.png')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
+            <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
           </View>
         </LinearGradient>
       </View>
 
       {/* Connection Status Card */}
       <View style={styles.statusCard}>
-        <LinearGradient
-          colors={['rgba(76, 175, 80, 0.15)', 'rgba(76, 175, 80, 0.05)']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={[styles.statusCardGradient, isTablet && styles.statusCardGradientTablet]}
-        >
+        <LinearGradient colors={['rgba(76, 175, 80, 0.15)', 'rgba(76, 175, 80, 0.05)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.statusCardGradient, isTablet && styles.statusCardGradientTablet]}>
           {/* Status Icon Circle */}
           <View style={[styles.statusIconContainer, { backgroundColor: '#4CAF50' + '20' }]}>
             <Ionicons name="checkmark-circle" size={isTablet ? 26 : 22} color="#4CAF50" />
@@ -71,37 +49,22 @@ const InterfaceHeader: React.FC<InterfaceHeaderProps> = ({
           <View style={styles.statusInfo}>
             <View style={styles.statusHeader}>
               <View style={[styles.statusDot, { backgroundColor: '#4CAF50' }]} />
-              <Text style={[styles.statusLabel, isTablet && styles.statusLabelTablet]}>
-                CONNECTED
-              </Text>
+              <Text style={[styles.statusLabel, isTablet && styles.statusLabelTablet]}>CONNECTED</Text>
             </View>
             <TVFocusable onPress={onEditConnectionName}>
-              <Pressable
-                style={({ pressed }) => [
-                  pressed && onEditConnectionName && styles.connectionNamePressed
-                ]}
-                onPress={onEditConnectionName}
-              >
-                <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>
-                  {connectionName || connectionHost || 'Connected'}
-                </Text>
+              <Pressable style={({ pressed }) => [pressed && onEditConnectionName && styles.connectionNamePressed]} onPress={onEditConnectionName}>
+                <Text style={[styles.connectionName, isTablet && styles.connectionNameTablet]}>{connectionName || connectionHost || 'Connected'}</Text>
               </Pressable>
             </TVFocusable>
           </View>
 
           {/* Disconnect Button */}
-          <TVFocusable onPress={onDisconnect} >
-            <Pressable
-            style={({ pressed }) => [
-              styles.actionButton,
-              pressed && styles.actionButtonPressed
-            ]}
-            onPress={onDisconnect}
-          >
-            <View style={styles.actionButtonGradient}>
-              <Ionicons name="power" size={isTablet ? 22 : 20} color="#EF5350" />
-            </View>
-          </Pressable>
+          <TVFocusable onPress={onDisconnect}>
+            <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]} onPress={onDisconnect}>
+              <View style={styles.actionButtonGradient}>
+                <Ionicons name="power" size={isTablet ? 22 : 20} color="#EF5350" />
+              </View>
+            </Pressable>
           </TVFocusable>
         </LinearGradient>
       </View>

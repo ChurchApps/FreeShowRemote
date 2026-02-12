@@ -1,22 +1,12 @@
-import { Ionicons } from '@expo/vector-icons'
-import { BlurView } from 'expo-blur'
-import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
-import {
-  Dimensions,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-
-import { FreeShowTheme } from '../theme/FreeShowTheme'
-import { getBottomPadding, getDeviceType } from '../utils/navigationUtils'
-import TVFocusable from './TVFocusable'
+import { Ionicons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import { Dimensions, Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FreeShowTheme } from '../theme/FreeShowTheme';
+import { getBottomPadding, getDeviceType } from '../utils/navigationUtils';
+import TVFocusable from './TVFocusable';
 
 interface ConnectedScreenProps {
   connectionName: string | null;
@@ -33,28 +23,16 @@ interface ConnectedScreenProps {
   onEditNickname: () => void;
 }
 
-const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
-  connectionName,
-  connectionHost,
-  currentShowPorts,
-  onDisconnect,
-  onShowQRCode,
-  onEditNickname
-}) => {
+const ConnectedScreen: React.FC<ConnectedScreenProps> = ({ connectionName, connectionHost, currentShowPorts, onDisconnect, onShowQRCode, onEditNickname }) => {
   const isTV = getDeviceType().isTV;
   const insets = useSafeAreaInsets();
 
   const getActivePortsCount = () => {
     if (!currentShowPorts) return 0;
-    return Object.entries(currentShowPorts)
-      .filter(([name, port]) => {
-        // Filter out non-port properties like hasEnabledInterfaces
-        return name !== 'hasEnabledInterfaces' &&
-          name !== 'validatedPorts' &&
-          port &&
-          port > 0 &&
-          typeof port === 'number';
-      }).length;
+    return Object.entries(currentShowPorts).filter(([name, port]) => {
+      // Filter out non-port properties like hasEnabledInterfaces
+      return name !== 'hasEnabledInterfaces' && name !== 'validatedPorts' && port && port > 0 && typeof port === 'number';
+    }).length;
   };
 
   const getActivePortsList = () => {
@@ -62,24 +40,17 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
     return Object.entries(currentShowPorts)
       .filter(([name, port]) => {
         // Filter out non-port properties like hasEnabledInterfaces
-        return name !== 'hasEnabledInterfaces' &&
-          name !== 'validatedPorts' &&
-          port &&
-          port > 0 &&
-          typeof port === 'number';
+        return name !== 'hasEnabledInterfaces' && name !== 'validatedPorts' && port && port > 0 && typeof port === 'number';
       })
       .map(([name, port]) => ({
         name: name.toUpperCase() === 'API' ? 'API' : name,
-        port
+        port,
       }));
   };
 
   const ConnectionInfoCard = () => (
     <View style={styles.infoCard}>
-      <LinearGradient
-        colors={['rgba(76,175,80,0.12)', 'rgba(76,175,80,0.08)']}
-        style={styles.infoCardGradient}
-      >
+      <LinearGradient colors={['rgba(76,175,80,0.12)', 'rgba(76,175,80,0.08)']} style={styles.infoCardGradient}>
         {Platform.OS === 'ios' ? (
           <BlurView intensity={15} style={styles.infoCardBlur}>
             <View style={styles.infoCardContent}>
@@ -95,9 +66,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                   <Ionicons name="wifi" size={20} color={FreeShowTheme.colors.secondary} />
                   <View style={styles.detailContent}>
                     <Text style={styles.detailLabel}>Server</Text>
-                    <Text style={styles.detailValue}>
-                      {connectionName || connectionHost || 'Unknown'}
-                    </Text>
+                    <Text style={styles.detailValue}>{connectionName || connectionHost || 'Unknown'}</Text>
                   </View>
                 </TouchableOpacity>
 
@@ -115,9 +84,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                   <Ionicons name="layers-outline" size={20} color={FreeShowTheme.colors.secondary} />
                   <View style={styles.detailContent}>
                     <Text style={styles.detailLabel}>Active Interfaces</Text>
-                    <Text style={styles.detailValue}>
-                      {getActivePortsCount()} of 5 enabled
-                    </Text>
+                    <Text style={styles.detailValue}>{getActivePortsCount()} of 5 enabled</Text>
                   </View>
                 </View>
               </View>
@@ -137,9 +104,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                 <Ionicons name="wifi" size={20} color={FreeShowTheme.colors.secondary} />
                 <View style={styles.detailContent}>
                   <Text style={styles.detailLabel}>Server</Text>
-                  <Text style={styles.detailValue}>
-                    {connectionName || connectionHost || 'Unknown'}
-                  </Text>
+                  <Text style={styles.detailValue}>{connectionName || connectionHost || 'Unknown'}</Text>
                 </View>
               </TouchableOpacity>
 
@@ -157,9 +122,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
                 <Ionicons name="layers-outline" size={20} color={FreeShowTheme.colors.secondary} />
                 <View style={styles.detailContent}>
                   <Text style={styles.detailLabel}>Active Interfaces</Text>
-                  <Text style={styles.detailValue}>
-                    {getActivePortsCount()} of 5 enabled
-                  </Text>
+                  <Text style={styles.detailValue}>{getActivePortsCount()} of 5 enabled</Text>
                 </View>
               </View>
             </View>
@@ -171,10 +134,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
 
   const PortsCard = () => (
     <View style={styles.portsCard}>
-      <LinearGradient
-        colors={['rgba(240,0,140,0.10)', 'rgba(240,0,140,0.05)']}
-        style={styles.portsCardGradient}
-      >
+      <LinearGradient colors={['rgba(240,0,140,0.10)', 'rgba(240,0,140,0.05)']} style={styles.portsCardGradient}>
         {Platform.OS === 'ios' ? (
           <BlurView intensity={15} style={styles.portsCardBlur}>
             <View style={styles.portsCardContent}>
@@ -226,11 +186,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
 
       <View style={styles.actionButtons}>
         <TVFocusable onPress={onShowQRCode}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={onShowQRCode}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity style={styles.actionButton} onPress={onShowQRCode} activeOpacity={0.7}>
             <View style={styles.actionButtonContent}>
               <View style={[styles.actionIcon, { backgroundColor: 'rgba(33, 150, 243, 0.15)' }]}>
                 <Ionicons name="qr-code" size={24} color="#2196F3" />
@@ -245,11 +201,7 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
         </TVFocusable>
 
         <TVFocusable onPress={onDisconnect}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={onDisconnect}
-            activeOpacity={0.7}
-          >
+          <TouchableOpacity style={styles.actionButton} onPress={onDisconnect} activeOpacity={0.7}>
             <View style={styles.actionButtonContent}>
               <View style={[styles.actionIcon, { backgroundColor: 'rgba(239, 83, 80, 0.15)' }]}>
                 <Ionicons name="power" size={24} color="#EF5350" />
@@ -267,42 +219,21 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({
   );
 
   return (
-    <LinearGradient
-      colors={FreeShowTheme.gradients.appBackground}
-      style={[styles.container, isTV && { paddingTop: insets.top }]}
-    >
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[
-          styles.scrollContent,
-          { paddingBottom: getBottomPadding() }
-        ]}
-        showsVerticalScrollIndicator={false}
-      >
+    <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={[styles.container, isTV && { paddingTop: insets.top }]}>
+      <ScrollView style={styles.scrollView} contentContainerStyle={[styles.scrollContent, { paddingBottom: getBottomPadding() }]} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           {/* Brand Header Card */}
           <View style={styles.brandCard}>
-            <LinearGradient
-              colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.brandGradient}
-            >
+            <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
               {/* Title Section - Left */}
               <View style={styles.titleSection}>
                 <Text style={[styles.screenTitle, Dimensions.get('window').width >= 768 && styles.titleTablet]}>Connection Status</Text>
-                <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>
-                  Manage your connection
-                </Text>
+                <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>Manage your connection</Text>
               </View>
 
               {/* Logo - Right */}
               <View style={styles.logoContainer}>
-                <Image
-                  source={require('../../assets/splash-icon.png')}
-                  style={styles.logo}
-                  resizeMode="contain"
-                />
+                <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
               </View>
             </LinearGradient>
           </View>

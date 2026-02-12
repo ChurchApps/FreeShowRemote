@@ -4,37 +4,30 @@
     "slug": "freeshow-remote",
     "version": "1.1.0",
     "orientation": "default",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon-bg.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": false,
     "scheme": "FreeShowRemote",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "splash": {
-      "image": "./assets/splash-icon-bg.png",
+      "image": "./assets/app-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0a0a0f"
+      "backgroundColor": "#191923"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "requireFullScreen": false,
       "splash": {
-        "image": "./assets/splash-icon-bg.png",
+        "image": "./assets/app-icon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#0a0a0f"
+        "backgroundColor": "#191923"
       },
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         },
-        "NSBonjourServices": [
-          "_freeshow._udp"
-        ],
+        "NSBonjourServices": ["_freeshow._udp"],
         "NSLocalNetworkUsageDescription": "Allow FreeShow Remote to discover devices on the local network.",
         "CFBundleDisplayName": "FreeShow Remote",
         "CFBundleShortVersionString": "1.1.0",
@@ -64,13 +57,13 @@
       }
     },
     "android": {
-      "icon": "./assets/icon.png",
+      "icon": "./assets/icon-bg.png",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": true,
       "splash": {
-        "image": "./assets/splash-icon-bg.png",
+        "image": "./assets/app-icon.png",
         "resizeMode": "contain",
-        "backgroundColor": "#0a0a0f"
+        "backgroundColor": "#191923"
       },
       "permissions": [
         "android.permission.CAMERA",
@@ -85,8 +78,8 @@
       "allowBackup": false,
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#0a0a0f"
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#191923"
       }
     },
     "plugins": [
@@ -101,9 +94,9 @@
       [
         "@react-native-tvos/config-tv",
         {
-          "androidTVBanner": "./assets/freeshow-icon.png",
+          "androidTVBanner": "./assets/app-icon.png",
           "removeFlipperOnAndroid": true,
-          "androidTVIcon": "./assets/freeshow-icon.png"
+          "androidTVIcon": "./assets/app-icon.png"
         }
       ],
       [
@@ -165,8 +158,8 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#0a0a0f",
-          "image": "./assets/splash-icon-bg.png",
+          "backgroundColor": "#191923",
+          "image": "./assets/app-icon.png",
           "imageWidth": 250,
           "resizeMode": "contain"
         }
@@ -176,8 +169,8 @@
         {
           "androidIcons": {
             "wifi_shortcut": {
-              "foregroundImage": "./assets/icon.png",
-              "backgroundColor": "#0a0a0f"
+              "foregroundImage": "./assets/icon-bg.png",
+              "backgroundColor": "#191923"
             }
           }
         }

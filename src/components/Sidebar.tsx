@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Animated,
-  Dimensions,
-  Modal,
-  TouchableWithoutFeedback,
-  Image,
-} from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { FreeShowTheme } from '../theme/FreeShowTheme';
-import { useConnection } from '../contexts';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Animated, Dimensions, Image, Modal, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { configService } from '../config/AppConfig';
+import { useConnection } from '../contexts';
+import { FreeShowTheme } from '../theme/FreeShowTheme';
 import TVFocusable from './TVFocusable';
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -38,12 +29,7 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
-  onNavigate,
-  isVisible,
-  onClose,
-  currentRoute,
-}) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, isVisible, onClose, currentRoute }) => {
   const { t } = useTranslation();
   const [slideAnim] = useState(new Animated.Value(-SIDEBAR_WIDTH));
   const [backdropOpacity] = useState(new Animated.Value(0));
@@ -58,15 +44,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   useEffect(() => {
     if (isVisible) {
-      Animated.parallel([
-        Animated.timing(slideAnim, { toValue: 0, duration: 150, useNativeDriver: true }),
-        Animated.timing(backdropOpacity, { toValue: 1, duration: 150, useNativeDriver: true }),
-      ]).start();
+      Animated.parallel([Animated.timing(slideAnim, { toValue: 0, duration: 150, useNativeDriver: true }), Animated.timing(backdropOpacity, { toValue: 1, duration: 150, useNativeDriver: true })]).start();
     } else {
-      Animated.parallel([
-        Animated.timing(slideAnim, { toValue: -SIDEBAR_WIDTH, duration: 120, useNativeDriver: true }),
-        Animated.timing(backdropOpacity, { toValue: 0, duration: 120, useNativeDriver: true }),
-      ]).start();
+      Animated.parallel([Animated.timing(slideAnim, { toValue: -SIDEBAR_WIDTH, duration: 120, useNativeDriver: true }), Animated.timing(backdropOpacity, { toValue: 0, duration: 120, useNativeDriver: true })]).start();
     }
   }, [isVisible]);
 
@@ -81,11 +61,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return FreeShowTheme.colors.textSecondary;
   };
 
-  const getItemColor = (item: NavigationItem) =>
-    currentRoute === item.route ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.textSecondary;
+  const getItemColor = (item: NavigationItem) => (currentRoute === item.route ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.textSecondary);
 
-  const getItemBackgroundColor = (item: NavigationItem) =>
-    currentRoute === item.route ? FreeShowTheme.colors.secondary + '15' : 'transparent';
+  const getItemBackgroundColor = (item: NavigationItem) => (currentRoute === item.route ? FreeShowTheme.colors.secondary + '15' : 'transparent');
 
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose} statusBarTranslucent>
@@ -109,7 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
               <View style={styles.logoContainer}>
                 <View style={styles.logoCircle}>
-                  <Image source={require('../../assets/icon.png')} style={styles.logoImage} resizeMode="cover" />
+                  <Image source={require('../../assets/icon-bg.png')} style={styles.logoImage} resizeMode="cover" />
                 </View>
               </View>
             </View>
@@ -117,17 +95,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {/* Navigation */}
             <View style={styles.navigation}>
               {navigationItems.map(item => (
-                <TVFocusable
-                  key={item.key}
-                  onPress={() => handleNavigate(item.route)}
-                  style={[styles.navItem, { backgroundColor: getItemBackgroundColor(item) }]}
-                >
+                <TVFocusable key={item.key} onPress={() => handleNavigate(item.route)} style={[styles.navItem, { backgroundColor: getItemBackgroundColor(item) }]}>
                   <View style={styles.navItemIcon}>
-                    <Ionicons
-                      name={currentRoute === item.route ? item.iconFocused : item.icon}
-                      size={24}
-                      color={getItemColor(item)}
-                    />
+                    <Ionicons name={currentRoute === item.route ? item.iconFocused : item.icon} size={24} color={getItemColor(item)} />
                   </View>
                   <View style={styles.navItemText}>
                     <Text style={[styles.navItemLabel, { color: getItemColor(item) }]}>{item.label}</Text>
@@ -142,9 +112,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <View style={styles.connectionStatus}>
                 <View style={styles.statusIndicator}>
                   <View style={[styles.statusDot, { backgroundColor: getConnectionColor() }]} />
-                  <Text style={styles.statusText}>
-                    {isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}
-                  </Text>
+                  <Text style={styles.statusText}>{isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}</Text>
                 </View>
               </View>
             </View>
@@ -187,11 +155,9 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
     return FreeShowTheme.colors.textSecondary;
   };
 
-  const getItemColor = (item: NavigationItem) =>
-    currentRoute === item.route ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.textSecondary;
+  const getItemColor = (item: NavigationItem) => (currentRoute === item.route ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.textSecondary);
 
-  const getItemBackgroundColor = (item: NavigationItem) =>
-    currentRoute === item.route ? FreeShowTheme.colors.secondary + '15' : 'transparent';
+  const getItemBackgroundColor = (item: NavigationItem) => (currentRoute === item.route ? FreeShowTheme.colors.secondary + '15' : 'transparent');
 
   return (
     <SafeAreaView style={traditionalStyles.safeArea} edges={['left', 'top', 'bottom']}>
@@ -211,7 +177,7 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
 
               <View style={traditionalStyles.logoContainer}>
                 <View style={traditionalStyles.logoCircle}>
-                  <Image source={require('../../assets/icon.png')} style={traditionalStyles.logoImage} resizeMode="cover" />
+                  <Image source={require('../../assets/icon-bg.png')} style={traditionalStyles.logoImage} resizeMode="cover" />
                 </View>
               </View>
             </>
@@ -221,21 +187,9 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
         {/* Navigation */}
         <View style={[traditionalStyles.navigation, !isExpanded && traditionalStyles.navigationCollapsed]}>
           {navigationItems.map(item => (
-            <TVFocusable
-              key={item.key}
-              onPress={() => onNavigate(item.route)}
-              style={[
-                traditionalStyles.navItem,
-                { backgroundColor: getItemBackgroundColor(item) },
-                !isExpanded && traditionalStyles.navItemCollapsed,
-              ]}
-            >
+            <TVFocusable key={item.key} onPress={() => onNavigate(item.route)} style={[traditionalStyles.navItem, { backgroundColor: getItemBackgroundColor(item) }, !isExpanded && traditionalStyles.navItemCollapsed]}>
               <View style={[traditionalStyles.navItemIcon, !isExpanded && traditionalStyles.navItemIconCollapsed]}>
-                <Ionicons
-                  name={currentRoute === item.route ? item.iconFocused : item.icon}
-                  size={24}
-                  color={getItemColor(item)}
-                />
+                <Ionicons name={currentRoute === item.route ? item.iconFocused : item.icon} size={24} color={getItemColor(item)} />
               </View>
               {isExpanded && (
                 <View style={traditionalStyles.navItemText}>
@@ -252,9 +206,7 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
             <View style={traditionalStyles.connectionStatus}>
               <View style={traditionalStyles.statusIndicator}>
                 <View style={[traditionalStyles.statusDot, { backgroundColor: getConnectionColor() }]} />
-                <Text style={traditionalStyles.statusText}>
-                  {isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}
-                </Text>
+                <Text style={traditionalStyles.statusText}>{isConnected ? t('sidebar.connected') : connectionStatus === 'connecting' ? t('sidebar.connecting') : t('sidebar.disconnected')}</Text>
               </View>
             </View>
           </View>
@@ -271,7 +223,16 @@ const styles = StyleSheet.create({
   safeArea: { flex: 1, backgroundColor: FreeShowTheme.colors.primaryDarkest },
   sidebar: { flex: 1, backgroundColor: FreeShowTheme.colors.primaryDarkest, paddingVertical: FreeShowTheme.spacing.lg },
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: FreeShowTheme.spacing.lg, marginBottom: FreeShowTheme.spacing.xl, justifyContent: 'flex-start' },
-  closeButton: { width: 40, height: 40, borderRadius: FreeShowTheme.borderRadius.lg, backgroundColor: FreeShowTheme.colors.primaryDarker, borderWidth: 1, borderColor: FreeShowTheme.colors.primaryLighter, justifyContent: 'center', alignItems: 'center' },
+  closeButton: {
+    width: 40,
+    height: 40,
+    borderRadius: FreeShowTheme.borderRadius.lg,
+    backgroundColor: FreeShowTheme.colors.primaryDarker,
+    borderWidth: 1,
+    borderColor: FreeShowTheme.colors.primaryLighter,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerText: { marginLeft: FreeShowTheme.spacing.md, flex: 1 },
   logoContainer: { marginLeft: FreeShowTheme.spacing.sm, alignItems: 'center', justifyContent: 'center' },
   logoCircle: { width: 28, height: 28, borderRadius: 14, overflow: 'hidden', backgroundColor: 'transparent' },
@@ -279,7 +240,15 @@ const styles = StyleSheet.create({
   appName: { fontSize: FreeShowTheme.fontSize.lg, fontWeight: '700', color: FreeShowTheme.colors.text, marginBottom: 2 },
   appSubtitle: { fontSize: FreeShowTheme.fontSize.sm, color: FreeShowTheme.colors.textSecondary, fontWeight: '500' },
   navigation: { flex: 1, paddingHorizontal: FreeShowTheme.spacing.sm },
-  navItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: FreeShowTheme.spacing.md, paddingHorizontal: FreeShowTheme.spacing.md, borderRadius: FreeShowTheme.borderRadius.lg, marginBottom: FreeShowTheme.spacing.xs, position: 'relative' },
+  navItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: FreeShowTheme.spacing.md,
+    paddingHorizontal: FreeShowTheme.spacing.md,
+    borderRadius: FreeShowTheme.borderRadius.lg,
+    marginBottom: FreeShowTheme.spacing.xs,
+    position: 'relative',
+  },
   navItemIcon: { width: 40, alignItems: 'center' },
   navItemText: { flex: 1, marginLeft: FreeShowTheme.spacing.md },
   navItemLabel: { fontSize: FreeShowTheme.fontSize.md, fontWeight: '600' },
@@ -297,7 +266,16 @@ const traditionalStyles = StyleSheet.create({
   sidebar: { backgroundColor: FreeShowTheme.colors.primaryDarkest, height: '100%', paddingVertical: FreeShowTheme.spacing.lg },
   header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: FreeShowTheme.spacing.lg, marginBottom: FreeShowTheme.spacing.xl, justifyContent: 'flex-start' },
   headerCollapsed: { justifyContent: 'center', paddingHorizontal: FreeShowTheme.spacing.sm },
-  toggleButton: { width: 40, height: 40, borderRadius: FreeShowTheme.borderRadius.lg, backgroundColor: FreeShowTheme.colors.primaryDarker, borderWidth: 1, borderColor: FreeShowTheme.colors.primaryLighter, justifyContent: 'center', alignItems: 'center' },
+  toggleButton: {
+    width: 40,
+    height: 40,
+    borderRadius: FreeShowTheme.borderRadius.lg,
+    backgroundColor: FreeShowTheme.colors.primaryDarker,
+    borderWidth: 1,
+    borderColor: FreeShowTheme.colors.primaryLighter,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   headerText: { marginLeft: FreeShowTheme.spacing.md, flex: 1 },
   logoContainer: { marginLeft: FreeShowTheme.spacing.sm, alignItems: 'center', justifyContent: 'center' },
   logoCircle: { width: 26, height: 26, borderRadius: 13, overflow: 'hidden', backgroundColor: 'transparent' },
@@ -306,7 +284,15 @@ const traditionalStyles = StyleSheet.create({
   appSubtitle: { fontSize: FreeShowTheme.fontSize.sm, color: FreeShowTheme.colors.textSecondary, fontWeight: '500' },
   navigation: { flex: 1, paddingHorizontal: FreeShowTheme.spacing.sm },
   navigationCollapsed: { paddingHorizontal: FreeShowTheme.spacing.xs, alignItems: 'center' },
-  navItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: FreeShowTheme.spacing.md, paddingHorizontal: FreeShowTheme.spacing.md, borderRadius: FreeShowTheme.borderRadius.lg, marginBottom: FreeShowTheme.spacing.xs, position: 'relative' },
+  navItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: FreeShowTheme.spacing.md,
+    paddingHorizontal: FreeShowTheme.spacing.md,
+    borderRadius: FreeShowTheme.borderRadius.lg,
+    marginBottom: FreeShowTheme.spacing.xs,
+    position: 'relative',
+  },
   navItemCollapsed: { paddingHorizontal: FreeShowTheme.spacing.xs, marginHorizontal: FreeShowTheme.spacing.xs, justifyContent: 'center', alignItems: 'center', width: 54 },
   navItemIcon: { width: 40, alignItems: 'center' },
   navItemIconCollapsed: { width: 'auto', alignItems: 'center', justifyContent: 'center' },
@@ -320,4 +306,3 @@ const traditionalStyles = StyleSheet.create({
   statusDot: { width: 8, height: 8, borderRadius: 4, marginRight: FreeShowTheme.spacing.sm },
   statusText: { fontSize: FreeShowTheme.fontSize.lg, color: FreeShowTheme.colors.textSecondary, fontWeight: '500' },
 });
-

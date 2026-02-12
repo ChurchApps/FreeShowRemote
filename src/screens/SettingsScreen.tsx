@@ -1,32 +1,20 @@
-import { Ionicons } from '@expo/vector-icons'
-import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake'
-import { LinearGradient } from 'expo-linear-gradient'
-import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import {
-  Dimensions,
-  Image,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import TVFocusable from '../components/TVFocusable'
-import { configService } from '../config/AppConfig'
-import { useSettings } from '../contexts'
-import { FreeShowTheme } from '../theme/FreeShowTheme'
-import { ShowOption } from '../types'
-import { getDeviceType } from "../utils/navigationUtils"
+import { Ionicons } from '@expo/vector-icons';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dimensions, Image, Modal, Platform, ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import TVFocusable from '../components/TVFocusable';
+import { configService } from '../config/AppConfig';
+import { useSettings } from '../contexts';
+import { FreeShowTheme } from '../theme/FreeShowTheme';
+import { ShowOption } from '../types';
+import { getDeviceType } from '../utils/navigationUtils';
 
 interface SettingsScreenProps {
   navigation: any;
 }
-
 
 const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
@@ -65,10 +53,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
     }
   }, [settings]);
 
-
-
-
-
   useEffect(() => {
     if (keepAwake) {
       activateKeepAwakeAsync();
@@ -91,7 +75,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       await actions.updateSettings({
         autoReconnect: value,
         autoLaunchInterface: 'none',
-        autoLaunchFullscreen: false
+        autoLaunchFullscreen: false,
       });
     } else {
       await actions.updateSettings({ autoReconnect: value });
@@ -107,7 +91,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
       setAutoLaunchFullscreen(false);
       await actions.updateSettings({
         autoLaunchInterface: typedShowId,
-        autoLaunchFullscreen: false
+        autoLaunchFullscreen: false,
       });
     } else {
       await actions.updateSettings({ autoLaunchInterface: typedShowId });
@@ -127,90 +111,63 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
   const selectedShow = getSelectedShow();
 
-
   const isTV = getDeviceType().isTV;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   return (
     <>
-      <LinearGradient
-        colors={FreeShowTheme.gradients.appBackground}
-        style={styles.container}
-      >
+      <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={styles.container}>
         <SafeAreaWrapper style={[styles.safeAreaContainer, { backgroundColor: 'transparent' }]}>
           <View style={styles.animatedContainer}>
-            <ScrollView
-              style={styles.scrollView}
-              contentContainerStyle={isTV ? styles.scrollContent : styles.scrollContentWithFloatingNav}
-              showsVerticalScrollIndicator={false}
-              bounces={false}
-            >
+            <ScrollView style={styles.scrollView} contentContainerStyle={isTV ? styles.scrollContent : styles.scrollContentWithFloatingNav} showsVerticalScrollIndicator={false} bounces={false}>
               {/* Header */}
               <View style={styles.header}>
                 {/* Brand Header Card */}
                 <View style={styles.brandCard}>
-                  <LinearGradient
-                    colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 1 }}
-                    style={styles.brandGradient}
-                  >
+                  <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
                     {/* Title Section - Left */}
                     <View style={styles.titleSection}>
                       <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>{t('settingsScreen.title')}</Text>
-                      <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>
-                        {t('settingsScreen.subtitle')}
-                      </Text>
+                      <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>{t('settingsScreen.subtitle')}</Text>
                     </View>
 
                     {/* Logo - Right */}
                     <View style={styles.logoContainer}>
-                      <Image
-                        source={require('../../assets/splash-icon.png')}
-                        style={styles.logo}
-                        resizeMode="contain"
-                      />
+                      <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
                     </View>
                   </LinearGradient>
                 </View>
               </View>
 
               {/* Settings Card */}
-              {
-                !isTV && (
-                  <View style={styles.settingsCard}>
-                    {/* Keep Awake Toggle */}
-                    <TouchableOpacity
-                      style={styles.settingItem}
-                      activeOpacity={0.7}
-                    >
-                      <View style={styles.settingInfo}>
-                        <View style={styles.settingTitleRow}>
-                          <View style={styles.iconContainer}>
-                            <Ionicons name="moon" size={20} color={FreeShowTheme.colors.secondary} />
-                          </View>
-                          <Text style={styles.settingTitle}>{t('settingsScreen.keepAwake')}</Text>
+              {!isTV && (
+                <View style={styles.settingsCard}>
+                  {/* Keep Awake Toggle */}
+                  <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
+                    <View style={styles.settingInfo}>
+                      <View style={styles.settingTitleRow}>
+                        <View style={styles.iconContainer}>
+                          <Ionicons name="moon" size={20} color={FreeShowTheme.colors.secondary} />
                         </View>
-                        <Text style={styles.settingDescription}>
-                          {t('settingsScreen.keepAwakeDescription')}
-                        </Text>
+                        <Text style={styles.settingTitle}>{t('settingsScreen.keepAwake')}</Text>
                       </View>
-                      <Switch
-                        value={keepAwake}
-                        onValueChange={handleKeepAwakeToggle}
-                        trackColor={{
-                          false: FreeShowTheme.colors.primaryLighter,
-                          true: FreeShowTheme.colors.secondary + '60'
-                        }}
-                        thumbColor={keepAwake ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
-                        ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                      />
-                    </TouchableOpacity>
+                      <Text style={styles.settingDescription}>{t('settingsScreen.keepAwakeDescription')}</Text>
+                    </View>
+                    <Switch
+                      value={keepAwake}
+                      onValueChange={handleKeepAwakeToggle}
+                      trackColor={{
+                        false: FreeShowTheme.colors.primaryLighter,
+                        true: FreeShowTheme.colors.secondary + '60',
+                      }}
+                      thumbColor={keepAwake ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
+                      ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
+                    />
+                  </TouchableOpacity>
 
-                    {/* <View style={styles.settingDivider} /> */}
-                  </View>
-                )
-              }
+                  {/* <View style={styles.settingDivider} /> */}
+                </View>
+              )}
 
               {/* Auto Connection Section */}
               <View style={styles.sectionSeparator}>
@@ -222,10 +179,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
               <TVFocusable onPress={() => handleAutoReconnectToggle(!autoReconnect)}>
                 <View style={styles.settingsCard}>
                   {/* Auto-Reconnect Toggle */}
-                  <TouchableOpacity
-                    style={styles.settingItem}
-                    activeOpacity={0.7}
-                  >
+                  <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
                     <View style={styles.settingInfo}>
                       <View style={styles.settingTitleRow}>
                         <View style={styles.iconContainer}>
@@ -233,16 +187,14 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         </View>
                         <Text style={styles.settingTitle}>{t('settingsScreen.autoReconnect')}</Text>
                       </View>
-                      <Text style={styles.settingDescription}>
-                        {t('settingsScreen.autoReconnectDescription')}
-                      </Text>
+                      <Text style={styles.settingDescription}>{t('settingsScreen.autoReconnectDescription')}</Text>
                     </View>
                     <Switch
                       value={autoReconnect}
                       onValueChange={handleAutoReconnectToggle}
                       trackColor={{
                         false: FreeShowTheme.colors.primaryLighter,
-                        true: FreeShowTheme.colors.secondary + '60'
+                        true: FreeShowTheme.colors.secondary + '60',
                       }}
                       thumbColor={autoReconnect ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
                       ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
@@ -257,10 +209,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                   <View style={styles.spacer} />
                   <TVFocusable onPress={() => setShowLaunchPicker(true)}>
                     <View style={styles.settingsCard}>
-                      <TouchableOpacity
-                        style={styles.settingItem}
-                        activeOpacity={0.7}
-                      >
+                      <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
                         <View style={styles.settingInfo}>
                           <View style={styles.settingTitleRow}>
                             <View style={styles.iconContainer}>
@@ -268,15 +217,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                             </View>
                             <Text style={styles.settingTitle}>{t('settingsScreen.autoLaunchInterface')}</Text>
                           </View>
-                          <Text style={styles.settingDescription}>
-                            {t('settingsScreen.autoLaunchInterfaceDescription')}
-                          </Text>
+                          <Text style={styles.settingDescription}>{t('settingsScreen.autoLaunchInterfaceDescription')}</Text>
                         </View>
-                        <TouchableOpacity
-                          style={styles.pickerButton}
-                          onPress={() => setShowLaunchPicker(true)}
-                          activeOpacity={0.8}
-                        >
+                        <TouchableOpacity style={styles.pickerButton} onPress={() => setShowLaunchPicker(true)} activeOpacity={0.8}>
                           <View style={styles.pickerButtonContent}>
                             <View style={styles.pickerIcon}>
                               <Ionicons name={selectedShow.icon as any} size={16} color={selectedShow.color} />
@@ -298,34 +241,28 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
                   <TVFocusable onPress={() => handleAutoLaunchFullscreenToggle(!autoLaunchFullscreen)}>
                     <View style={styles.settingsCard}>
-
-                    <TouchableOpacity
-                      style={styles.settingItem}
-                      activeOpacity={0.7}
-                    >
-                      <View style={styles.settingInfo}>
-                        <View style={styles.settingTitleRow}>
-                          <View style={styles.iconContainer}>
-                            <Ionicons name="expand" size={20} color={FreeShowTheme.colors.secondary} />
+                      <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
+                        <View style={styles.settingInfo}>
+                          <View style={styles.settingTitleRow}>
+                            <View style={styles.iconContainer}>
+                              <Ionicons name="expand" size={20} color={FreeShowTheme.colors.secondary} />
+                            </View>
+                            <Text style={styles.settingTitle}>{t('settingsScreen.autoLaunchFullscreen')}</Text>
                           </View>
-                          <Text style={styles.settingTitle}>{t('settingsScreen.autoLaunchFullscreen')}</Text>
+                          <Text style={styles.settingDescription}>{t('settingsScreen.autoLaunchFullscreenDescription')}</Text>
                         </View>
-                        <Text style={styles.settingDescription}>
-                          {t('settingsScreen.autoLaunchFullscreenDescription')}
-                        </Text>
-                      </View>
-                      <Switch
-                        value={autoLaunchFullscreen}
-                        onValueChange={handleAutoLaunchFullscreenToggle}
-                        trackColor={{
-                          false: FreeShowTheme.colors.primaryLighter,
-                          true: FreeShowTheme.colors.secondary + '60'
-                        }}
-                        thumbColor={autoLaunchFullscreen ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
-                        ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
-                      />
-                    </TouchableOpacity>
-                  </View>
+                        <Switch
+                          value={autoLaunchFullscreen}
+                          onValueChange={handleAutoLaunchFullscreenToggle}
+                          trackColor={{
+                            false: FreeShowTheme.colors.primaryLighter,
+                            true: FreeShowTheme.colors.secondary + '60',
+                          }}
+                          thumbColor={autoLaunchFullscreen ? FreeShowTheme.colors.secondary : FreeShowTheme.colors.text}
+                          ios_backgroundColor={FreeShowTheme.colors.primaryLighter}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </TVFocusable>
                 </>
               )}
@@ -340,11 +277,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
               {/* Connection History Section */}
               <TVFocusable onPress={() => navigation.navigate('ConnectionHistory')}>
                 <View style={styles.settingsCard}>
-                  <TouchableOpacity
-                    style={styles.settingItem}
-                    onPress={() => navigation.navigate('ConnectionHistory')}
-                    activeOpacity={0.7}
-                  >
+                  <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('ConnectionHistory')} activeOpacity={0.7}>
                     <View style={styles.settingInfo}>
                       <View style={styles.settingTitleRow}>
                         <View style={styles.iconContainer}>
@@ -353,7 +286,9 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                         <Text style={styles.settingTitle}>{t('settingsScreen.connectionHistory')}</Text>
                       </View>
                       <Text style={styles.settingDescription}>
-                        {t('settingsScreen.connectionHistoryDescription', { count: history.length })}
+                        {t('settingsScreen.connectionHistoryDescription', {
+                          count: history.length,
+                        })}
                       </Text>
                     </View>
                     <View style={styles.actionIcon}>
@@ -362,47 +297,29 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </TVFocusable>
-
             </ScrollView>
           </View>
         </SafeAreaWrapper>
       </LinearGradient>
 
       {/* Auto-Launch Picker Modal */}
-      <Modal
-        visible={showLaunchPicker}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setShowLaunchPicker(false)}
-      >
+      <Modal visible={showLaunchPicker} transparent={true} animationType="fade" onRequestClose={() => setShowLaunchPicker(false)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{t('settingsScreen.autoLaunchInterface')}</Text>
 
               <TVFocusable onPress={() => setShowLaunchPicker(false)}>
-                <TouchableOpacity
-                  style={styles.modalCloseButton}
-                  onPress={() => setShowLaunchPicker(false)}
-                  activeOpacity={0.8}
-                >
+                <TouchableOpacity style={styles.modalCloseButton} onPress={() => setShowLaunchPicker(false)} activeOpacity={0.8}>
                   <Ionicons name="close" size={24} color={FreeShowTheme.colors.textSecondary} />
                 </TouchableOpacity>
               </TVFocusable>
             </View>
 
             <ScrollView style={styles.modalList} showsVerticalScrollIndicator={false}>
-              {showOptions.map((option) => (
+              {showOptions.map(option => (
                 <TVFocusable onPress={() => handleAutoLaunchSelect(option.id)}>
-                  <TouchableOpacity
-                    key={option.id}
-                    style={[
-                      styles.modalOption,
-                      autoLaunchInterface === option.id && styles.modalOptionSelected
-                    ]}
-                    onPress={() => handleAutoLaunchSelect(option.id)}
-                    activeOpacity={0.7}
-                  >
+                  <TouchableOpacity key={option.id} style={[styles.modalOption, autoLaunchInterface === option.id && styles.modalOptionSelected]} onPress={() => handleAutoLaunchSelect(option.id)} activeOpacity={0.7}>
                     <View style={styles.modalOptionIcon}>
                       <View style={[styles.optionIconBg, { backgroundColor: option.color + '20' }]}>
                         <Ionicons name={option.icon as any} size={22} color={option.color} />
@@ -795,4 +712,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingsScreen; 
+export default SettingsScreen;
