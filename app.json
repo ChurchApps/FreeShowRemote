@@ -7,7 +7,7 @@
     "icon": "./assets/icon-bg.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": false,
-    "scheme": "FreeShowRemote",
+    "scheme": "freeshowremote",
     "platforms": ["ios", "android"],
     "splash": {
       "image": "./assets/app-icon.png",

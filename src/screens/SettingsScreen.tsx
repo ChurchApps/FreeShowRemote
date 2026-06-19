@@ -154,6 +154,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                       <Text style={styles.settingDescription}>{t('settingsScreen.keepAwakeDescription')}</Text>
                     </View>
                     <Switch
+                      style={styles.settingSwitch}
                       value={keepAwake}
                       onValueChange={handleKeepAwakeToggle}
                       trackColor={{
@@ -190,6 +191,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                       <Text style={styles.settingDescription}>{t('settingsScreen.autoReconnectDescription')}</Text>
                     </View>
                     <Switch
+                      style={styles.settingSwitch}
                       value={autoReconnect}
                       onValueChange={handleAutoReconnectToggle}
                       trackColor={{
@@ -252,6 +254,7 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                           <Text style={styles.settingDescription}>{t('settingsScreen.autoLaunchFullscreenDescription')}</Text>
                         </View>
                         <Switch
+                          style={styles.settingSwitch}
                           value={autoLaunchFullscreen}
                           onValueChange={handleAutoLaunchFullscreenToggle}
                           trackColor={{
@@ -490,6 +493,11 @@ const styles = StyleSheet.create({
   settingInfo: {
     flex: 1,
     marginRight: FreeShowTheme.spacing.lg,
+  },
+  // iOS (old arch release build) doesn't reserve the Switch's intrinsic width in a flex row,
+  // pushing it off-screen; pin the default 51x31 footprint so flexbox lays it out. See issue #11.
+  settingSwitch: {
+    ...Platform.select({ ios: { width: 51, height: 31 } }),
   },
   iconContainer: {
     width: 36,

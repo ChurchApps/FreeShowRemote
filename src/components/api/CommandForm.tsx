@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, Switch } from 'react-native'
+import { View, Text, TextInput, Switch, Platform } from 'react-native'
 import { FreeShowTheme } from '../../theme/FreeShowTheme'
 import { ApiCommandDef, CommandParam } from '../../services/api/apiSchema'
 
@@ -15,7 +15,7 @@ const Field: React.FC<{ name: string; schema: CommandParam; value: any; onChange
     return (
       <View style={{ marginBottom: FreeShowTheme.spacing.md, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <Text style={{ color: FreeShowTheme.colors.text }}>{label}</Text>
-        <Switch value={!!value} onValueChange={onChange} />
+        <Switch style={Platform.select({ ios: { width: 51, height: 31 } })} value={!!value} onValueChange={onChange} />
       </View>
     )
   }
