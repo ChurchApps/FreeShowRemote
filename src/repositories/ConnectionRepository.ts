@@ -2,8 +2,6 @@ import { IStorageRepository, StorageKeys } from './IStorageRepository';
 import { storageRepository } from './AsyncStorageRepository';
 import { ErrorLogger } from '../services/ErrorLogger';
 
-// Types for discovery domain
-
 export interface DiscoveryResult {
   host: string;
   port: number;
@@ -13,10 +11,7 @@ export interface DiscoveryResult {
   metadata?: Record<string, any>;
 }
 
-/**
- * Lightweight repository for managing discovery cache
- * Handles persistence of discovery-related data only
- */
+/** Manages discovery cache persistence. */
 export class ConnectionRepository {
   private readonly logContext = 'ConnectionRepository';
   private storage: IStorageRepository;
@@ -25,7 +20,6 @@ export class ConnectionRepository {
     this.storage = storage;
   }
 
-  // Discovery Results (temporary cache)
   async getDiscoveryResults(): Promise<DiscoveryResult[]> {
     try {
       const results = await this.storage.getObject<DiscoveryResult[]>(StorageKeys.DISCOVERY_CACHE);
@@ -52,12 +46,10 @@ export class ConnectionRepository {
         ...result,
         discoveredAt: new Date().toISOString(),
       };
-      
-      // Remove existing result for same host:port
+
       const filteredResults = results.filter(r => !(r.host === result.host && r.port === result.port));
       filteredResults.push(discoveryResult);
-      
-      // Keep only results from last 24 hours
+
       const cutoffTime = Date.now() - (24 * 60 * 60 * 1000);
       const recentResults = filteredResults.filter(r => new Date(r.discoveredAt).getTime() > cutoffTime);
       
@@ -75,9 +67,6 @@ export class ConnectionRepository {
       ErrorLogger.error('Failed to clear discovery cache', this.logContext, error instanceof Error ? error : new Error(String(error)));
     }
   }
-
-
 }
 
-// Export singleton instance
 export const connectionRepository = new ConnectionRepository();

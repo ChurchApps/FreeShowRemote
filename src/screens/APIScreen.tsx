@@ -43,7 +43,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
   const { title = 'FreeShow Remote' } = route.params || {};
   const deviceType = getDeviceType();
   const isTV = deviceType.isTV;
-  // const isTablet = deviceType.isTablet;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
   const [socketConnected, setSocketConnected] = useState(false);
@@ -130,7 +129,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
   const connectWebSocket = async () => {
     if (!connectionHost) return;
 
-    // If API is not available, don't try to connect
     if (!isApiAvailable) {
       ErrorLogger.info('API not available - interface-only mode', 'APIScreen');
       setSocketConnected(false);
@@ -140,11 +138,11 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     try {
       hasShownErrorRef.current = false;
       ErrorLogger.info('Connecting to FreeShow WebSocket API', 'APIScreen');
-      
+
       if (connectionErrorTimeoutRef.current) {
         clearTimeout(connectionErrorTimeoutRef.current);
       }
-      
+
       if (socketRef.current) {
         socketRef.current.disconnect();
       }
@@ -175,7 +173,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
 
       socketRef.current.on('connect_error', (error) => {
         ErrorLogger.error('WebSocket connection error', 'APIScreen', error);
-        
+
         if (!hasShownErrorRef.current) {
           connectionErrorTimeoutRef.current = setTimeout(() => {
             if (!socketConnected && !hasShownErrorRef.current) {
@@ -194,8 +192,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
           }, 3000);
         }
       });
-
-      // No-op: we don't need to process inbound data here for UI
 
     } catch (error) {
       ErrorLogger.error('Failed to setup WebSocket connection', 'APIScreen', error instanceof Error ? error : new Error(String(error)));
@@ -256,7 +252,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
 
   // const handleClearAll = () => sendApiCommand('clear_all');
 
-  // New UX helpers
   const { favorites, removeFavorite } = useApiFavorites();
 
   if (!isConnected) {
@@ -283,7 +278,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
     );
   }
 
-  // Show API not available UI if connected but API is disabled
   if (!isApiAvailable) {
     return (
       <SafeAreaWrapper style={styles.safeArea} {...(isTV && { edges: ['top', 'left', 'right'] })}>
@@ -345,7 +339,7 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
             <Text style={styles.title}>{title}</Text>
           )}
 
-          {/* Right controls: Fullscreen only (search handled by WebView when embedded) */}
+          {/* Fullscreen toggle only; search via WebView when embedded */}
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity style={styles.fullScreenButton} onPress={handleToggleFullScreen}>
               <Ionicons 
@@ -360,8 +354,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
 
       <View style={styles.container}>
         <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          {/* Search moved to header modal */}
-          {/* Favorites */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Favorites</Text>
             {favorites.length === 0 ? (
@@ -405,7 +397,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
             )}
           </View>
 
-          {/* Categories grid */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Categories</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginHorizontal: -8 }}>
@@ -429,7 +420,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
                   </TouchableOpacity>
                 </View>
               ))}
-              {/* Custom Command card as the last category */}
               <View style={{ width: '50%', paddingHorizontal: 8, marginBottom: 16 }}>
                 <TouchableOpacity
                   style={{
@@ -455,14 +445,12 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
 
       </View>
 
-      {/* Loading Overlay */}
       {isConnecting && (
         <View style={styles.loadingOverlay}>
           <ActivityIndicator size="small" color={FreeShowTheme.colors.secondary} />
         </View>
       )}
 
-      {/* New Modals */}
       {activeCommandId && findCommandById(activeCommandId)?.command && (
         <APICommandModal
           visible={!!activeCommandId}
@@ -475,7 +463,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
       )}
       <CustomCommandModal visible={showCustom} onClose={() => setShowCustom(false)} onSaved={() => setShowCustom(false)} />
 
-      {/* Confirmation modal for parameterless commands */}
       <ConfirmRunModal
         visible={!!confirmCommandId}
         title={findCommandById(confirmCommandId || '')?.command.label || 'Run Command'}
@@ -489,7 +476,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
         }}
       />
 
-      {/* Error Modal */}
       <ErrorModal
         visible={errorModal.visible}
         title={errorModal.title}
@@ -504,7 +490,6 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
         }}
       />
 
-      {/* Fullscreen hint (tap to dismiss) */}
       {!embedded && isFullScreen && showFullscreenHint && (
         <TouchableOpacity
           style={styles.fullscreenHint}
@@ -518,25 +503,20 @@ const APIScreen: React.FC<APIScreenProps> = ({ route, navigation, embedded = fal
         </TouchableOpacity>
       )}
 
-      {/* Double-tap corners to exit fullscreen */}
       {!embedded && isFullScreen && (
         <>
-          {/* Top-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.corner, styles.topLeft, showCornerFeedback && styles.cornerFeedback]} />
           </TouchableWithoutFeedback>
 
-          {/* Top-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.corner, styles.topRight, showCornerFeedback && styles.cornerFeedback]} />
           </TouchableWithoutFeedback>
 
-          {/* Bottom-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.corner, styles.bottomLeft, showCornerFeedback && styles.cornerFeedback]} />
           </TouchableWithoutFeedback>
 
-          {/* Bottom-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.corner, styles.bottomRight, showCornerFeedback && styles.cornerFeedback]} />
           </TouchableWithoutFeedback>
@@ -621,7 +601,6 @@ const styles = StyleSheet.create({
     color: FreeShowTheme.colors.text,
     marginBottom: FreeShowTheme.spacing.lg,
   },
-  // Control Buttons
   controlRow: {
     flexDirection: 'row',
     gap: FreeShowTheme.spacing.lg,
@@ -654,7 +633,6 @@ const styles = StyleSheet.create({
   projectButton: {
     backgroundColor: '#007bff',
   },
-  // Advanced Button
   advancedButton: {
     backgroundColor: '#333',
     borderRadius: FreeShowTheme.borderRadius.lg,
@@ -689,7 +667,6 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: FreeShowTheme.fontSize.sm,
   },
-  // Bottom Section
   bottomSection: {
     padding: FreeShowTheme.spacing.lg,
     borderTopWidth: 1,
@@ -728,8 +705,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
-  // Fullscreen styles
+
   fullScreenButton: {
     padding: FreeShowTheme.spacing.sm,
   },

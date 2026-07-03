@@ -22,7 +22,6 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
 }) => {
   const defaultPorts = configService.getDefaultShowPorts();
 
-  // Helper function to get default port for interface
   const getDefaultPortForInterface = (interfaceId: string): string => {
     const portMap: Record<string, number> = {
       'api': defaultPorts.api,
@@ -61,8 +60,7 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
         <TouchableOpacity style={styles.enableBackdropTouchable} activeOpacity={1} onPress={onClose} />
         <View style={styles.enablePopupContainer}>
           <View style={styles.enableHandle} />
-          
-          {/* Header with icon and title */}
+
           <View style={styles.enableHeader}>
             <View style={[styles.enableIconContainer, { backgroundColor: (show?.color || '#333') + '15' }]}>
               <Ionicons
@@ -77,7 +75,6 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
             </View>
           </View>
 
-          {/* Port Input */}
           <View style={styles.portInputContainer}>
             <Text style={styles.portInputLabel}>Port Number</Text>
             <TextInput
@@ -92,7 +89,6 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
             />
           </View>
 
-          {/* Action buttons */}
           <View style={styles.enableActions}>
             <TouchableOpacity
               style={[styles.enableActionButton, styles.enableCancelButton]}
@@ -119,7 +115,6 @@ const EnableInterfaceModal: React.FC<EnableInterfaceModalProps> = ({
 };
 
 const styles = StyleSheet.create({
-  // Enable interface modal styles
   enableBackdrop: {
     flex: 1,
     backgroundColor: '#00000066',

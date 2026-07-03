@@ -40,13 +40,13 @@ module.exports = [
           ignoreRestSiblings: true,
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'off', // Turn off any warnings
+      '@typescript-eslint/no-explicit-any': 'off',
       'no-console': 'off',
       'prefer-const': 'error',
       'no-undef': 'off', // TypeScript handles this
       'no-prototype-builtins': 'error',
       'no-dupe-class-members': 'error',
-      'react-hooks/exhaustive-deps': 'off', // We'll add react hooks plugin separately if needed
+      'react-hooks/exhaustive-deps': 'off',
     },
   },
   {

@@ -29,10 +29,7 @@ export interface ConnectionHistory {
   };
 }
 
-/**
- * Repository for managing application settings and user preferences
- * Abstracts the underlying storage implementation
- */
+/** Repository for managing application settings and user preferences */
 export class SettingsRepository {
   private readonly logContext = 'SettingsRepository';
   private storage: IStorageRepository;
@@ -41,12 +38,10 @@ export class SettingsRepository {
     this.storage = storage;
   }
 
-  // App Settings
   async getAppSettings(): Promise<AppSettings> {
     try {
       const settings = await this.storage.getObject<AppSettings>(StorageKeys.APP_SETTINGS);
       if (!settings) {
-        // Return default settings if none exist
         const defaultSettings: AppSettings = {
           theme: 'dark',
           notifications: true,
@@ -88,7 +83,6 @@ export class SettingsRepository {
     }
   }
 
-  // Connection History
   async getConnectionHistory(): Promise<ConnectionHistory[]> {
     try {
       const history = await this.storage.getObject<ConnectionHistory[]>(StorageKeys.CONNECTION_HISTORY);
@@ -118,19 +112,16 @@ export class SettingsRepository {
     try {
       const history = await this.getConnectionHistory();
       const existingIndex = history.findIndex(item => item.host === host);
-      
-      // Get default ports if not provided, but preserve existing ports if they exist
+
+      // Preserve existing ports if connection already in history; use defaults for new
       const defaultPorts = configService.getDefaultShowPorts();
       let portsToStore;
-      
+
       if (showPorts) {
-        // Use provided ports
         portsToStore = showPorts;
       } else if (existingIndex >= 0 && history[existingIndex].showPorts) {
-        // Preserve existing ports for this connection
         portsToStore = history[existingIndex].showPorts;
       } else {
-        // Use defaults for new connections
         portsToStore = {
           remote: defaultPorts.remote,
           stage: defaultPorts.stage,
@@ -139,9 +130,8 @@ export class SettingsRepository {
           api: defaultPorts.api,
         };
       }
-      
+
       if (existingIndex >= 0) {
-        // Update existing entry
         history[existingIndex] = {
           ...history[existingIndex],
           lastUsed: new Date().toISOString(),
@@ -150,7 +140,6 @@ export class SettingsRepository {
           showPorts: portsToStore,
         };
       } else {
-        // Add new entry
         const newEntry: ConnectionHistory = {
           id: host,
           host,
@@ -162,7 +151,6 @@ export class SettingsRepository {
         history.push(newEntry);
       }
 
-      // Keep only the most recent connections based on config
       const maxConnections = configService.getStorageConfig().maxConnectionHistory;
       const sortedHistory = history
         .sort((a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime())
@@ -185,17 +173,17 @@ export class SettingsRepository {
     try {
       const history = await this.getConnectionHistory();
       const existingIndex = history.findIndex(item => item.id === hostId || item.host === hostId);
-      
+
       if (existingIndex >= 0) {
         history[existingIndex] = {
           ...history[existingIndex],
-          nickname: nickname.trim() || history[existingIndex].host, // Fallback to host if empty
+          nickname: nickname.trim() || history[existingIndex].host,
         };
-        
+
         await this.setConnectionHistory(history);
-        ErrorLogger.info('Updated connection nickname', this.logContext, { 
-          hostId, 
-          nickname: nickname.trim() || history[existingIndex].host 
+        ErrorLogger.info('Updated connection nickname', this.logContext, {
+          hostId,
+          nickname: nickname.trim() || history[existingIndex].host
         });
       } else {
         throw new Error(`Connection with ID ${hostId} not found in history`);
@@ -213,24 +201,21 @@ export class SettingsRepository {
     try {
       const history = await this.getConnectionHistory();
       const existingIndex = history.findIndex(item => item.host === host);
-      
+
       if (existingIndex >= 0) {
-        // Update existing entry without incrementing connection count
         history[existingIndex] = {
           ...history[existingIndex],
           lastUsed: new Date().toISOString(),
           showPorts,
         };
-        
+
         await this.setConnectionHistory(history);
-        ErrorLogger.info('Updated connection ports', this.logContext, { 
-          host, 
-          showPorts 
+        ErrorLogger.info('Updated connection ports', this.logContext, {
+          host,
+          showPorts
         });
       } else {
-        // If connection doesn't exist in history, this shouldn't happen during port updates
-        // But we can handle it gracefully
-        ErrorLogger.warn('Attempted to update ports for non-existent connection', this.logContext, 
+        ErrorLogger.warn('Attempted to update ports for non-existent connection', this.logContext,
           new Error(`Host not found in history: ${host}`)
         );
       }
@@ -262,14 +247,12 @@ export class SettingsRepository {
     }
   }
 
-  // Last connection for auto-reconnect
   async getLastConnection(): Promise<ConnectionHistory | null> {
     try {
       const history = await this.getConnectionHistory();
       if (history.length === 0) {
         return null;
       }
-      // Return the most recently used connection
       return history.sort((a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime())[0];
     } catch (error) {
       ErrorLogger.error('Failed to get last connection', this.logContext, error instanceof Error ? error : new Error(String(error)));
@@ -277,7 +260,6 @@ export class SettingsRepository {
     }
   }
 
-  // Cleanup and maintenance
   async clearAllData(): Promise<void> {
     try {
       await this.storage.removeItem(StorageKeys.APP_SETTINGS);

@@ -89,21 +89,17 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <View style={styles.header}>
-      {/* Brand Header Card */}
       <View style={styles.brandCard}>
         <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
-          {/* Title Section - Left */}
           <View style={styles.titleSection}>
             <Text style={[styles.title, isTablet && styles.titleTablet]}>{t('app.name')}</Text>
             <Text style={[styles.subtitle, isTablet && styles.subtitleTablet]}>{t('app.subtitle')}</Text>
           </View>
 
-          {/* Logo - Right */}
           <View style={styles.logoContainer}>
             <Image source={require('../../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
           </View>
 
-          {/* Disconnect Button */}
           {onDisconnect && isConnected && (
             <Pressable style={({ pressed }) => [styles.actionButton, pressed && styles.actionButtonPressed]} onPress={onDisconnect}>
               <LinearGradient colors={['rgba(239, 83, 80, 0.2)', 'rgba(239, 83, 80, 0.1)']} style={styles.actionButtonGradient}>
@@ -114,7 +110,6 @@ const Header: React.FC<HeaderProps> = ({
         </LinearGradient>
       </View>
 
-      {/* Connection Status Card - Only show when connected, connecting, or error */}
       {(isConnected || connectionStatus === 'connecting' || connectionStatus === 'error') && (
         <View style={styles.statusCard}>
           <LinearGradient
@@ -129,12 +124,10 @@ const Header: React.FC<HeaderProps> = ({
             end={{ x: 1, y: 1 }}
             style={[styles.statusCardGradient, isTablet && styles.statusCardGradientTablet]}
           >
-            {/* Status Icon Circle */}
             <View style={[styles.statusIconContainer, { backgroundColor: status.color + '20' }]}>
               <Ionicons name={status.icon} size={isTablet ? 26 : 22} color={status.color} />
             </View>
 
-            {/* Connection Details */}
             <View style={styles.statusInfo}>
               <View style={styles.statusHeader}>
                 <View style={[styles.statusDot, { backgroundColor: status.color }]} />
@@ -176,7 +169,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
 
-  // Brand Header Card
   brandCard: {
     borderRadius: 16,
     overflow: 'hidden',
@@ -243,7 +235,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(239, 83, 80, 0.25)',
   },
 
-  // Status Card
   statusCard: {
     borderRadius: 16,
     overflow: 'hidden',

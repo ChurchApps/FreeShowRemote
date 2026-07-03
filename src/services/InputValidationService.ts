@@ -23,10 +23,10 @@ export class InputValidationService {
     }
 
     return input
-      .trim() // Remove leading/trailing whitespace
-      .replace(/[<>]/g, '') // Remove potential HTML/XML tags
-      .replace(/['";]/g, '') // Remove potential SQL injection characters
-      .replace(/[^\w\s\-._:\[\]]/g, ''); // Keep only alphanumeric, spaces, and safe punctuation
+      .trim()
+      .replace(/[<>]/g, '')
+      .replace(/['";]/g, '')
+      .replace(/[^\w\s\-._:[\]]/g, '');
   }
 
   /**
@@ -41,16 +41,14 @@ export class InputValidationService {
         };
       }
 
-      // Sanitize input
       const sanitized = this.sanitizeString(ip);
       
       if (sanitized !== ip) {
-        ErrorLogger.warn('IP address contained suspicious characters', 'InputValidation', 
+        ErrorLogger.warn('IP address contained suspicious characters', 'InputValidation',
           new Error(`Original: ${ip}, Sanitized: ${sanitized}`)
         );
       }
 
-      // Check length
       const config = configService.getValidationConfig();
       if (sanitized.length === 0) {
         return {
@@ -66,7 +64,6 @@ export class InputValidationService {
         };
       }
 
-      // Validate IP format
       if (!configService.isValidIP(sanitized)) {
         return {
           isValid: false,
@@ -74,9 +71,7 @@ export class InputValidationService {
         };
       }
 
-      // Check for private/local IP ranges (additional security)
       if (this.isPrivateIP(sanitized)) {
-        // This is fine for local network apps, but log it
         ErrorLogger.debug('Using private IP address', 'InputValidation', { ip: sanitized });
       }
 
@@ -105,16 +100,14 @@ export class InputValidationService {
         };
       }
 
-      // Sanitize input
       const sanitized = this.sanitizeString(hostname);
-      
+
       if (sanitized !== hostname) {
-        ErrorLogger.warn('Hostname contained suspicious characters', 'InputValidation', 
+        ErrorLogger.warn('Hostname contained suspicious characters', 'InputValidation',
           new Error(`Original: ${hostname}, Sanitized: ${sanitized}`)
         );
       }
 
-      // Check length
       const config = configService.getValidationConfig();
       if (sanitized.length === 0) {
         return {
@@ -166,9 +159,7 @@ export class InputValidationService {
 
       let portNumber: number;
 
-      // Convert to number if string
       if (typeof port === 'string') {
-        // Sanitize string input
         const sanitized = this.sanitizeString(port);
         
         if (sanitized !== port) {
@@ -192,7 +183,6 @@ export class InputValidationService {
           };
         }
 
-        // Check if it's a valid number
         if (!/^\d+$/.test(sanitized)) {
           return {
             isValid: false,
@@ -210,7 +200,6 @@ export class InputValidationService {
         };
       }
 
-      // Validate port range
       if (!configService.isValidPort(portNumber)) {
         const config = configService.getValidationConfig();
         return {
@@ -236,19 +225,16 @@ export class InputValidationService {
    * Validate host (IP address or hostname)
    */
   static validateHost(host: string): ValidationResult {
-    // Try IP validation first
     const ipResult = this.validateIPAddress(host);
     if (ipResult.isValid) {
       return ipResult;
     }
 
-    // If IP validation fails, try hostname validation
     const hostnameResult = this.validateHostname(host);
     if (hostnameResult.isValid) {
       return hostnameResult;
     }
 
-    // Both failed
     return {
       isValid: false,
       error: 'Invalid host. Please enter a valid IP address or hostname',
@@ -267,7 +253,6 @@ export class InputValidationService {
         };
       }
 
-      // Sanitize content
       const sanitized = content.trim();
 
       if (sanitized.length === 0) {
@@ -277,7 +262,6 @@ export class InputValidationService {
         };
       }
 
-      // Length check for security
       if (sanitized.length > 2048) {
         return {
           isValid: false,
@@ -285,7 +269,6 @@ export class InputValidationService {
         };
       }
 
-      // Enhanced suspicious patterns check
       const suspiciousPatterns = [
         /javascript:/i,
         /data:/i,
@@ -331,7 +314,6 @@ export class InputValidationService {
         }
       }
 
-      // Check for non-printable characters
       if (/[^\x20-\x7E\t\n\r]/.test(sanitized)) {
         return {
           isValid: false,
@@ -339,25 +321,20 @@ export class InputValidationService {
         };
       }
 
-      // Try to parse as structured JSON payload first
       try {
         const obj = JSON.parse(sanitized);
         if (obj && typeof obj === 'object') {
-          // Expect our structured payload
           if (obj.type === 'freeshow-remote-connection') {
-            // Validate host
             const hostResult = this.validateHost(String(obj.host || ''));
             if (!hostResult.isValid) {
               return { isValid: false, error: `Invalid host in QR payload: ${hostResult.error}` };
             }
 
-            // Validate ports object
             const portsResult = this.validateShowPorts(obj.ports);
             if (!portsResult.isValid) {
               return { isValid: false, error: `Invalid ports in QR payload: ${portsResult.error}` };
             }
 
-            // Sanitize nickname (optional)
             const nickname = obj.nickname ? this.sanitizeString(String(obj.nickname)) : undefined;
 
             return {
@@ -373,12 +350,9 @@ export class InputValidationService {
           }
         }
       } catch {
-        // Not JSON – continue
       }
 
-      // Try to parse as URL or IP
       try {
-        // Check if it's a URL
         const url = new URL(sanitized);
         if (url.protocol !== 'http:' && url.protocol !== 'https:') {
           return {
@@ -386,13 +360,12 @@ export class InputValidationService {
             error: 'QR code must contain a valid HTTP/HTTPS URL or IP address',
           };
         }
-        
+
         return {
           isValid: true,
           sanitizedValue: sanitized,
         };
       } catch {
-        // Not a URL, try as plain host
         return this.validateHost(sanitized);
       }
     } catch (error) {
@@ -420,10 +393,7 @@ export class InputValidationService {
   }
 
   /**
-   * Sanitize and validate show ports object
-   */
-  /**
-   * Validate show ports - simplified version
+   * Validate show ports
    */
   static validateShowPorts(ports: any): ValidationResult {
     try {
@@ -439,7 +409,7 @@ export class InputValidationService {
 
       for (const portName of requiredPorts) {
         if (!(portName in ports)) {
-          sanitizedPorts[portName] = 0; // Default to disabled
+          sanitizedPorts[portName] = 0;
           continue;
         }
 
@@ -460,10 +430,9 @@ export class InputValidationService {
         sanitizedPorts[portName] = portResult.sanitizedValue;
       }
 
-      // Simple check: if enabled ports exist, they must be unique
       const enabledPorts = Object.values(sanitizedPorts).filter((port): port is number => typeof port === 'number' && port > 0);
       const uniquePorts = new Set(enabledPorts);
-      
+
       if (enabledPorts.length !== uniquePorts.size) {
         return {
           isValid: false,
@@ -485,5 +454,4 @@ export class InputValidationService {
   }
 }
 
-// Export the service
 export { InputValidationService as ValidationService };

@@ -2,10 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IStorageRepository } from './IStorageRepository';
 import { ErrorLogger } from '../services/ErrorLogger';
 
-/**
- * AsyncStorage implementation of the storage repository
- * Provides abstraction layer over AsyncStorage with error handling and type safety
- */
+/** AsyncStorage implementation with error handling and type safety */
 export class AsyncStorageRepository implements IStorageRepository {
   private readonly logContext = 'AsyncStorageRepository';
 
@@ -15,8 +12,8 @@ export class AsyncStorageRepository implements IStorageRepository {
       if (value === null) {
         return null;
       }
-      
-      // Try to parse as JSON, if it fails return as string
+
+      // Try JSON parse; fall back to string if it fails
       try {
         return JSON.parse(value) as T;
       } catch {
@@ -70,7 +67,6 @@ export class AsyncStorageRepository implements IStorageRepository {
     }
   }
 
-  // Typed convenience methods
   async getString(key: string): Promise<string | null> {
     try {
       const value = await AsyncStorage.getItem(key);
@@ -116,5 +112,4 @@ export class AsyncStorageRepository implements IStorageRepository {
   }
 }
 
-// Export singleton instance for easy access throughout the app
 export const storageRepository = new AsyncStorageRepository();

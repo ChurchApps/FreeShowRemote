@@ -19,10 +19,7 @@ interface ConnectingScreenProps {
   connectionStatus: string;
 }
 
-/**
- * Connecting Screen Component
- * Shows a clean, mature connecting state that matches the not connected screen design
- */
+/** Connecting Screen showing status with pulsing WiFi icon. */
 const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
   onCancel,
   connectionStatus
@@ -87,7 +84,6 @@ const ConnectingScreen: React.FC<ConnectingScreenProps> = ({
           }
         ]}
       >
-        {/* Icon container - matches not connected design exactly */}
         <View style={styles.connectingIcon}>
           <Animated.View style={{ opacity: pulseAnimation }}>
             <Ionicons name="wifi-outline" size={56} color={FreeShowTheme.colors.textSecondary} />

@@ -52,7 +52,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     message: ''
   });
 
-  // Device detection
   const [deviceDimensions, setDeviceDimensions] = useState(() => {
     const { width, height } = Dimensions.get('window');
     return {
@@ -62,22 +61,18 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     };
   });
 
-  // Double-tap to exit fullscreen
   const [lastTap, setLastTap] = useState<number | null>(null);
   const [showCornerFeedback, setShowCornerFeedback] = useState(false);
   const [showFullscreenHint, setShowFullscreenHint] = useState(false);
   const DOUBLE_TAP_DELAY = configService.getNetworkConfig().doubleTapDelay;
 
   useEffect(() => {
-    // Get current orientation on mount
     ScreenOrientation.getOrientationAsync().then(setCurrentOrientation);
 
-    // Listen for orientation changes
     const subscription = ScreenOrientation.addOrientationChangeListener((event) => {
       setCurrentOrientation(event.orientationInfo.orientation);
     });
 
-    // Listen for dimension changes (device rotation or screen size changes)
     const dimensionSubscription = Dimensions.addEventListener('change', () => {
       const { width, height } = Dimensions.get('window');
       setDeviceDimensions({
@@ -93,7 +88,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     };
   }, []);
 
-  // Show fullscreen hint when entering fullscreen
   useEffect(() => {
     if (isFullScreen) {
       setShowFullscreenHint(true);
@@ -135,10 +129,8 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         currentOrientation === ScreenOrientation.Orientation.LANDSCAPE_RIGHT;
 
       if (isLandscape) {
-        // Switch to portrait
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
       } else {
-        // Switch to landscape
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE_LEFT);
       }
     } catch (error) {
@@ -151,18 +143,15 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     }
   };
 
-  // Handle double-tap on corner to exit fullscreen
   const handleCornerDoubleTap = () => {
     if (!isFullScreen) return;
 
     const now = Date.now();
 
-    // Show visual feedback on any tap
     setShowCornerFeedback(true);
     setTimeout(() => setShowCornerFeedback(false), configService.getNetworkConfig().cornerFeedbackDuration);
 
     if (lastTap && (now - lastTap) < DOUBLE_TAP_DELAY) {
-      // Double tap detected - exit fullscreen
       setIsFullScreen(false);
       setLastTap(null);
     } else {
@@ -224,14 +213,12 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
 
     const newUrl = `http://${connectionHost}:${show.port}`;
 
-    // Navigate to the new show interface
     navigation.setParams({
       url: newUrl,
       title: show.title,
       showId: show.id,
     });
 
-    // Reload the WebView with the new URL
     if (webViewRef.current) {
       setLoading(true);
       setError(null);
@@ -268,14 +255,12 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
     const title = showTitles[showId as keyof typeof showTitles];
     const newUrl = `http://${connectionHost}:${port}`;
 
-    // Navigate to the new show interface
     navigation.setParams({
       url: newUrl,
       title: title,
       showId: showId,
     });
 
-    // Reload the WebView with the new URL
     if (webViewRef.current) {
       setLoading(true);
       setError(null);
@@ -329,7 +314,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
 
           {connectionHost && showId ? (
             deviceDimensions.isTablet ? (
-              /* Tablet: ShowSwitcher modal + Quick Interface Switch Buttons - Centered */
               <>
                 <ShowSwitcher
                   currentTitle={title}
@@ -439,7 +423,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
                 </View>
               </>
             ) : (
-              /* Mobile: ShowSwitcher modal */
               <ShowSwitcher
                 currentTitle={title}
                 currentShowId={showId}
@@ -481,7 +464,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
             </TVFocusable>
           )}
 
-          {/* API-specific header controls: search + fullscreen */}
           {showId === 'api' && (
             <TouchableOpacity style={styles.fullScreenButton} onPress={() => setShowSearch(true)}>
               <Ionicons name="search" size={20} color={FreeShowTheme.colors.text} />
@@ -504,7 +486,7 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
           <APIScreen navigation={navigation} route={{ params: { title: 'API', showId: 'api' } }} embedded />
         ) : (
         <>
-        {loading && (
+          {loading && (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={FreeShowTheme.colors.secondary} />
             <Text style={styles.loadingText}>Loading {title}...</Text>
@@ -524,13 +506,12 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
           mediaPlaybackRequiresUserAction={false}
           mixedContentMode="compatibility"
           allowsFullscreenVideo={true}
-          key={url} // Force re-render when URL changes
+          key={url}
         />
         </>
         )}
       </View>
 
-      {/* API Search Modal */}
       {showId === 'api' && (
         <Modal
           visible={showSearch}
@@ -605,7 +586,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         </Modal>
       )}
 
-      {/* Error Modal */}
       <ErrorModal
         visible={errorModal.visible}
         title={errorModal.title}
@@ -613,7 +593,6 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         onClose={() => setErrorModal({ visible: false, title: '', message: '' })}
       />
 
-      {/* Fullscreen hint (tap to dismiss) */}
       {isFullScreen && showFullscreenHint && (
         <TouchableOpacity
           style={styles.fullscreenHint}
@@ -627,25 +606,20 @@ const WebViewScreen: React.FC<WebViewScreenProps> = ({ navigation, route }) => {
         </TouchableOpacity>
       )}
 
-      {/* Double-tap corners to exit fullscreen */}
       {isFullScreen && (
         <>
-          {/* Top-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
 
-          {/* Top-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaTopRight, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
 
-          {/* Bottom-left corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaBottomLeft, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>
 
-          {/* Bottom-right corner */}
           <TouchableWithoutFeedback onPress={handleCornerDoubleTap}>
             <View style={[styles.cornerTapArea, styles.cornerTapAreaBottomRight, showCornerFeedback && styles.cornerTapAreaActive]} />
           </TouchableWithoutFeedback>

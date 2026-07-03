@@ -19,10 +19,6 @@ interface NotConnectedScreenProps {
   onNavigateToConnect: () => void;
 }
 
-/**
- * Not Connected Screen Component
- * Shows when the app is not connected to FreeShow with option to connect
- */
 const NotConnectedScreen: React.FC<NotConnectedScreenProps> = ({
   onNavigateToConnect
 }) => {

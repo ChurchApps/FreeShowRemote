@@ -20,7 +20,6 @@ interface QRScannerModalProps {
   onScan: (ip: string) => void;
 }
 
-// Get screen dimensions and determine if device is a tablet
 const { width, height } = Dimensions.get('window');
 const isTablet = Math.min(width, height) > 600;
 
@@ -35,7 +34,6 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ visible, onClose, onSca
     message: ''
   });
 
-  // Update dimensions when orientation changes
   useEffect(() => {
     const updateDimensions = () => {
       const { width: newWidth, height: newHeight } = Dimensions.get('window');
@@ -164,7 +162,6 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ visible, onClose, onSca
             barcodeScannerSettings={{
               barcodeTypes: ["qr", "pdf417", "code128", "code39"],
             }}
-            // Optimize performance
             animateShutter={false}
             enableTorch={torchEnabled}
           />
@@ -210,7 +207,6 @@ const QRScannerModal: React.FC<QRScannerModalProps> = ({ visible, onClose, onSca
         </View>
       </View>
 
-      {/* Error Modal */}
       <ErrorModal
         visible={errorModal.visible}
         title={errorModal.title}

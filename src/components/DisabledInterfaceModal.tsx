@@ -27,7 +27,6 @@ const DisabledInterfaceModal: React.FC<DisabledInterfaceModalProps> = ({
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          {/* Header */}
           <View style={styles.modalHeader}>
             <View style={[
               styles.iconContainer,
@@ -50,14 +49,12 @@ const DisabledInterfaceModal: React.FC<DisabledInterfaceModalProps> = ({
             </TVFocusable>
           </View>
 
-          {/* Body */}
           <View style={styles.modalBody}>
             <Text style={styles.modalMessage}>
               This interface is currently disabled. Enable it to use this feature?
             </Text>
           </View>
 
-          {/* Buttons */}
           <View style={styles.modalButtons}>
             <TVFocusable onPress={onCancel}>
               <TouchableOpacity

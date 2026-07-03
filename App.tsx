@@ -35,15 +35,8 @@ import * as Sentry from '@sentry/react-native';
 
 Sentry.init({
   dsn: 'https://7013ba6a75324fd1201daf8817b11394@o4510432524107776.ingest.us.sentry.io/4510446363607040',
-
-  // Adds more context data to events (IP address, cookies, user, etc.)
-  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
   sendDefaultPii: true,
-
-  // Enable Logs
   enableLogs: true,
-
-  // Configure Session Replay
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1,
   integrations: [Sentry.mobileReplayIntegration()],
@@ -53,10 +46,8 @@ Sentry.init({
 });
 const Stack = createStackNavigator();
 
-// Create navigation ref at module level for use in layout components
 const navigationRef = createNavigationContainerRef();
 
-// Screen components with error boundaries
 const InterfaceScreenComponent = (props: any) => (
   <ErrorBoundary onError={(error, errorInfo) => ErrorLogger.error('InterfaceScreen Error', 'App', error, { errorInfo })}>
     <InterfaceScreen {...props} />
@@ -75,28 +66,23 @@ const SettingsScreenWrapped = (props: any) => (
   </ErrorBoundary>
 );
 
-// Route definitions for sidebar navigation
 const SIDEBAR_ROUTES = ['Interface', 'Connect', 'Settings'];
 const EXTERNAL_ROUTES = ['WebView', 'APIScreen', 'ConnectionHistory', 'Main'];
 
-// Sidebar Layout with content area
 function SidebarLayout() {
   const { t } = useTranslation();
   const autoConnectExpected = useAutoConnectExpected();
-  
-  // Always call all hooks first
+
   const initialRoute = React.useMemo(() => {
     return "Interface";
   }, [autoConnectExpected]);
-  
+
   const [currentRoute, setCurrentRoute] = useState(initialRoute);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [screenWidth, setScreenWidth] = useState(Dimensions.get('window').width);
-  
-  // Responsive breakpoint - use overlay on mobile, side-by-side on tablet
+
   const isMobile = screenWidth < 768;
 
-  // Update current route when autoConnectExpected changes
   React.useEffect(() => {
     if (autoConnectExpected !== null) {
       const newInitialRoute = autoConnectExpected ? "Interface" : "Connect";
@@ -108,7 +94,6 @@ function SidebarLayout() {
     }
   }, [autoConnectExpected]);
 
-  // Listen for screen dimension changes
   React.useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setScreenWidth(window.width);
@@ -133,33 +118,28 @@ function SidebarLayout() {
     setSidebarVisible(false);
   }, []);
 
-  // Helper function for type-safe navigation
   const navigateSafely = (routeName: string, params?: Record<string, any>) => {
     if (navigationRef.current?.navigate) {
-      // Use type assertion to bypass strict typing for dynamic navigation
+      // Type assertion to bypass strict typing for dynamic navigation
       (navigationRef.current.navigate as (routeName: string, params?: Record<string, any>) => void)(routeName, params);
     } else {
       console.warn(`[SidebarLayout] No valid main navigation available for: ${routeName}`);
     }
   };
 
-  // Create a navigation object for sidebar screens
   const sidebarNavigation = React.useMemo(() => ({
     navigate: (routeName: string, params?: Record<string, any>) => {
       if (EXTERNAL_ROUTES.includes(routeName)) {
-        // Use the main navigation for modal screens and external screens
         navigateSafely(routeName, params);
       } else if (SIDEBAR_ROUTES.includes(routeName)) {
-        // Use sidebar navigation for main routes
         handleNavigate(routeName);
       } else {
-        // Handle unknown routes gracefully
         console.warn(`[SidebarLayout] Unknown route: ${routeName}. Attempting to use main navigation.`);
         navigateSafely(routeName, params);
       }
     },
     addListener: (_event: string, _callback: () => void) => {
-      // No-op listener in sidebar layout; screens remain mounted and manage their own state
+      // Screens remain mounted; listeners not used
       return () => {};
     },
     getParent: () => navigationRef.current || null,
@@ -191,7 +171,6 @@ function SidebarLayout() {
   if (isMobile) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: FreeShowTheme.colors.primaryDarker }} edges={['top', 'left', 'right']}>
-        {/* Header with hamburger menu */}
         <View style={{
           backgroundColor: FreeShowTheme.colors.primaryDarker,
           flexDirection: 'row',
@@ -218,7 +197,7 @@ function SidebarLayout() {
           >
             <Ionicons name="menu" size={24} color={FreeShowTheme.colors.text} />
           </TouchableOpacity>
-          
+
           <View style={{ marginLeft: FreeShowTheme.spacing.md, flex: 1 }}>
             <Text style={{
               fontSize: FreeShowTheme.fontSize.lg,
@@ -230,12 +209,10 @@ function SidebarLayout() {
           </View>
         </View>
 
-        {/* Content area */}
         <View style={{ flex: 1, backgroundColor: FreeShowTheme.colors.primary }}>
           {renderContent()}
         </View>
 
-        {/* Overlay Sidebar */}
         <Sidebar 
           navigation={null}
           currentRoute={currentRoute} 
@@ -247,16 +224,14 @@ function SidebarLayout() {
     );
   }
 
-  // Tablet/Desktop layout with traditional side-by-side sidebar
   return (
     <View style={{ flex: 1, flexDirection: 'row', backgroundColor: FreeShowTheme.colors.primary }}>
-      <SidebarTraditional 
+      <SidebarTraditional
         navigation={null}
-        currentRoute={currentRoute} 
-        onNavigate={handleNavigate} 
+        currentRoute={currentRoute}
+        onNavigate={handleNavigate}
       />
       <View style={{ flex: 1 }}>
-        {/* Keep all main screens mounted to avoid header flicker when switching */}
         <View style={{ flex: 1, display: currentRoute === 'Interface' ? 'flex' : 'none' }}>
           <InterfaceScreenComponent navigation={sidebarNavigation} />
         </View>
@@ -271,18 +246,17 @@ function SidebarLayout() {
   );
 }
 
-// Floating Navigation Layout
 function FloatingNavLayout() {
   const { t } = useTranslation();
   const autoConnectExpected = useAutoConnectExpected();
   const insets = useSafeAreaInsets();
-  
+
   const initialRoute = React.useMemo(() => {
     return "Interface";
   }, [autoConnectExpected]);
-  
+
   const [currentRoute, setCurrentRoute] = useState(initialRoute);
-  
+
   React.useEffect(() => {
     if (autoConnectExpected !== null) {
       const newInitialRoute = autoConnectExpected ? "Interface" : "Connect";
@@ -294,38 +268,33 @@ function FloatingNavLayout() {
     setCurrentRoute(route);
   }, []);
 
-  // Helper function for type-safe navigation (local to FloatingNavLayout)
   const navigateSafelyFloating = (routeName: string, params?: Record<string, any>) => {
     if (navigationRef.current?.navigate) {
-      // Use type assertion to bypass strict typing for dynamic navigation
+      // Type assertion to bypass strict typing for dynamic navigation
       (navigationRef.current.navigate as (routeName: string, params?: Record<string, any>) => void)(routeName, params);
     } else {
       console.warn(`[FloatingNavLayout] No valid main navigation available for: ${routeName}`);
     }
   };
 
-  // Create a navigation object for floating nav screens
   const floatingNavigation = React.useMemo(() => ({
     navigate: (routeName: string, params?: Record<string, any>) => {
       if (['Interface', 'Connect', 'Settings'].includes(routeName)) {
         handleNavigate(routeName);
       } else if (EXTERNAL_ROUTES.includes(routeName)) {
-        // Handle external routes using main navigation
         navigateSafelyFloating(routeName, params);
       } else {
-        // Handle other routes using main navigation
         navigateSafelyFloating(routeName, params);
       }
     },
     addListener: (_event: string, _callback: () => void) => {
-      // No-op listener in floating layout; screens remain mounted and manage their own state
+      // Screens remain mounted; listeners not used
       return () => {};
     },
     getParent: () => navigationRef.current || null,
   }), [handleNavigate]);
 
   const renderContent = () => {
-    // Keep all screens mounted; toggle visibility for smooth header/content
     return (
       <>
         <View style={{ flex: 1, display: currentRoute === 'Interface' ? 'flex' : 'none' }}>
@@ -378,8 +347,7 @@ function FloatingNavLayout() {
         <View style={{ flex: 1 }}>
           {renderContent()}
         </View>
-        
-        {/* Universal Floating Navigation */}
+
         <View style={{
           position: 'absolute',
           left: 24,
@@ -388,7 +356,6 @@ function FloatingNavLayout() {
           height: 64,
           borderRadius: 32,
           overflow: 'hidden',
-          // Enhanced shadow for better depth
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 8 },
           shadowOpacity: 0.3,
@@ -406,7 +373,6 @@ function FloatingNavLayout() {
               borderRadius: 32,
               borderWidth: 1,
               borderColor: 'rgba(255, 255, 255, 0.08)',
-              // Inner glow effect
               shadowColor: FreeShowTheme.colors.secondary,
               shadowOffset: { width: 0, height: 0 },
               shadowOpacity: 0.1,
@@ -416,7 +382,7 @@ function FloatingNavLayout() {
             {['Interface', 'Connect', 'Settings'].map((route) => {
               const isFocused = currentRoute === route;
               const { iconName, iconColor } = getTabIcon(route, isFocused);
-              
+
               return (
                 <TouchableOpacity
                   key={route}
@@ -427,10 +393,9 @@ function FloatingNavLayout() {
                     justifyContent: 'center',
                     marginHorizontal: 2,
                     borderRadius: 26,
-                    backgroundColor: isFocused 
-                      ? FreeShowTheme.colors.secondarySurface 
+                    backgroundColor: isFocused
+                      ? FreeShowTheme.colors.secondarySurface
                       : 'transparent',
-                    // Active state styling
                     ...(isFocused && {
                       shadowColor: FreeShowTheme.colors.secondary,
                       shadowOffset: { width: 0, height: 0 },
@@ -441,9 +406,9 @@ function FloatingNavLayout() {
                   onPress={() => handleNavigate(route)}
                   activeOpacity={0.8}
                 >
-                  <Ionicons 
-                    name={iconName} 
-                    size={28} 
+                  <Ionicons
+                    name={iconName}
+                    size={28}
                     color={iconColor}
                   />
                 </TouchableOpacity>
@@ -456,7 +421,6 @@ function FloatingNavLayout() {
   );
 }
 
-// Main layout component that chooses between sidebar, bottom tabs, or floating nav
 function MainLayout() {
   const isTV = getDeviceType().isTV;
 
@@ -467,7 +431,6 @@ function MainLayout() {
   }
 }
 
-// FreeShow-themed navigation theme
 const FreeShowNavigationTheme = {
   ...DarkTheme,
   colors: {
@@ -483,7 +446,6 @@ const FreeShowNavigationTheme = {
 
 export default Sentry.wrap(function App() {
 
-  // Initialize configuration on app startup
   useEffect(() => {
     const initializeApp = async () => {
       try {
@@ -497,10 +459,8 @@ export default Sentry.wrap(function App() {
     initializeApp();
   }, []);
 
-  // Check for OTA updates on app launch
   useEffect(() => {
     const checkForUpdates = async () => {
-      // Only check for updates in production builds (not in development)
       if (__DEV__) {
         return;
       }
@@ -512,7 +472,6 @@ export default Sentry.wrap(function App() {
           ErrorLogger.info('Update available, downloading...', 'App');
           await Updates.fetchUpdateAsync();
           ErrorLogger.info('Update downloaded, reloading app...', 'App');
-          // Reload the app to apply the update
           await Updates.reloadAsync();
         } else {
           ErrorLogger.info('App is up to date', 'App');
@@ -525,30 +484,24 @@ export default Sentry.wrap(function App() {
     checkForUpdates();
   }, []);
 
-  // Store quick action for auto-connect
   const quickActionRef = React.useRef<any>(null);
 
-  // Handle quick actions (Android/iOS launcher shortcuts)
   useEffect(() => {
     const handleQuickAction = (action: QuickActions.Action | null) => {
       if (!action || !action.params) return;
 
       const params = action.params as any;
-      
+
       if (params.type === 'connect-history') {
         ErrorLogger.info(`[QuickActions] Auto-connecting to: ${params.host}`, 'App');
-        
-        // Store the quick action data for auto-connect
         quickActionRef.current = params;
       }
     };
 
-    // Handle app opened from quick action
     if (QuickActions.initial) {
       handleQuickAction(QuickActions.initial);
     }
 
-    // Listen for quick actions while app is running
     const subscription = QuickActions.addListener<QuickActions.Action>((action) => {
       handleQuickAction(action);
     });
@@ -562,7 +515,6 @@ export default Sentry.wrap(function App() {
     <ErrorBoundary
       onError={(error, errorInfo) => {
         ErrorLogger.fatal('App-level Error', 'App', error, new Error(JSON.stringify(errorInfo)));
-        // In production, you might want to report this to a crash analytics service
       }}
     >
       <SafeAreaProvider>
@@ -612,7 +564,7 @@ export default Sentry.wrap(function App() {
               }}
             >
               <Stack.Screen name="Main" component={MainLayout} />
-              <Stack.Screen 
+              <Stack.Screen
                 name="WebView"
                 options={{
                   presentation: 'modal',
@@ -641,7 +593,7 @@ export default Sentry.wrap(function App() {
                   </ErrorBoundary>
                 )}
               </Stack.Screen>
-              <Stack.Screen 
+              <Stack.Screen
                 name="APIScreen"
                 options={{
                   presentation: 'modal',
@@ -671,7 +623,7 @@ export default Sentry.wrap(function App() {
                 )}
               </Stack.Screen>
 
-              <Stack.Screen 
+              <Stack.Screen
                 name="APICategory"
                 options={{
                   presentation: 'card',
@@ -735,8 +687,8 @@ export default Sentry.wrap(function App() {
                 )}
               </Stack.Screen>
             </Stack.Navigator>
-            <StatusBar 
-              style="light" 
+            <StatusBar
+              style="light"
               translucent={true}
             />
           </NavigationContainer>

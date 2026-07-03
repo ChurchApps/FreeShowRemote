@@ -2,30 +2,18 @@ import { useState } from 'react';
 import { ShowOption } from '../types';
 import { ErrorLogger } from '../services/ErrorLogger';
 
-/**
- * Error modal state interface
- */
 export interface ErrorModalState {
   visible: boolean;
   title: string;
   message: string;
 }
 
-/**
- * Navigation result interface
- */
 export interface NavigationResult {
   success: boolean;
   error?: string;
 }
 
-/**
- * Custom hook for managing interface navigation logic
- * @param navigation - Navigation object
- * @param connectionHost - Current connection host
- * @param isConnected - Connection status
- * @returns Navigation handlers and error state
- */
+/** Manages interface navigation and error modal state. */
 export const useInterfaceNavigation = (
   navigation: any,
   connectionHost: string | null,
@@ -37,30 +25,18 @@ export const useInterfaceNavigation = (
     message: ''
   });
 
-  /**
-   * Shows error modal with specified message
-   */
   const showError = (title: string, message: string) => {
     setErrorModal({ visible: true, title, message });
   };
 
-  /**
-   * Hides error modal
-   */
   const hideError = () => {
     setErrorModal({ visible: false, title: '', message: '' });
   };
 
-  /**
-   * Validates navigation availability
-   */
   const validateNavigation = (): boolean => {
     return navigation && typeof navigation.navigate === 'function';
   };
 
-  /**
-   * Validates connection and interface state
-   */
   const validateConnection = (show: ShowOption): boolean => {
     if (!show.port || show.port === 0) {
       showError(
@@ -78,9 +54,6 @@ export const useInterfaceNavigation = (
     return true;
   };
 
-  /**
-   * Navigates to API screen
-   */
   const navigateToApi = (show: ShowOption): NavigationResult => {
     try {
       if (validateNavigation()) {
@@ -104,9 +77,6 @@ export const useInterfaceNavigation = (
     }
   };
 
-  /**
-   * Navigates to WebView screen
-   */
   const navigateToWebView = (show: ShowOption): NavigationResult => {
     try {
       const url = `http://${connectionHost}:${show.port}`;
@@ -132,9 +102,6 @@ export const useInterfaceNavigation = (
     }
   };
 
-  /**
-   * Main navigation handler for interface selection
-   */
   const handleShowSelect = (show: ShowOption): NavigationResult => {
     if (!validateConnection(show)) {
       return { success: false, error: 'Connection validation failed' };
@@ -147,9 +114,6 @@ export const useInterfaceNavigation = (
     }
   };
 
-  /**
-   * Navigates back to connect screen
-   */
   const navigateToConnect = (): NavigationResult => {
     try {
       if (validateNavigation()) {

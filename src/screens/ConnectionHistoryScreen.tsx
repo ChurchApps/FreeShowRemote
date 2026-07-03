@@ -40,7 +40,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
     message: '',
   });
 
-  // Memoize sorted history
   const sortedHistory = useMemo(() => {
     return [...history].sort((a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime());
   }, [history]);
@@ -59,7 +58,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
       setConnectionToRemove(null);
     } catch (error) {
       ErrorLogger.error('Failed to remove connection from history', 'ConnectionHistoryScreen', error instanceof Error ? error : new Error(String(error)));
-      // You could add another modal for error display here if needed
     }
   }, [connectionToRemove, actions]);
 
@@ -78,7 +76,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
       setShowClearAllConfirm(false);
     } catch (error) {
       ErrorLogger.error('Failed to clear connection history', 'ConnectionHistoryScreen', error instanceof Error ? error : new Error(String(error)));
-      // You could add another modal for error display here if needed
     }
   }, [actions]);
 
@@ -113,7 +110,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
   return (
     <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={styles.container}>
       <SafeAreaView style={[styles.safeArea, { backgroundColor: 'transparent' }]}>
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.brandCard}>
             <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
@@ -145,7 +141,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
           </View>
         </View>
 
-        {/* Content */}
         {history.length > 0 ? (
           <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             {sortedHistory.map((item: ConnectionHistory, _index: number) => (
@@ -316,10 +311,8 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
           </View>
         )}
 
-        {/* Edit Nickname Modal */}
         <EditNicknameModal connection={editingConnection} visible={showEditNickname} onClose={handleCloseEditModal} onSaved={handleNicknameSaved} onError={handleEditError} />
 
-        {/* Remove Connection Confirmation Modal */}
         <ConfirmationModal
           visible={showRemoveConfirm}
           title="Remove Connection"
@@ -332,7 +325,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
           onCancel={cancelRemoveFromHistory}
         />
 
-        {/* Clear All History Confirmation Modal */}
         <ConfirmationModal
           visible={showClearAllConfirm}
           title="Clear All History"
@@ -345,7 +337,6 @@ const ConnectionHistoryScreen: React.FC<ConnectionHistoryScreenProps> = React.me
           onCancel={cancelClearAllHistory}
         />
 
-        {/* Error Modal */}
         <ErrorModal visible={errorModal.visible} title={errorModal.title} message={errorModal.message} onClose={() => setErrorModal({ visible: false, title: '', message: '' })} />
       </SafeAreaView>
     </LinearGradient>

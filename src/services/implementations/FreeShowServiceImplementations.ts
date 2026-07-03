@@ -1,5 +1,3 @@
-// Concrete implementations for FreeShow service
-
 import { io, Socket } from 'socket.io-client';
 import { 
   IFreeShowServiceConfig 
@@ -215,7 +213,6 @@ export class RequestQueueManager {
       );
     } finally {
       this.activeRequests.delete(request.id);
-      // Process next request
       setTimeout(() => this.processQueue(executor), 0);
     }
   }
@@ -235,7 +232,6 @@ export class RequestQueueManager {
   }
 
   clearQueue(): void {
-    // Reject all pending requests
     this.queue.forEach(request => {
       request.reject(new Error('Request queue cleared'));
     });

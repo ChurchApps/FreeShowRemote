@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { settingsRepository } from '../repositories';
 import { ErrorLogger } from '../services/ErrorLogger';
 
-/**
- * Hook to check if auto-connect should be attempted
- */
+/** Checks if auto-connect should be attempted. */
 export const useAutoConnectExpected = () => {
   const [autoConnectExpected, setAutoConnectExpected] = useState<boolean | null>(null);
 

@@ -31,10 +31,6 @@ interface InterfaceScreenProps {
   navigation: any;
 }
 
-/**
- * Interface Screen - Main interface for FreeShow remote control
- * Displays available interfaces and handles navigation between them
- */
 const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -51,7 +47,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   } = state;
   const { disconnect, updateShowPorts, cancelConnection } = actions;
 
-  // Edit connection name state
   const { history, actions: settingsActions } = useSettings();
   const [showEditNickname, setShowEditNickname] = useState(false);
   const [editingConnection, setEditingConnection] = useState<any>(null);
@@ -60,12 +55,11 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
   const contentFade = React.useRef(new Animated.Value(0)).current;
   const contentSlide = React.useRef(new Animated.Value(50)).current;
 
-  // Custom hooks for modal, navigation, and app launch management
   const modalState = useModalState();
   const navigationHandlers = useInterfaceNavigation(navigation, connectionHost, isConnected);
   const appLaunch = useAppLaunch();
 
-  // Animate only once per cold start (session). Otherwise render instantly.
+  // Only animate once per cold start (session); render instantly on reconnect to avoid janky re-entry
   const introAnimatingRef = React.useRef(false);
   useEffect(() => {
     if (!isConnected) {
@@ -103,7 +97,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     }
   }, [isConnected, contentFade, contentSlide, appLaunch]);
 
-  // Get interface options using config service
   const showOptions = React.useMemo(() => {
     const defaultPorts = configService.getDefaultShowPorts();
     const currentPorts = currentShowPorts || defaultPorts;
@@ -113,7 +106,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     return configService.separateInterfaceOptions(options).allOptions;
   }, [currentShowPorts]);
 
-  // Use navigation hook for interface selection
   const handleShowSelect = (show: ShowOption) => {
     // Check if interface is disabled
     if (!show.port || show.port === 0) {
@@ -125,7 +117,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
 
   // Do not block on AsyncStorage; animation is session-scoped
 
-  // Handler functions using custom hooks
   const handleDisconnect = () => {
     modalState.showDisconnectConfirmModal();
   };
@@ -136,7 +127,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     navigationHandlers.navigateToConnect();
   };
 
-  // Helper function to get interface URL
   const getInterfaceUrl = (show: ShowOption): string | null => {
     if (!connectionHost) {
       modalState.showErrorModal(t('common.error'), t('errors.noConnectionHost'));
@@ -145,7 +135,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     return `http://${connectionHost}:${show.port}`;
   };
 
-  // Popup handlers using modal state hook
   const openCompactPopup = (show: ShowOption) => {
     modalState.showCompactPopup(show);
   };
@@ -179,7 +168,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Helper function to get default port for an interface
   const getDefaultPortForInterface = (interfaceId: string): string => {
     const defaultPorts = configService.getDefaultShowPorts();
     const portMap: Record<string, number> = {
@@ -192,22 +180,18 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     return String(portMap[interfaceId] ?? defaultPorts.api);
   };
 
-  // Handle clicking on a disabled interface
   const handleDisabledInterfaceClick = (show: ShowOption) => {
     modalState.showDisabledInterfaceModal(show);
   };
 
-  // Handle enabling a disabled interface from CompactPopup (go directly to port input)
   const handleEnableInterfaceFromPopup = (show: ShowOption) => {
     const defaultPort = getDefaultPortForInterface(show.id);
     modalState.showEnableInterfaceModal(show, defaultPort);
   };
 
-  // Handle editing connection name
   const handleEditConnectionName = useCallback(() => {
     if (!connectionHost) return;
-    
-    // Find the connection in history to get its ID
+
     const historyItem = history.find(h => h.host === connectionHost);
     if (!historyItem) return;
 
@@ -231,19 +215,16 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     setEditingConnection(null);
   }, []);
 
-  // Handle enabling a disabled interface from DisabledInterfaceModal (show port input modal)
   const handleEnableDisabledInterface = () => {
     const show = modalState.disabledInterfaceModal.show;
     if (!show) return;
 
     const defaultPort = getDefaultPortForInterface(show.id);
-    
-    // Hide disabled modal and show port input modal
+
     modalState.hideDisabledInterfaceModal();
     modalState.showEnableInterfaceModal(show, defaultPort);
   };
 
-  // Handle saving the port from the enable interface modal
   const handleEnableInterfaceSave = async (port: string) => {
     const show = modalState.enableInterfaceModal.show;
     if (!show || !port || !currentShowPorts) return;
@@ -272,14 +253,12 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Handle disabling an interface
   const handleDisableInterface = async (show: ShowOption) => {
     if (!currentShowPorts) return;
 
     const updatedPorts = { ...currentShowPorts };
     updatedPorts[show.id as keyof typeof updatedPorts] = 0;
 
-    // Check if this would disable all interfaces
     const enabledInterfaces = Object.values(updatedPorts).filter(port => port > 0);
     if (enabledInterfaces.length === 0) {
       modalState.showErrorModal(
@@ -302,7 +281,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     }
   };
 
-  // Initial auto-reconnect in progress: show clean loading instead of Not Connected
   if (
     !isConnected &&
     !autoConnectAttempted &&
@@ -313,7 +291,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
     return <ConnectingScreen onCancel={cancelConnection} connectionStatus={connectionStatus} />;
   }
 
-  // Not connected state after auto-reconnect attempt is done
   if (!isConnected) {
     return <NotConnectedScreen onNavigateToConnect={navigationHandlers.navigateToConnect} />;
   }
@@ -334,7 +311,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
           },
         ]}
       >
-        {/* Interface Header */}
         <InterfaceHeader
           connectionName={connectionName}
           connectionHost={connectionHost}
@@ -342,7 +318,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
           onEditConnectionName={handleEditConnectionName}
         />
 
-        {/* Interface Cards */}
         <View style={styles.interfacesSection}>
           <Text
             style={[styles.sectionTitleLarge, isTablet && styles.sectionTitleLargeTablet]}
@@ -357,7 +332,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
               { opacity: contentFade, transform: [{ translateY: contentSlide }] },
             ]}
           >
-            {/* First Row - 2 cards */}
             <View style={[styles.interfacesRow, (isTablet || isTV) && { marginBottom: 12 }]}>
               {showOptions.slice(0, 2).map((show, index) => (
                 <Animated.View
@@ -388,7 +362,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
               ))}
             </View>
 
-            {/* Second Row - 2 cards */}
             <View
               style={[
                 styles.interfacesRow,
@@ -465,7 +438,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         </View>
       </Animated.ScrollView>
 
-      {/* Modals */}
       <CompactPopup
         visible={modalState.compactPopup.visible}
         show={modalState.compactPopup.show}
@@ -490,7 +462,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         onCancel={modalState.hideDisconnectConfirmModal}
       />
 
-      {/* Disabled Interface Modal */}
       <DisabledInterfaceModal
         visible={modalState.disabledInterfaceModal.visible}
         show={modalState.disabledInterfaceModal.show}
@@ -498,7 +469,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         onCancel={modalState.hideDisabledInterfaceModal}
       />
 
-      {/* Enable Interface Modal (Port Input) */}
       <EnableInterfaceModal
         visible={modalState.enableInterfaceModal.visible}
         show={modalState.enableInterfaceModal.show}
@@ -514,7 +484,6 @@ const InterfaceScreen: React.FC<InterfaceScreenProps> = ({ navigation }) => {
         onClose={navigationHandlers.hideError}
       />
 
-      {/* Edit Nickname Modal */}
       <EditNicknameModal
         visible={showEditNickname}
         connection={editingConnection}
@@ -549,7 +518,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     justifyContent: 'space-between',
   },
-  // (removed tablet offset)
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',

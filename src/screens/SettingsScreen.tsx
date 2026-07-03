@@ -120,18 +120,14 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
         <SafeAreaWrapper style={[styles.safeAreaContainer, { backgroundColor: 'transparent' }]}>
           <View style={styles.animatedContainer}>
             <ScrollView style={styles.scrollView} contentContainerStyle={isTV ? styles.scrollContent : styles.scrollContentWithFloatingNav} showsVerticalScrollIndicator={false} bounces={false}>
-              {/* Header */}
               <View style={styles.header}>
-                {/* Brand Header Card */}
                 <View style={styles.brandCard}>
                   <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
-                    {/* Title Section - Left */}
                     <View style={styles.titleSection}>
                       <Text style={[styles.title, Dimensions.get('window').width >= 768 && styles.titleTablet]}>{t('settingsScreen.title')}</Text>
                       <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>{t('settingsScreen.subtitle')}</Text>
                     </View>
 
-                    {/* Logo - Right */}
                     <View style={styles.logoContainer}>
                       <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
                     </View>
@@ -139,10 +135,8 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                 </View>
               </View>
 
-              {/* Settings Card */}
               {!isTV && (
                 <View style={styles.settingsCard}>
-                  {/* Keep Awake Toggle */}
                   <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
                     <View style={styles.settingInfo}>
                       <View style={styles.settingTitleRow}>
@@ -170,7 +164,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                 </View>
               )}
 
-              {/* Auto Connection Section */}
               <View style={styles.sectionSeparator}>
                 <View style={styles.separatorLine} />
                 <Text style={styles.separatorText}>{t('settingsScreen.autoConnection')}</Text>
@@ -179,7 +172,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
 
               <TVFocusable onPress={() => handleAutoReconnectToggle(!autoReconnect)}>
                 <View style={styles.settingsCard}>
-                  {/* Auto-Reconnect Toggle */}
                   <TouchableOpacity style={styles.settingItem} activeOpacity={0.7}>
                     <View style={styles.settingInfo}>
                       <View style={styles.settingTitleRow}>
@@ -270,14 +262,12 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
                 </>
               )}
 
-              {/* Section Separator */}
               <View style={styles.sectionSeparator}>
                 <View style={styles.separatorLine} />
                 <Text style={styles.separatorText}>{t('settingsScreen.history')}</Text>
                 <View style={styles.separatorLine} />
               </View>
 
-              {/* Connection History Section */}
               <TVFocusable onPress={() => navigation.navigate('ConnectionHistory')}>
                 <View style={styles.settingsCard}>
                   <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('ConnectionHistory')} activeOpacity={0.7}>
@@ -305,7 +295,6 @@ const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
         </SafeAreaWrapper>
       </LinearGradient>
 
-      {/* Auto-Launch Picker Modal */}
       <Modal visible={showLaunchPicker} transparent={true} animationType="fade" onRequestClose={() => setShowLaunchPicker(false)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
@@ -385,8 +374,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     gap: 16,
   },
-
-  // Brand Header Card
   brandCard: {
     borderRadius: 16,
     overflow: 'hidden',
@@ -494,10 +481,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: FreeShowTheme.spacing.lg,
   },
-  // iOS (old arch release build) doesn't reserve the Switch's intrinsic width in a flex row,
-  // pushing it off-screen; pin the default 51x31 footprint so flexbox lays it out. See issue #11.
   settingSwitch: {
-    ...Platform.select({ ios: { width: 51, height: 31 } }),
+    ...Platform.select({ ios: { width: 51, height: 31 } }), // iOS old arch release: pin Switch footprint (see #11)
   },
   iconContainer: {
     width: 36,
@@ -562,9 +547,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderRightColor: FreeShowTheme.colors.primaryLighter,
   },
-  pillRight: {
-    // No additional border needed for right side
-  },
+  pillRight: {},
   pillActive: {
     backgroundColor: FreeShowTheme.colors.secondary,
   },

@@ -1,5 +1,3 @@
-// FreeShowService implementation
-
 import { Socket } from 'socket.io-client';
 import { 
   IFreeShowService, 
@@ -17,7 +15,6 @@ import { InputValidationService } from './InputValidationService';
 import { ErrorLogger } from './ErrorLogger';
 import { settingsRepository, connectionRepository } from '../repositories';
 
-// Error types
 export class FreeShowConnectionError extends Error {
   constructor(message: string, public code?: string, public details?: any) {
     super(message);
@@ -51,7 +48,6 @@ export class FreeShowService implements IFreeShowService {
   private requestQueue: RequestQueueManager;
   private readonly logContext = 'FreeShowService';
 
-  // Direct service instances
   private readonly configService = configService;
   private readonly validationService = InputValidationService;
   private readonly errorLogger = ErrorLogger;
@@ -72,7 +68,6 @@ export class FreeShowService implements IFreeShowService {
       config.requestQueueSize
     );
 
-    // Initialize configuration
     this.initializeConfiguration();
   }
 
@@ -92,10 +87,8 @@ export class FreeShowService implements IFreeShowService {
     }
   }
 
-  // Connection management
   async connect(host: string, port?: number, nickname?: string): Promise<void> {
     try {
-      // Validate inputs
       const hostValidation = this.validationService.validateHost(host);
       if (!hostValidation.isValid) {
         throw new FreeShowConnectionError(
@@ -104,7 +97,6 @@ export class FreeShowService implements IFreeShowService {
         );
       }
 
-      // Use default port if not provided
       const finalPort = port ?? this.configService.getNetworkConfig().defaultPort;
       const portValidation = this.validationService.validatePort(finalPort);
       if (!portValidation.isValid) {
@@ -114,7 +106,6 @@ export class FreeShowService implements IFreeShowService {
         );
       }
 
-      // Disconnect if already connected
       if (this.socket) {
         await this.disconnect();
       }
@@ -123,15 +114,14 @@ export class FreeShowService implements IFreeShowService {
       this.currentPort = portValidation.sanitizedValue || finalPort;
 
       this.errorLogger.info(
-        `Attempting to connect to FreeShow`, 
+        `Attempting to connect to FreeShow`,
         this.logContext,
         { host: this.currentHost, port: this.currentPort }
       );
 
-      // Test if API port is actually available
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 2000);
-      
+
       try {
         const _response = await fetch(`http://${this.currentHost}:${this.currentPort}`, {
           method: 'HEAD',
@@ -139,32 +129,28 @@ export class FreeShowService implements IFreeShowService {
           headers: { 'Cache-Control': 'no-cache' }
         });
         clearTimeout(timeoutId);
-        
-        // API is available, use WebSocket connection
+
         await this.connectWithWebSocket();
-        
+
       } catch {
         clearTimeout(timeoutId);
-        
-        // API is not available, create mock connection
+
         this.errorLogger.info(
           `API not available on port ${this.currentPort}, creating interface-only connection`,
           this.logContext
         );
-        
+
         await this.connectWithoutAPI();
       }
 
-      // Save successful connection
       if (this.config.enableConnectionPersistence) {
         await this.settingsRepository.addToConnectionHistory(
           this.currentHost!,
           this.currentPort!,
-          nickname // Only pass nickname if explicitly provided, otherwise preserve existing
+          nickname
         );
       }
 
-      // Start heartbeat if enabled and we have a socket
       if (this.config.enableHeartbeat && this.socket) {
         this.startHeartbeat();
       }
@@ -345,7 +331,6 @@ export class FreeShowService implements IFreeShowService {
   private async setupSocketEventHandlers(): Promise<void> {
     if (!this.socket) return;
 
-    // Connection events
     this.socket.on('disconnect', (reason: string) => {
       this.errorLogger.warn(
         `Disconnected from FreeShow: ${reason}`,
@@ -378,7 +363,6 @@ export class FreeShowService implements IFreeShowService {
       this.eventManager.emit('error', { error, timestamp: new Date().toISOString() });
     });
 
-    // FreeShow-specific events
     this.socket.on('shows', (data: any) => {
       this.connectionStateManager.updateActivity();
       if (this.config.enableEventLogging) {
@@ -403,7 +387,6 @@ export class FreeShowService implements IFreeShowService {
       this.eventManager.emit('outputs', data);
     });
 
-    // Generic message handler
     this.socket.onAny((event: string, data: any) => {
       this.connectionStateManager.updateActivity();
       if (this.config.enableEventLogging) {
@@ -418,7 +401,6 @@ export class FreeShowService implements IFreeShowService {
       clearInterval(this.heartbeatInterval);
     }
 
-    // Only start heartbeat if we have a socket connection
     if (!this.socket) {
       return;
     }
@@ -438,7 +420,6 @@ export class FreeShowService implements IFreeShowService {
     }
   }
 
-  // State methods
   isConnected(): boolean {
     return this.connectionStateManager.isConnected();
   }
@@ -447,7 +428,6 @@ export class FreeShowService implements IFreeShowService {
     return this.connectionStateManager.getConnectionInfo();
   }
 
-  // Event management
   on(event: string, callback: (data: any) => void): void {
     this.eventManager.addListener(event, callback);
   }
@@ -456,7 +436,6 @@ export class FreeShowService implements IFreeShowService {
     this.eventManager.removeListener(event, callback);
   }
 
-  // Remote control methods
   async nextSlide(): Promise<void> {
     return this.sendRequest('next');
   }
@@ -473,7 +452,6 @@ export class FreeShowService implements IFreeShowService {
     return this.sendRequest('blackout');
   }
 
-  // Show management
   async getShows(): Promise<any[]> {
     return this.sendRequest('get_shows');
   }
@@ -486,7 +464,6 @@ export class FreeShowService implements IFreeShowService {
     return this.sendRequest('load_show', { showId });
   }
 
-  // Output management
   async getOutputs(): Promise<any[]> {
     return this.sendRequest('get_outputs');
   }
@@ -495,7 +472,6 @@ export class FreeShowService implements IFreeShowService {
     return this.sendRequest('set_output', { outputId, enabled });
   }
 
-  // Generic request handling with queue management
   async sendRequest(action: string, data?: any): Promise<any> {
     if (!this.connectionStateManager.isConnected()) {
       throw new FreeShowConnectionError(
@@ -504,7 +480,6 @@ export class FreeShowService implements IFreeShowService {
       );
     }
 
-    // If we don't have a socket (interface-only mode), reject API requests
     if (!this.socket) {
       throw new FreeShowConnectionError(
         'API not available in interface-only mode',
@@ -530,11 +505,10 @@ export class FreeShowService implements IFreeShowService {
         ));
       }, networkConfig.connectionTimeout);
 
-      // Create response handler
       const responseHandler = (response: any) => {
         clearTimeout(timeout);
         this.connectionStateManager.updateActivity();
-        
+
         if (response.error) {
           reject(new Error(response.error));
         } else {
@@ -542,10 +516,7 @@ export class FreeShowService implements IFreeShowService {
         }
       };
 
-      // Listen for response
       this.socket.once(`${action}_response`, responseHandler);
-
-      // Send request
       this.socket.emit(action, data || {});
 
       this.errorLogger.debug(
@@ -555,7 +526,6 @@ export class FreeShowService implements IFreeShowService {
     });
   }
 
-  // Utility methods
   getRequestQueueStatus(): any {
     return this.requestQueue.getQueueStatus();
   }
@@ -568,14 +538,12 @@ export class FreeShowService implements IFreeShowService {
     this.disconnect();
     this.eventManager.removeAllListeners();
     this.requestQueue.clearQueue();
-    
-    // Clear all timeouts and intervals
+
     if (this.heartbeatInterval) {
       clearInterval(this.heartbeatInterval);
       this.heartbeatInterval = null;
     }
-    
-    // Clean up socket if it exists
+
     if (this.socket) {
       this.socket.removeAllListeners();
       this.socket.disconnect();

@@ -20,7 +20,6 @@ interface NavigationItem {
   route: string;
 }
 
-// ================= Sidebar Overlay (Mobile/TV) =================
 interface SidebarProps {
   navigation: any;
   currentRoute: string;
@@ -74,7 +73,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, isVisible, onClose
       <Animated.View style={[styles.sidebarContainer, { transform: [{ translateX: slideAnim }] }]}>
         <SafeAreaView style={styles.safeArea} edges={['left', 'top', 'bottom']}>
           <View style={styles.sidebar}>
-            {/* Header */}
             <View style={styles.header}>
               <TVFocusable onPress={onClose} style={styles.closeButton}>
                 <Ionicons name="close" size={24} color={FreeShowTheme.colors.text} />
@@ -92,7 +90,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, isVisible, onClose
               </View>
             </View>
 
-            {/* Navigation */}
             <View style={styles.navigation}>
               {navigationItems.map(item => (
                 <TVFocusable key={item.key} onPress={() => handleNavigate(item.route)} style={[styles.navItem, { backgroundColor: getItemBackgroundColor(item) }]}>
@@ -107,7 +104,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, isVisible, onClose
               ))}
             </View>
 
-            {/* Connection Status */}
             <View style={styles.statusSection}>
               <View style={styles.connectionStatus}>
                 <View style={styles.statusIndicator}>
@@ -123,7 +119,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ onNavigate, isVisible, onClose
   );
 };
 
-// ================= Sidebar Traditional (Tablet/Desktop) =================
 interface SidebarTraditionalProps {
   navigation: any;
   currentRoute: string;
@@ -162,7 +157,6 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
   return (
     <SafeAreaView style={traditionalStyles.safeArea} edges={['left', 'top', 'bottom']}>
       <Animated.View style={[traditionalStyles.sidebar, { width: animatedWidth }]}>
-        {/* Header */}
         <View style={[traditionalStyles.header, !isExpanded && traditionalStyles.headerCollapsed]}>
           <TVFocusable onPress={toggleSidebar} style={traditionalStyles.toggleButton}>
             <Ionicons name={isExpanded ? 'chevron-back' : 'menu'} size={24} color={FreeShowTheme.colors.text} />
@@ -184,7 +178,6 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
           )}
         </View>
 
-        {/* Navigation */}
         <View style={[traditionalStyles.navigation, !isExpanded && traditionalStyles.navigationCollapsed]}>
           {navigationItems.map(item => (
             <TVFocusable key={item.key} onPress={() => onNavigate(item.route)} style={[traditionalStyles.navItem, { backgroundColor: getItemBackgroundColor(item) }, !isExpanded && traditionalStyles.navItemCollapsed]}>
@@ -216,7 +209,6 @@ export const SidebarTraditional: React.FC<SidebarTraditionalProps> = ({ currentR
   );
 };
 
-// ================= Styles =================
 const styles = StyleSheet.create({
   backdrop: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)' },
   sidebarContainer: { position: 'absolute', top: 0, left: 0, bottom: 0, width: SIDEBAR_WIDTH, zIndex: 1000 },
@@ -260,7 +252,6 @@ const styles = StyleSheet.create({
   statusText: { fontSize: FreeShowTheme.fontSize.sm, color: FreeShowTheme.colors.textSecondary, fontWeight: '500' },
 });
 
-// ================= SidebarTraditional Styles =================
 const traditionalStyles = StyleSheet.create({
   safeArea: { backgroundColor: FreeShowTheme.colors.primaryDarkest },
   sidebar: { backgroundColor: FreeShowTheme.colors.primaryDarkest, height: '100%', paddingVertical: FreeShowTheme.spacing.lg },

@@ -16,23 +16,19 @@ class QuickActionsService {
    * Works on both Android (long-press) and iOS (3D Touch/Haptic Touch)
    */
   async updateRecentConnections(history: ConnectionHistory[]): Promise<void> {
-    // Works on both Android and iOS
     if (Platform.OS !== 'android' && Platform.OS !== 'ios') {
       return;
     }
 
     try {
-      // Get the 3 most recent connections
       const recentConnections = [...history]
         .sort((a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime())
         .slice(0, 3);
 
-      // Create quick actions
       const quickActions: QuickActions.Action[] = recentConnections.map((connection, index) => ({
         id: `connect-${connection.id}`,
         title: connection.nickname || connection.host,
         subtitle: connection.nickname ? connection.host : undefined,
-        // Use SF Symbols for iOS, configured icon for Android
         icon: Platform.OS === 'ios' ? 'symbol:wifi' : 'wifi_shortcut',
         params: {
           type: 'connect-history',
@@ -42,7 +38,6 @@ class QuickActionsService {
         },
       }));
 
-      // Set the quick actions
       await QuickActions.setItems(quickActions);
 
       ErrorLogger.info(`Updated quick actions: ${quickActions.length}`, 'QuickActionsService');

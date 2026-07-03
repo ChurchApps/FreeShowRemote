@@ -34,14 +34,12 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
     if (!category || !highlightCommandId) return
     const index = category.commands.findIndex(c => c.id === highlightCommandId)
     if (index < 0) return
-    // Approximate item height to scroll into view
     const approxItemHeight = 64
     setTimeout(() => {
       scrollRef.current?.scrollTo({ y: Math.max(0, index * approxItemHeight - 40), animated: true })
     }, 50)
   }, [category, highlightCommandId])
 
-  // Blink effect for highlighted command (single short flash)
   React.useEffect(() => {
     if (!highlightCommandId) return
     setBlinkOn(false)
@@ -131,7 +129,6 @@ const APICategoryScreen: React.FC<Props> = ({ route, navigation }) => {
         />
       )}
 
-      {/* Confirmation modal for parameterless commands */}
       <ConfirmRunModal
         visible={!!confirmCommandId}
         title={category?.commands.find(c => c.id === confirmCommandId)?.label || 'Run Command'}

@@ -32,16 +32,11 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
   onDisableInterface,
 }) => {
   const { t } = useTranslation();
-  // Get safe area insets
   const insets = useSafeAreaInsets();
-  
-  // Animation values
   const slideAnim = React.useRef(new Animated.Value(0)).current;
 
-  // Check if interface is disabled
   const isDisabled = show && (!show.port || show.port === 0);
 
-  // Handle modal visibility changes with animation
   React.useEffect(() => {
     if (visible) {
       Animated.spring(slideAnim, {
@@ -60,31 +55,24 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
     }
   }, [visible, slideAnim]);
 
-  // PanResponder for swipe-to-close functionality
   const panResponder = React.useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => {
-        // Only respond to vertical gestures
         return Math.abs(gestureState.dy) > Math.abs(gestureState.dx) && Math.abs(gestureState.dy) > 10;
       },
       onPanResponderGrant: () => {
-        // Start tracking the gesture
       },
       onPanResponderMove: (evt, gestureState) => {
-        // Only allow downward movement (positive dy values)
         if (gestureState.dy > 0) {
-          // Calculate the new position based on swipe distance
           const newPosition = Math.max(0, 1 - gestureState.dy / 150);
           slideAnim.setValue(newPosition);
         }
       },
       onPanResponderRelease: (evt, gestureState) => {
-        // If swiped down more than 80px, close the popup (adjusted for new animation)
         if (gestureState.dy > 80) {
           onClose();
         } else {
-          // Otherwise, animate back to original position
           Animated.spring(slideAnim, {
             toValue: 1,
             useNativeDriver: true,
@@ -94,7 +82,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
         }
       },
       onPanResponderTerminate: () => {
-        // If gesture is terminated, animate back to original position
         Animated.spring(slideAnim, {
           toValue: 1,
           useNativeDriver: true,
@@ -107,7 +94,7 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
   
   const modalTranslateY = slideAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [400, 0], // Reduced from 600 to 400 to prevent cutting off
+    outputRange: [400, 0], // Reduced from 600 to prevent cutting off
   });
 
   return (
@@ -147,7 +134,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
             <View style={styles.compactHandle} />
 
             <View>
-              {/* Enhanced Header with glassmorphism effect */}
               <View style={styles.compactHeader}>
                 <BlurView intensity={20} style={styles.compactHeaderBlur}>
                   <View style={styles.compactHeaderContent}>
@@ -221,7 +207,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                         )}
                       </TouchableOpacity>
                     )}
-                    {/* Header actions for enabled interfaces */}
                     {!isDisabled && !!(show?.port) && (
                       <View style={styles.compactHeaderActions}>
                         <TouchableOpacity
@@ -251,7 +236,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
                 </BlurView>
               </View>
 
-              {/* Actions */}
               <View style={styles.compactActions}>
                 {isDisabled ? (
                   <TouchableOpacity
@@ -314,7 +298,6 @@ const CompactPopup: React.FC<CompactPopupProps> = ({
 };
 
 const styles = StyleSheet.create({
-  // Enhanced Compact popup styles
   compactBackdrop: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.6)',
@@ -345,11 +328,10 @@ const styles = StyleSheet.create({
   compactPopupGradient: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingBottom: 40, // Increased bottom padding
+    paddingBottom: 40,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
   },
-  // removed scroll view
   compactHandle: {
     width: 40,
     height: 4,

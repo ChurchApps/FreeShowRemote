@@ -46,7 +46,6 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   static getDerivedStateFromError(error: Error): Partial<State> {
-    // Update state so the next render will show the fallback UI
     return {
       hasError: true,
       error,
@@ -55,10 +54,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log the error
     ErrorLogger.error('ErrorBoundary caught an error', 'ErrorBoundary', error, { componentStack: errorInfo.componentStack });
 
-    // Call custom error handler if provided
     if (this.props.onError) {
       try {
         this.props.onError(error, errorInfo);
@@ -80,25 +77,22 @@ export class ErrorBoundary extends Component<Props, State> {
     const { resetKeys, resetOnPropsChange } = this.props;
     const { hasError } = this.state;
 
-    // Reset error boundary when resetKeys change
     if (hasError && resetKeys && prevProps.resetKeys) {
       const hasResetKeyChanged = resetKeys.some(
         (resetKey, index) => resetKey !== prevProps.resetKeys![index]
       );
-      
+
       if (hasResetKeyChanged) {
         this.resetErrorBoundary();
       }
     }
 
-    // Reset error boundary when any props change (if enabled)
     if (hasError && resetOnPropsChange && prevProps !== this.props) {
       this.resetErrorBoundary();
     }
   }
 
   resetErrorBoundary = () => {
-    // Cancel any pending reset
     if (this.resetTimeoutId) {
       clearTimeout(this.resetTimeoutId);
     }
@@ -128,7 +122,6 @@ export class ErrorBoundary extends Component<Props, State> {
       errorModalMessage: `Error: ${error.message}\n\nError details have been logged to console for debugging.`,
     });
 
-    // Log the error report
     const { errorInfo } = this.state;
     const errorReport = {
       message: error.message,
@@ -150,12 +143,10 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      // Custom fallback UI
       if (this.props.fallback) {
         return this.props.fallback;
       }
 
-      // Default fallback UI
       return (
         <View style={styles.container}>
           <View style={styles.errorContainer}>
@@ -214,7 +205,6 @@ export class ErrorBoundary extends Component<Props, State> {
             </View>
           </View>
 
-          {/* Error Modal */}
           <ErrorModal
             visible={this.state.showErrorModal}
             title={this.state.errorModalTitle}

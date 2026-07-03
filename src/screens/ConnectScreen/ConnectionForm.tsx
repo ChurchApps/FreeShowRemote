@@ -67,7 +67,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
   const defaultPorts = configService.getDefaultShowPorts();
   const isTV = getDeviceType().isTV
 
-  // Convert port strings to numbers for show ports
   const getShowPorts = useCallback(() => ({
     remote: remotePort.trim() === '' ? 0 : (parseInt(remotePort) || 0),
     stage: stagePort.trim() === '' ? 0 : (parseInt(stagePort) || 0),
@@ -92,7 +91,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
     }
   }, [isConnected, remotePort, stagePort, controlPort, outputPort, apiPort, updateShowPorts, getShowPorts]);
 
-  // Animated spinner for connecting state
   const spinAnimRef = useRef(new Animated.Value(0));
   const animRef = useRef<Animated.CompositeAnimation | null>(null);
 
@@ -103,7 +101,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
 
   useEffect(() => {
     if (isConnecting) {
-      // Reset and start a continuous rotation
       spinAnimRef.current.setValue(0);
       animRef.current = Animated.loop(
         Animated.timing(spinAnimRef.current, {
@@ -115,7 +112,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
       );
       animRef.current.start();
     } else {
-      // Stop animation and reset
       if (animRef.current) {
         animRef.current.stop();
         animRef.current = null;
@@ -134,14 +130,13 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
 
   const handleConnect = async () => {
     try {
-      // Validate host input
       const hostValidation = ValidationService.validateHost(host.trim());
       if (!hostValidation.isValid) {
-        // Error handling would be done in parent component
+        // Parent handles error display
         throw new Error(hostValidation.error || 'Please enter a valid host address');
       }
 
-      // Validate show ports (allow blank ports to be treated as disabled)
+      // Blank ports treated as disabled (port = 0)
       const portsToValidate = {
         remote: remotePort,
         stage: stagePort,
@@ -152,7 +147,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
 
       const validatedPorts: any = {};
       for (const [portName, portValue] of Object.entries(portsToValidate)) {
-        // If port is blank, treat as disabled (port = 0)
         if (portValue.trim() === '') {
           validatedPorts[portName] = 0;
         } else {
@@ -164,7 +158,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
         }
       }
 
-      // Validate all ports (the validation function handles disabled ports)
       const showPortsValidation = ValidationService.validateShowPorts(validatedPorts);
       if (!showPortsValidation.isValid) {
         throw new Error(showPortsValidation.error || 'Invalid port configuration');
@@ -185,7 +178,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
     setApiPort(String(defaultPorts.api));
   };
 
-  // Function to clear a port (disable an interface)
   const handleClearPort = (portType: 'remote' | 'stage' | 'control' | 'output' | 'api') => {
     switch (portType) {
       case 'remote':
@@ -242,7 +234,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
         </View>
       </View>
 
-      {/* Advanced Settings Toggle */}
       <TVFocusable onPress={() => setShowAdvanced(!showAdvanced)}>
         <TouchableOpacity
           style={styles.advancedToggle}
@@ -260,7 +251,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
         </TouchableOpacity>
       </TVFocusable>
 
-      {/* Advanced Settings */}
       {showAdvanced && (
         <View style={styles.advancedSection}>
           <View style={styles.portGrid}>
@@ -387,7 +377,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </View>
           </View>
 
-          {/* Help text for ports */}
           <View style={styles.portHelpContainer}>
             <Text style={styles.portHelpText}>
               <Ionicons name="information-circle-outline" size={14} color={FreeShowTheme.colors.textSecondary} />
@@ -395,7 +384,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
             </Text>
           </View>
 
-          {/* Restore Defaults Button */}
           {!isConnected && (
             <TVFocusable onPress={handleRestoreDefaults}>
               <TouchableOpacity
@@ -410,7 +398,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
         </View>
       )}
 
-      {/* Main Action Button */}
       <View style={styles.actionContainer}>
         {isConnected ? (
           <View style={styles.connectedActions}>
@@ -505,7 +492,6 @@ const ConnectionForm: React.FC<ConnectionFormProps> = ({
 };
 
 const styles = StyleSheet.create({
-  // Card Styles
   mainCard: {
     backgroundColor: FreeShowTheme.colors.primaryDarker,
     borderRadius: FreeShowTheme.borderRadius.lg,
@@ -527,7 +513,6 @@ const styles = StyleSheet.create({
     marginBottom: FreeShowTheme.spacing.lg,
   },
 
-  // Input Styles
   inputContainer: {
     marginBottom: FreeShowTheme.spacing.lg,
   },
@@ -557,7 +542,6 @@ const styles = StyleSheet.create({
     marginLeft: FreeShowTheme.spacing.sm,
   },
 
-  // Advanced Settings
   advancedToggle: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -613,7 +597,6 @@ const styles = StyleSheet.create({
     backgroundColor: FreeShowTheme.colors.primaryDarker,
   },
 
-  // Restore Defaults Button
   restoreDefaultsButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -633,7 +616,6 @@ const styles = StyleSheet.create({
     marginLeft: FreeShowTheme.spacing.xs,
   },
 
-  // Action Buttons
   actionContainer: {
     marginTop: FreeShowTheme.spacing.xl,
   },

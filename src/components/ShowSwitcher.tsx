@@ -77,7 +77,6 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
       })),
     ];
 
-    // Filter out disabled interfaces (those with port <= 0)
     return allOptions.filter(option => option.port && option.port > 0);
   }, [showPorts, defaultPorts]);
 
@@ -303,7 +302,6 @@ const ShowSwitcher: React.FC<ShowSwitcherProps> = ({
               </Text>
               <View style={styles.showsList}>
                 {showOptions.map((show) => {
-                  // Skip current show
                   if (show.id === currentShowId) return null;
 
                   return (

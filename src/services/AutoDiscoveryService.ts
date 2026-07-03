@@ -2,7 +2,6 @@ import Zeroconf, { ZeroconfService, ZeroconfError } from 'react-native-zeroconf'
 import { ErrorLogger } from './ErrorLogger';
 import { configService } from '../config/AppConfig';
 
-// Service type mappings
 const SERVICE_TYPE_MAPPINGS = {
   API: { capability: 'api', portKey: 'api', isApi: true },
   REMOTE: { capability: 'remoteshow', portKey: 'remote', isApi: false },
@@ -43,9 +42,6 @@ interface PendingService {
   isApi: boolean;
 }
 
-/**
- * Parse service name to determine capability and port mapping
- */
 function parseServiceCapability(serviceName: string): { 
   capability: string; 
   portKey: string; 
@@ -53,14 +49,12 @@ function parseServiceCapability(serviceName: string): {
 } {
   const name = serviceName?.toUpperCase() || '';
 
-  // Look for role token anywhere in the name
   for (const key of Object.keys(SERVICE_TYPE_MAPPINGS) as (keyof typeof SERVICE_TYPE_MAPPINGS)[]) {
     if (name.includes(key)) {
       return SERVICE_TYPE_MAPPINGS[key];
     }
   }
 
-  // Fallback for old / unknown formats
   return { 
     capability: `unknown:${name}`, 
     portKey: 'unknown', 
@@ -68,11 +62,7 @@ function parseServiceCapability(serviceName: string): {
   };
 }
 
-/**
- * Extract hostname from service name and format for display
- */
 function getDisplayName(_serviceName: string, hostName: string, ip: string): string {
-  // 1. Prefer real mDNS hostname
   if (hostName) {
     const cleaned = hostName
       .replace(/\.local\.?$/, '')
@@ -84,7 +74,6 @@ function getDisplayName(_serviceName: string, hostName: string, ip: string): str
     }
   }
 
-  // 2. Fallback to IP
   return ip;
 }
 
@@ -131,9 +120,6 @@ class AutoDiscoveryService {
     this.zeroconf = null;
   }
 
-  /**
-   * Aggregate multiple services for the same IP into a single DiscoveredFreeShowInstance
-   */
   private aggregateServicesForIP(ip: string): void {
     const services = this.pendingServices.get(ip) || [];
     if (services.length === 0) return;
@@ -144,8 +130,7 @@ class AutoDiscoveryService {
     let displayName = "";
     let allIps: string[] = [];
     let host = '';
-    
-    // Process each service for this IP
+
     services.forEach((service: PendingService) => {
       if (service.portKey && service.port) {
         ports[service.portKey] = service.port;
@@ -158,14 +143,12 @@ class AutoDiscoveryService {
       if (service.host) {
         host = service.host;
       }
-      
-      // Get display name using helper function
+
       displayName = getDisplayName(service.name, service.host, ip);
 
       allIps = Array.from(new Set([...allIps, ...service.ips]));
     });
-    
-    // Create the aggregated instance
+
     const aggregatedInstance: DiscoveredFreeShowInstance = {
       name: displayName,
       host: host || '',
@@ -182,7 +165,7 @@ class AutoDiscoveryService {
       capabilities: capabilities,
       apiEnabled: capabilities.length > 0,
     };
-    
+
     this.discoveredServices.set(ip, aggregatedInstance);
   }
 
@@ -207,28 +190,23 @@ class AutoDiscoveryService {
       this.notifyError(`Discovery error: ${error.message || 'Unknown error'}`);
     });
 
-    // Service resolved (we get the full details)
     this.zeroconf.on('resolved', (service: ZeroconfService) => {
       ErrorLogger.info('✅ AutoDiscovery: FreeShow service resolved', 'AutoDiscoveryService', { 
         name: service.name, 
-        host: service.host, 
-        port: service.port 
+        host: service.host,
+        port: service.port
       });
-      
-      // Get the primary IP address
+
       const txtIps = (service.txt as any)?.ips as string[] | undefined;
-      const ips = Array.isArray(txtIps) && txtIps.length > 0 ? txtIps : (service.addresses || []).filter(Boolean);      
+      const ips = Array.isArray(txtIps) && txtIps.length > 0 ? txtIps : (service.addresses || []).filter(Boolean);
       if (!ips.length) return;
-      
-      const primaryIP = ips[0]; // just for map key
-      
-      // Parse service capability from name
+
+      const primaryIP = ips[0];
+
       const { capability, portKey, isApi } = parseServiceCapability(service.name);
-      
-      // Get or create pending services for this IP
+
       const ipServices = this.pendingServices.get(primaryIP) || [];
-      
-      // Add this service to the pending list
+
       ipServices.push({
         name: service.name || primaryIP,
         host: service.host || '',
@@ -238,36 +216,31 @@ class AutoDiscoveryService {
         portKey,
         isApi,
       });
-      
+
       this.pendingServices.set(primaryIP, ipServices);
-      
-      // Aggregate all services for this IP into a single instance
+
       this.aggregateServicesForIP(primaryIP);
-      
+
       this.notifyServicesUpdatedThrottled();
     });
 
-    // Service removed
     this.zeroconf.on('remove', (service: ZeroconfService) => {
       ErrorLogger.info('🗑️ AutoDiscovery: FreeShow service removed', 'AutoDiscoveryService', { serviceName: service.name });
       const primaryIP = service.addresses?.[0] || service.host;
-      
-      // Remove the specific service from pending services
+
       const ipServices = this.pendingServices.get(primaryIP) || [];
-      const filteredServices = ipServices.filter(s => 
+      const filteredServices = ipServices.filter(s =>
         !(s.port === service.port && s.name === service.name)
       );
-      
+
       if (filteredServices.length === 0) {
-        // No more services for this IP, remove completely
         this.pendingServices.delete(primaryIP);
         this.discoveredServices.delete(primaryIP);
       } else {
-        // Re-aggregate remaining services
         this.pendingServices.set(primaryIP, filteredServices);
         this.aggregateServicesForIP(primaryIP);
       }
-      
+
       this.notifyServicesUpdatedThrottled();
     });
   }
@@ -287,38 +260,36 @@ class AutoDiscoveryService {
     }
 
     const config = configService.getNetworkConfig();
-    
+
     try {
       ErrorLogger.info(`🔍 AutoDiscovery: Starting scan for FreeShow services (${config.discoveryTimeout / 1000}s timeout)...`, 'AutoDiscoveryService');
-      
-      // Force stop any previous scan to ensure clean state
+
       try {
         this.zeroconf.stop();
       } catch {
         ErrorLogger.debug('Previous scan stop attempt (expected if not running)', 'AutoDiscoveryService');
       }
-      
-      // Clear all state for fresh scan
+
       this.discoveredServices.clear();
       this.pendingServices.clear();
       this.isScanning = true;
-      
+
       this.setScanTimeout();
-      
-      // Small delay to ensure zeroconf is properly stopped before starting
+
+      // Ensure zeroconf is properly stopped before starting
       setTimeout(() => {
         try {
           this.zeroconf?.scan('freeshow', 'udp');
         } catch (scanError) {
-          ErrorLogger.error('❌ AutoDiscovery: Failed to start scan after delay', 'AutoDiscoveryService', 
+          ErrorLogger.error('❌ AutoDiscovery: Failed to start scan after delay', 'AutoDiscoveryService',
             scanError instanceof Error ? scanError : new Error(String(scanError)));
           this.isScanning = false;
           this.notifyError(`Failed to start discovery: ${scanError}. Try using manual connection instead.`);
         }
       }, 100);
-      
+
     } catch (error) {
-      ErrorLogger.error('❌ AutoDiscovery: Failed to start scanning', 'AutoDiscoveryService', 
+      ErrorLogger.error('❌ AutoDiscovery: Failed to start scanning', 'AutoDiscoveryService',
         error instanceof Error ? error : new Error(String(error)));
       this.isScanning = false;
       this.notifyError(`Failed to start discovery: ${error}. Try using manual connection instead.`);
@@ -389,9 +360,9 @@ class AutoDiscoveryService {
 
   restartDiscovery(): void {
     ErrorLogger.info('🔄 AutoDiscovery: Force restarting discovery...', 'AutoDiscoveryService');
-    
+
     this.stopDiscovery();
-    
+
     setTimeout(() => {
       this.startDiscovery();
     }, 200);
@@ -404,8 +375,7 @@ class AutoDiscoveryService {
     this.pendingServices.clear();
     this.clearScanTimeout();
     this.clearUpdateThrottle();
-    
-    // Clean up Zeroconf instance
+
     if (this.zeroconf) {
       try {
         this.zeroconf.removeAllListeners();
@@ -419,11 +389,11 @@ class AutoDiscoveryService {
   private setScanTimeout(): void {
     this.clearScanTimeout();
     const config = configService.getNetworkConfig();
-    
+
     this.scanTimeout = setTimeout(() => {
       const discoveredCount = this.discoveredServices.size;
       const timeoutSeconds = config.discoveryTimeout / 1000;
-      
+
       if (discoveredCount === 0) {
         ErrorLogger.info(`⏰ AutoDiscovery: Scan timeout reached (${timeoutSeconds}s) with no devices found, stopping discovery`, 'AutoDiscoveryService');
         this.notifyError(`No FreeShow devices found after ${timeoutSeconds} seconds. Try manual connection or ensure FreeShow is running on your network.`);
@@ -449,29 +419,22 @@ class AutoDiscoveryService {
     this.pendingUpdate = false;
   }
 
-  /**
-   * Throttled version of notifyServicesUpdated to prevent excessive updates
-   */
   private notifyServicesUpdatedThrottled(): void {
-    // If we already have a pending update, just mark that we need to update
     if (this.updateThrottleTimeout) {
       this.pendingUpdate = true;
       return;
     }
 
-    // Immediately notify for the first event
     this.notifyServicesUpdated();
-    
-    // Set up throttling for subsequent events
+
     this.updateThrottleTimeout = setTimeout(() => {
       this.updateThrottleTimeout = null;
-      
-      // If there was a pending update during throttle period, process it now
+
       if (this.pendingUpdate) {
         this.pendingUpdate = false;
         this.notifyServicesUpdated();
       }
-    }, 500); // Use hardcoded value for simplicity
+    }, 500);
   }
 
   private notifyServicesUpdated(): void {
@@ -487,7 +450,7 @@ class AutoDiscoveryService {
 
   private notifyError(error: string): void {
     ErrorLogger.warn(`⚠️ AutoDiscovery: ${error}`, 'AutoDiscoveryService');
-    
+
     this.listeners.onError.forEach(callback => {
       try {
         callback(error);

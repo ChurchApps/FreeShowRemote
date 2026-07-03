@@ -87,11 +87,10 @@ export class InterfacePingService {
       return { ...finalPorts, validatedPorts: [], hasEnabledInterfaces: false };
     }
     
-    const pingPromises = portsToTest.map(([interfaceName, port]) => 
+    const pingPromises = portsToTest.map(([interfaceName, port]) =>
       this.pingPort(host, port).then(result => ({ interfaceName, result }))
     );
 
-    // Process ping results and disable unreachable interfaces
     const pingResults = await Promise.all(pingPromises);
     const validatedPorts: PortPingResult[] = [];
 
@@ -143,13 +142,12 @@ export class InterfacePingService {
           });
           
           return { isReachable: true, responseTime };
-          
+
         } catch {
-          continue; // Try next port
+          continue;
         }
       }
-      
-      // All ports failed
+
       const responseTime = Date.now() - startTime;
       return {
         isReachable: false,
@@ -172,5 +170,4 @@ export class InterfacePingService {
   }
 }
 
-// Export singleton instance
 export const interfacePingService = new InterfacePingService();

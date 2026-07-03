@@ -13,9 +13,6 @@ interface InterfaceCardProps {
   size?: 'default' | 'large' | 'xlarge';
 }
 
-/**
- * Individual interface card component
- */
 const InterfaceCard: React.FC<InterfaceCardProps> = ({
   show,
   onPress,
@@ -27,9 +24,6 @@ const InterfaceCard: React.FC<InterfaceCardProps> = ({
   const isLarge = size === 'large';
   const isXL = size === 'xlarge';
 
-  /**
-   * Renders the card content (icon, title, description, port)
-   */
   const CardContent = () => (
     <>
       <View style={styles.cardHeader}>

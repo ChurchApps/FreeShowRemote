@@ -12,15 +12,14 @@ export function getTabIcon(routeName: string, isFocused: boolean, isConnected: b
     iconName = isFocused ? 'apps' : 'apps-outline';
   } else if (routeName === 'Connect') {
     iconName = isFocused ? 'wifi' : 'wifi-outline';
-    // Dynamic color for Connect tab based on connection status
     if (isFocused) {
-      iconColor = FreeShowTheme.colors.secondary; // Purple when focused (on Connect page)
+      iconColor = FreeShowTheme.colors.secondary;
     } else if (isConnected) {
-      iconColor = FreeShowTheme.colors.connected; // Green when connected
+      iconColor = FreeShowTheme.colors.connected;
     } else if (connectionStatus === 'connecting') {
-      iconColor = FreeShowTheme.colors.secondaryLight; // Light purple when connecting
+      iconColor = FreeShowTheme.colors.secondaryLight;
     } else if (connectionStatus === 'error') {
-      iconColor = FreeShowTheme.colors.disconnected; // Red when error
+      iconColor = FreeShowTheme.colors.disconnected;
     }
   } else if (routeName === 'Settings') {
     iconName = isFocused ? 'settings' : 'settings-outline';

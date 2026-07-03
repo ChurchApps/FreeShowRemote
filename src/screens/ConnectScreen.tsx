@@ -64,20 +64,16 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   });
   const [isPingingInterfaces, setIsPingingInterfaces] = useState(false);
 
-  // Helper function to show error modal
   const showError = useCallback((title: string, message: string) => {
     setErrorModal({ visible: true, title, message });
   }, []);
 
-  // Helper function to hide error modal
   const hideError = useCallback(() => {
     setErrorModal({ visible: false, title: '', message: '' });
   }, []);
 
-  // Ref to track if we've already processed the history item
   const processedHistoryItemRef = useRef(false);
 
-  // Use focused contexts
   const connection = useConnection();
   const { state, actions } = connection;
   const { isConnected, connectionStatus, connectionHost, connectionName, currentShowPorts } = state;
@@ -100,27 +96,23 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   const { discoveredServices, isDiscovering, isDiscoveryAvailable } = discoveryState;
   const { startDiscovery, stopDiscovery, clearDiscoveredServices } = discoveryActions;
 
-  // Progress state for scan
-  // Use shorter timeout for UI progress to match snappier discovery
+  // UI progress bar reflects snappier discovery feedback than actual timeout
   const discoveryTimeout = configService.getNetworkConfig().discoveryTimeout;
   const [scanComplete, setScanComplete] = useState(false);
   const [isScanActive, setIsScanActive] = useState(false);
   const scanTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Clear discovered services and progress when screen mounts
   useEffect(() => {
     clearDiscoveredServices();
     setScanComplete(false);
   }, []);
 
-  // Update host when connection changes
   useEffect(() => {
     if (isConnected && connectionHost) {
       setHost(connectionHost);
     }
   }, [isConnected, connectionHost]);
 
-  // Handle scan progress
   useEffect(() => {
     if (isScanActive) {
       setScanComplete(false);
@@ -149,14 +141,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     }
   }, [isScanActive, discoveryTimeout, stopDiscovery, animatedScanProgress]);
 
-  // When discovery stops for any reason, also end scan feedback
   useEffect(() => {
     if (!isDiscovering && isScanActive) {
       setIsScanActive(false);
     }
   }, [isDiscovering]);
 
-  // Sync port fields with currentShowPorts (interface states from ShowSelector)
   useEffect(() => {
     if (!currentShowPorts) return;
 
@@ -169,14 +159,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
   const handleConnect = async () => {
     try {
-      // 1. Validate host
       const hostValidation = ValidationService.validateHost(host.trim());
       if (!hostValidation.isValid) {
         showError('Invalid Host', hostValidation.error || 'Please enter a valid host address');
         return;
       }
 
-      // 2. Get user's desired port configuration
       const desiredPorts = {
         remote: parseInt(remotePort) || 0,
         stage: parseInt(stagePort) || 0,
@@ -185,7 +173,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         api: parseInt(apiPort) || 0,
       };
 
-      // 3. Check if user wants at least one interface
       const hasDesiredInterfaces = Object.values(desiredPorts).some(port => port > 0);
       if (!hasDesiredInterfaces) {
         showError(
@@ -198,7 +185,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       const sanitizedHost = hostValidation.sanitizedValue as string;
       const nameToUse = history.find(h => h.host === sanitizedHost)?.nickname;
 
-      // 4. Use new validation-first connection method
       setIsPingingInterfaces(true);
 
       ErrorLogger.info(
@@ -211,7 +197,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       setIsPingingInterfaces(false);
 
       if (result.success && result.validatedPorts) {
-        // Connection successful - save to history and navigate
         await settingsRepository.addToConnectionHistory(
           sanitizedHost,
           result.validatedPorts.api || configService.getNetworkConfig().defaultPort,
@@ -219,7 +204,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           result.validatedPorts
         );
 
-        // Show user feedback about any disabled interfaces
         const disabledInterfaces = Object.entries(desiredPorts)
           .filter(
             ([name, port]) =>
@@ -236,7 +220,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
         navigation.navigate('Interface');
       } else {
-        // Connection failed - show user-friendly error
         showError(
           'Connection Failed',
           result.error || 'Unable to connect to FreeShow. Please check your settings and try again.'
@@ -260,7 +243,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   const handleHistoryConnect = useCallback(
     async (historyItem: any) => {
       try {
-        // Validate host from history
         const hostValidation = ValidationService.validateHost(historyItem.host);
         if (!hostValidation.isValid) {
           setErrorModal({
@@ -271,11 +253,9 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           return;
         }
 
-        // Update UI with history item data
         const sanitizedHost = hostValidation.sanitizedValue as string;
         setHost(sanitizedHost);
 
-        // Validate and update interface ports from stored history
         let desiredPorts;
 
         if (historyItem.showPorts) {
@@ -291,14 +271,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
             desiredPorts = showPortsValidation.sanitizedValue;
           }
 
-          // Update UI with desired ports
           setRemotePort(desiredPorts.remote ? String(desiredPorts.remote) : '');
           setStagePort(desiredPorts.stage ? String(desiredPorts.stage) : '');
           setControlPort(desiredPorts.control ? String(desiredPorts.control) : '');
           setOutputPort(desiredPorts.output ? String(desiredPorts.output) : '');
           setApiPort(desiredPorts.api ? String(desiredPorts.api) : '');
         } else {
-          // Use default ports if none stored
           desiredPorts = configService.getDefaultShowPorts();
           setRemotePort(String(desiredPorts.remote));
           setStagePort(String(desiredPorts.stage));
@@ -317,7 +295,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           }
         );
 
-        // Use connectWithValidation to run standard interface checks
         setIsPingingInterfaces(true);
         try {
           const result = await connectWithValidation(
@@ -327,8 +304,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
           );
 
           if (result.success) {
-            // Navigation is handled by connectWithValidation or connection state change
-            // Navigate to Interface screen (works for both sidebar and bottom tab layouts)
             if (navigation && typeof navigation.navigate === 'function') {
               navigation.navigate('Interface');
             } else {
@@ -338,7 +313,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
               );
             }
           } else {
-            // Show error from validation
             setErrorModal({
               visible: true,
               title: 'Connection Failed',
@@ -369,7 +343,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   };
 
   const handleDiscoveredConnect = async (service: any) => {
-    // Check if any services are available for this instance
     if (!service.capabilities || service.capabilities.length === 0) {
       setErrorModal({
         visible: true,
@@ -389,7 +362,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     stopDiscovery();
 
     try {
-      // 1. Start with discovered interfaces (treat missing as disabled)
       const discoveredPorts = {
         remote: service.ports?.remote || 0,
         stage: service.ports?.stage || 0,
@@ -398,14 +370,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         api: 0, // API not broadcasted, we'll test it separately
       };
 
-      // 2. Connect immediately for speed, then validate API in background
       const defaultApiPort = configService.getNetworkConfig().defaultPort;
       const nameToUse = history.find(h => ips.includes(h.host))?.nickname || service.name;
 
-      // Start API validation in parallel (don't block connection)
+      // Test API port in parallel (don't block connection)
       const apiValidationPromise = interfacePingService.pingPort(host, defaultApiPort);
 
-      // 3. Try connecting to multiple IPs if available
       let connected: boolean;
       if (ips.length > 1) {
         ErrorLogger.info(
@@ -418,7 +388,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       }
 
       if (connected) {
-        // 4. Wait for API validation and update ports accordingly
         const apiResult = await apiValidationPromise;
         if (apiResult.isReachable) {
           discoveredPorts.api = defaultApiPort;
@@ -441,7 +410,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         }
         updateCapabilities(service.capabilities || ['api']);
 
-        // Use the actual connected host from connection state instead of original host
         const actualConnectedHost = connectionHost || host;
         await settingsRepository.addToConnectionHistory(
           actualConnectedHost,
@@ -477,12 +445,10 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   const handleEditConnectionName = useCallback(() => {
     if (!connectionHost) return;
 
-    // Find the connection in history to get its ID
     const historyItem = history.find(h => h.host === connectionHost);
     if (historyItem) {
       handleEditNickname(historyItem);
     } else {
-      // If not in history yet, create a placeholder with the current connection details
       const placeholderItem: ConnectionHistory = {
         id: '', // Will be generated when saved
         host: connectionHost,
@@ -498,10 +464,8 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
   const handleNicknameSaved = useCallback(
     async (nickname: string) => {
-      // Refresh history
       await historyActions.refreshHistory();
 
-      // Update the connection name in the connection state if this is the current connection
       if (isConnected && editingConnection?.host === connectionHost) {
         actions.updateConnectionName(nickname);
       }
@@ -537,58 +501,44 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     setShowClearAllConfirm(false);
   };
 
-  // Handle navigation parameter for history item connection
   useEffect(() => {
-    // Only add listener if navigation has addListener method (not available in sidebar layout)
+    // Navigation.addListener unavailable in sidebar layout; check getParam as fallback
     if (typeof navigation?.addListener === 'function') {
       const unsubscribe = navigation.addListener('focus', () => {
         const historyItem = navigation.getParam?.('historyItem');
         if (historyItem && !processedHistoryItemRef.current) {
-          // Mark as processed to prevent multiple triggers
           processedHistoryItemRef.current = true;
-          // Remove the parameter so it doesn't trigger again
           navigation.setParams?.({ historyItem: undefined });
-          // Connect using the history item
           handleHistoryConnect(historyItem);
         }
       });
 
       return () => {
         unsubscribe();
-        // Reset the ref when the effect is cleaned up
         processedHistoryItemRef.current = false;
       };
     }
 
-    // For sidebar layout, check for historyItem on initial render
     const historyItem = navigation?.getParam?.('historyItem');
     if (historyItem && !processedHistoryItemRef.current) {
-      // Mark as processed to prevent multiple triggers
       processedHistoryItemRef.current = true;
-      // Remove the parameter so it doesn't trigger again
       navigation.setParams?.({ historyItem: undefined });
-      // Connect using the history item
       handleHistoryConnect(historyItem);
     }
 
-    // Return a cleanup function
     return () => {
-      // Reset the ref when the effect is cleaned up
       processedHistoryItemRef.current = false;
     };
   }, [navigation, handleHistoryConnect]);
 
-  // Helper function to handle structured QR payload
   const handleStructuredQRPayload = useCallback(
     async (payload: any) => {
-      // Validate host
       const hostValidation = ValidationService.validateHost(String(payload.host));
       if (!hostValidation.isValid) {
         showError('Invalid Host', `QR code contains invalid host: ${hostValidation.error}`);
         return;
       }
 
-      // Validate ports
       const portsValidation = ValidationService.validateShowPorts(payload.ports);
       if (!portsValidation.isValid) {
         showError('Invalid Ports', portsValidation.error || 'QR payload contained invalid ports');
@@ -610,7 +560,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
       const historyMatch = history.find(h => h.host === validatedHost);
       const nameToUse = payload.nickname || historyMatch?.nickname;
 
-      // Update UI with scanned host
       setHost(validatedHost);
       setRemotePort(sanitizedShowPorts.remote ? String(sanitizedShowPorts.remote) : '');
       setStagePort(sanitizedShowPorts.stage ? String(sanitizedShowPorts.stage) : '');
@@ -653,19 +602,16 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     [history, connect, updateShowPorts, navigation, showError]
   );
 
-  // Helper function to handle legacy QR format
   const handleLegacyQRFormat = useCallback(
     async (sanitizedContent: string) => {
-      // Extract host from URL if it's a full URL, otherwise use as-is
       let extractedHost = sanitizedContent;
       try {
         const url = new URL(sanitizedContent);
         extractedHost = url.hostname;
       } catch {
-        // Not a URL, use the content as-is (should be an IP or hostname)
+        // content is IP/hostname, not URL
       }
 
-      // Final validation of the extracted host
       const hostValidation = ValidationService.validateHost(extractedHost);
       if (!hostValidation.isValid) {
         showError('Invalid Host', `QR code contains invalid host: ${hostValidation.error}`);
@@ -674,12 +620,9 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
       const validatedHost = hostValidation.sanitizedValue as string;
 
-      // Update UI with scanned host
       setHost(validatedHost);
 
-      // Auto-connect after QR scan
       try {
-        // Validate current port configuration for auto-connect
         const portsToValidate = {
           remote: remotePort,
           stage: stagePort,
@@ -714,14 +657,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         const sanitizedShowPorts = showPortsValidation.sanitizedValue;
         const defaultPort = configService.getNetworkConfig().defaultPort;
 
-        // Find existing nickname before connecting
         const historyMatch = history.find(h => h.host === validatedHost);
         const nameToUse = historyMatch?.nickname;
 
         const connected = await connect(validatedHost, defaultPort, nameToUse);
 
         if (connected) {
-          // Update show ports after successful connection
           try {
             await updateShowPorts(sanitizedShowPorts);
           } catch (error) {
@@ -759,10 +700,8 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     ]
   );
 
-  // Update: Scan button clears results and rescans, or cancels if already scanning
   const handleScanPress = () => {
     if (isScanActive) {
-      // Cancel scanning
       stopDiscovery();
       setIsScanActive(false);
       setScanComplete(false);
@@ -771,11 +710,9 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         clearInterval(scanTimerRef.current);
       }
     } else {
-      // Start scanning
       clearDiscoveredServices();
       setScanComplete(false);
       setIsScanActive(true);
-      // Reset animated progress
       animatedScanProgress.setValue(0);
       startDiscovery();
     }
@@ -783,7 +720,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
   const handleQRScan = async (scannedContent: string) => {
     try {
-      // Validate QR content
       const qrValidation = ValidationService.validateQRContent(scannedContent);
       if (!qrValidation.isValid) {
         showError('Invalid QR Code', qrValidation.error || 'The QR code contains invalid content');
@@ -793,14 +729,12 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
       const value = qrValidation.sanitizedValue as any;
 
-      // Case 1: Structured payload with nickname and ports
       if (value && typeof value === 'object' && value.type === 'freeshow-remote-connection') {
         await handleStructuredQRPayload(value);
         setShowQRScanner(false);
         return;
       }
 
-      // Case 2: Legacy URL/host format
       await handleLegacyQRFormat(value as string);
       setShowQRScanner(false);
     } catch (error) {
@@ -816,7 +750,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
 
   const isConnecting = connectionStatus === 'connecting';
 
-  // Render connected screen when connected
   const connectedContent = isConnected ? (
     <>
       <ConnectedScreen
@@ -826,12 +759,10 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
         onDisconnect={handleDisconnect}
         onShowQRCode={() => setShowQrModalVisible(true)}
         onEditNickname={() => {
-          // Find the current connection in history and trigger edit
           let currentConnection = history.find(
             item => item.host === connectionHost && item.showPorts?.api === currentShowPorts?.api
           );
 
-          // If no matching connection found, create a temporary one for editing
           if (!currentConnection) {
             currentConnection = {
               id: connectionHost || 'unknown',
@@ -860,7 +791,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
   const isTV = getDeviceType().isTV;
   const SafeAreaWrapper = isTV ? SafeAreaView : View;
 
-  // Render disconnected screen when not connected
   const disconnectedContent = !isConnected ? (
     <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={styles.container}>
       <SafeAreaWrapper style={styles.safeArea}>
@@ -886,7 +816,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
               onEditConnectionName={handleEditConnectionName}
             />
 
-            {/* Quick Connect Section - Only show when not connected */}
             {!isConnected &&
               (history.length > 0 || discoveredServices.length > 0 || isDiscoveryAvailable) && (
                 <QuickConnectSection
@@ -947,7 +876,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
             onScan={handleQRScan}
           />
 
-          {/* Clear All History Confirmation Modal */}
           <ConfirmationModal
             visible={showClearAllConfirm}
             title="Clear All History"
@@ -960,7 +888,6 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
             onCancel={cancelClearAllHistory}
           />
 
-          {/* Error Modal */}
           <ErrorModal
             visible={errorModal.visible}
             title={errorModal.title}
@@ -972,13 +899,11 @@ const ConnectScreen: React.FC<ConnectScreenProps> = ({ navigation }) => {
     </LinearGradient>
   ) : null;
 
-  // Render the appropriate content based on connection state
   return (
     <>
       {connectedContent}
       {disconnectedContent}
 
-      {/* Shared modals available in both connected and disconnected states */}
       <ShareQRModal
         visible={showShareQR || showQrModalVisible}
         onClose={() => {

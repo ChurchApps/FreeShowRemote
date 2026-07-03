@@ -30,7 +30,6 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({ connectionName, conne
   const getActivePortsCount = () => {
     if (!currentShowPorts) return 0;
     return Object.entries(currentShowPorts).filter(([name, port]) => {
-      // Filter out non-port properties like hasEnabledInterfaces
       return name !== 'hasEnabledInterfaces' && name !== 'validatedPorts' && port && port > 0 && typeof port === 'number';
     }).length;
   };
@@ -39,7 +38,6 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({ connectionName, conne
     if (!currentShowPorts) return [];
     return Object.entries(currentShowPorts)
       .filter(([name, port]) => {
-        // Filter out non-port properties like hasEnabledInterfaces
         return name !== 'hasEnabledInterfaces' && name !== 'validatedPorts' && port && port > 0 && typeof port === 'number';
       })
       .map(([name, port]) => ({
@@ -222,16 +220,13 @@ const ConnectedScreen: React.FC<ConnectedScreenProps> = ({ connectionName, conne
     <LinearGradient colors={FreeShowTheme.gradients.appBackground} style={[styles.container, isTV && { paddingTop: insets.top }]}>
       <ScrollView style={styles.scrollView} contentContainerStyle={[styles.scrollContent, { paddingBottom: getBottomPadding() }]} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          {/* Brand Header Card */}
           <View style={styles.brandCard}>
             <LinearGradient colors={['rgba(240, 0, 140, 0.12)', 'rgba(240, 0, 140, 0.04)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.brandGradient}>
-              {/* Title Section - Left */}
               <View style={styles.titleSection}>
                 <Text style={[styles.screenTitle, Dimensions.get('window').width >= 768 && styles.titleTablet]}>Connection Status</Text>
                 <Text style={[styles.subtitle, Dimensions.get('window').width >= 768 && styles.subtitleTablet]}>Manage your connection</Text>
               </View>
 
-              {/* Logo - Right */}
               <View style={styles.logoContainer}>
                 <Image source={require('../../assets/app-icon.png')} style={styles.logo} resizeMode="contain" />
               </View>
@@ -264,8 +259,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     paddingBottom: 20,
   },
-
-  // Brand Header Card
   brandCard: {
     borderRadius: 16,
     overflow: 'hidden',
@@ -318,8 +311,6 @@ const styles = StyleSheet.create({
   cardsContainer: {
     gap: FreeShowTheme.spacing.lg,
   },
-
-  // Connection Info Card
   infoCard: {
     borderRadius: 12,
     overflow: 'hidden',
@@ -374,8 +365,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'white',
   },
-
-  // Ports Card
   portsCard: {
     borderRadius: 12,
     overflow: 'hidden',
@@ -431,8 +420,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
   },
-
-  // Actions Card
   actionsCard: {
     gap: 16,
   },

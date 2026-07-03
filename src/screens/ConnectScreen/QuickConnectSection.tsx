@@ -44,20 +44,15 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
     const _discoveryTimeout = configService.getNetworkConfig().discoveryTimeout;
     const isIpAddress = useCallback((str: string) => /^(\d{1,3}\.){3}\d{1,3}$/.test(str), []);
 
-    // Check if running in Expo Go
     const isExpoGo = Constants.executionEnvironment === 'storeClient';
 
-    // Modal state
     const [showExpoGoWarning, setShowExpoGoWarning] = useState(false);
-    // Expo Go mock discovery state
     const [isMockScanActive, setIsMockScanActive] = useState(false);
     const [mockedServices, setMockedServices] = useState<DiscoveredFreeShowInstance[]>([]);
     const [showExpoMockNotice, setShowExpoMockNotice] = useState(false);
 
-    // Handle scan press with Expo Go check
     const handleScanPress = useCallback(() => {
       if (isExpoGo) {
-        // Simulate discovery results in Expo Go
         setShowExpoMockNotice(true);
         setIsMockScanActive(true);
         const defaultPort = configService.getNetworkConfig().defaultPort;
@@ -112,7 +107,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
           },
         ];
         setMockedServices(mocks);
-        // Animate progress briefly for UX, then stop
         Animated.timing(animatedScanProgress, {
           toValue: 1,
           duration: 800,
@@ -130,7 +124,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
       onScanPress();
     }, [isExpoGo, onScanPress, animatedScanProgress]);
 
-    // Memoize computed values
     const recentHistory = useMemo(() => history.slice(0, 3), [history]);
 
     const effectiveScanActive = isScanActive || (isExpoGo && isMockScanActive);
@@ -148,7 +141,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
         </View>
 
         <View style={styles.quickConnectContent}>
-          {/* Auto Discovery */}
           {isDiscoveryAvailable && (
             <View style={styles.discoverySection}>
               <View style={styles.discoverySectionHeader}>
@@ -168,7 +160,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
                         : 'Scan the network for available FreeShow devices'
                     }
                   >
-                    {/* Progress fill overlay */}
                     {effectiveScanActive && (
                       <Animated.View
                         style={{
@@ -187,7 +178,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
                         }}
                       />
                     )}
-                    {/* Icon and label */}
                     <View style={styles.discoveryToggleContent}>
                       <Ionicons
                         name={effectiveScanActive ? 'stop' : 'search'}
@@ -263,7 +253,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
                               {service.ip}
                             </Text>
                           )}
-                          {/* Show capabilities */}
                           <View style={styles.capabilitiesContainer}>
                             {!service.capabilities || service.capabilities.length === 0 ? (
                               <View style={styles.capabilityBadgeDisabled}>
@@ -348,7 +337,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
             </View>
           )}
 
-          {/* Recent Connections */}
           {hasHistory && (
             <View style={styles.recentSection}>
               <View style={styles.recentSectionHeader}>
@@ -417,7 +405,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
           )}
         </View>
 
-        {/* Expo Go Warning Modal */}
         <ErrorModal
           visible={showExpoGoWarning}
           title={t('quickConnect.networkDiscoveryNotAvailable')}
@@ -432,7 +419,6 @@ const QuickConnectSection: React.FC<QuickConnectSectionProps> = React.memo(
 );
 
 const styles = StyleSheet.create({
-  // Quick Connect Styles
   quickConnectCard: {
     backgroundColor: FreeShowTheme.colors.primaryDarker,
     borderRadius: 12,
@@ -462,7 +448,6 @@ const styles = StyleSheet.create({
     padding: FreeShowTheme.spacing.lg,
   },
 
-  // Discovery Section
   discoverySection: {
     marginBottom: FreeShowTheme.spacing.lg,
   },
@@ -613,7 +598,6 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
   },
 
-  // Recent Connections Section
   recentSection: {
     borderTopWidth: 1,
     borderTopColor: FreeShowTheme.colors.primaryLighter,
